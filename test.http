@@ -1,0 +1,12 @@
+POST http://localhost:3000/adresses
+Content-Type: application/json
+
+{
+  "nom": "La Winery",
+  "type": "cave",
+  "adresse": "12 rue Nationale",
+  "ville": "Lille",
+  "latitude": 50.6292,
+  "longitude": 3.0573,
+  "description": "Nouvelle cave nature à Lille"
+}
