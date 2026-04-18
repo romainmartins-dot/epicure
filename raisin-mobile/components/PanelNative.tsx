@@ -75,6 +75,7 @@ export default function PanelNative({ selected, onClose }: Props) {
       setPhotoPleinEcran(false);
       setScrollEnabled(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   const snapTo = (target: number, vel: number, isExpand = false) => {

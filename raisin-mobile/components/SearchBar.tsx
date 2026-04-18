@@ -14,6 +14,7 @@ export default function SearchBar({ recherche, setRecherche, onSubmit }: Props) 
 
   useEffect(() => {
     clearOpacity.value = withTiming(recherche.length > 0 ? 1 : 0, { duration: 150 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recherche]);
 
   const clearStyle = useAnimatedStyle(() => ({

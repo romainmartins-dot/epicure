@@ -81,7 +81,6 @@ export default function PanelWeb({ selected, onClose }: Props) {
 
     const onUp = (e: MouseEvent) => {
       if (!drag.current) return;
-      const startTY = drag.current.startTY;
       const endTY = drag.current.currentTY;
       const delta = e.clientY - drag.current.startY;
       // Vélocité approximée (pixels par ms × 16)

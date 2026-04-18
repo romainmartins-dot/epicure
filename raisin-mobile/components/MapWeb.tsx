@@ -12,6 +12,10 @@ interface Props {
 
 export default function MapWeb({ adresses, onMarkerClick, onMapReady }: Props) {
   const initialized = useRef(false);
+  const onMarkerClickRef = useRef(onMarkerClick);
+  const onMapReadyRef = useRef(onMapReady);
+  onMarkerClickRef.current = onMarkerClick;
+  onMapReadyRef.current = onMapReady;
 
   useEffect(() => {
     if (initialized.current || adresses.length === 0) return;
@@ -47,11 +51,11 @@ export default function MapWeb({ adresses, onMarkerClick, onMapReady }: Props) {
         const marker = L.marker([parseFloat(item.latitude), parseFloat(item.longitude)], {
           icon: icon(item.type),
         }).addTo(map);
-        marker.on("click", () => onMarkerClick(item));
+        marker.on("click", () => onMarkerClickRef.current(item));
       });
 
       initialized.current = true;
-      if (onMapReady) onMapReady(map);
+      if (onMapReadyRef.current) onMapReadyRef.current(map);
     };
 
     if ((window as any).L) initMap();

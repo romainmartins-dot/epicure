@@ -24,6 +24,7 @@ export default function Header({ vue, setVue }: Props) {
       damping: 20,
       stiffness: 300,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vue]);
 
   const pillStyle = useAnimatedStyle(() => ({
