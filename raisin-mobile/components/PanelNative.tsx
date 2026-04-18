@@ -37,6 +37,7 @@ interface Props {
 const COMPACT_H = 320;
 const EXPANDED_H = 520;
 
+// "decelerate" curve : démarre à pleine vitesse (suit le doigt), décélère proprement — aucun départ en pop
 const IOS_EASE = Easing.bezier(0.0, 0.0, 0.2, 1.0);
 const IOS_EASE_IN = Easing.bezier(0.4, 0.0, 1.0, 1.0);
 
@@ -69,14 +70,11 @@ export default function PanelNative({ selected, onClose }: Props) {
         runOnJS(haptic)(Haptics.ImpactFeedbackStyle.Light),
       );
       setScrollEnabled(false);
-    } else {
-      panelH.value = withTiming(0, { duration: 160, easing: IOS_EASE_IN });
-      setPhotoPleinEcran(false);
-      setScrollEnabled(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
+  // Animation démarre immédiatement sur le press — pas d'attente du cycle React
   const animateClose = () => {
     cancelAnimation(panelH);
     panelH.value = withTiming(0, { duration: 160, easing: IOS_EASE_IN }, () => {
@@ -145,13 +143,16 @@ export default function PanelNative({ selected, onClose }: Props) {
     <>
       <Animated.View
         style={[StyleSheet.absoluteFillObject, styles.backdrop, backdropStyle]}
-        pointerEvents="none"
-      />
+        pointerEvents={selected ? "auto" : "none"}
+      >
+        <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={animateClose} />
+      </Animated.View>
 
       {photoPleinEcran && photo && (
         <PhotoModal uri={photo} onClose={() => setPhotoPleinEcran(false)} />
       )}
 
+      {/* Shadow séparé : overflow:hidden sur le panel couperait le shadow iOS */}
       <Animated.View style={[styles.shadow, sizeStyle]} pointerEvents="none" />
 
       <GestureDetector gesture={gesture}>
