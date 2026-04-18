@@ -70,13 +70,19 @@ export default function PanelNative({ selected, onClose }: Props) {
         runOnJS(haptic)(Haptics.ImpactFeedbackStyle.Light),
       );
       setScrollEnabled(false);
-    } else {
-      panelH.value = withTiming(0, { duration: 260, easing: IOS_EASE_IN });
-      setPhotoPleinEcran(false);
-      setScrollEnabled(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+
+  // Animation démarre immédiatement sur le press — pas d'attente du cycle React
+  const animateClose = () => {
+    cancelAnimation(panelH);
+    panelH.value = withTiming(0, { duration: 160, easing: IOS_EASE_IN }, () => {
+      runOnJS(onClose)();
+    });
+    setPhotoPleinEcran(false);
+    setScrollEnabled(false);
+  };
 
   const snapTo = (target: number, vel: number, isExpand = false) => {
     "worklet";
@@ -139,7 +145,7 @@ export default function PanelNative({ selected, onClose }: Props) {
         style={[StyleSheet.absoluteFillObject, styles.backdrop, backdropStyle]}
         pointerEvents={selected ? "auto" : "none"}
       >
-        <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={onClose} />
+        <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={animateClose} />
       </Animated.View>
 
       {photoPleinEcran && photo && (
@@ -154,7 +160,7 @@ export default function PanelNative({ selected, onClose }: Props) {
           <View style={styles.handleZone}>
             <View style={styles.pill} />
           </View>
-          <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+          <TouchableOpacity style={styles.closeBtn} onPress={animateClose}>
             <Text style={styles.closeTxt}>✕</Text>
           </TouchableOpacity>
 
