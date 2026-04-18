@@ -66,7 +66,7 @@ export default function PanelNative({ selected, onClose }: Props) {
 
   useEffect(() => {
     if (selected) {
-      panelH.value = withTiming(COMPACT_H, { duration: 320, easing: IOS_EASE }, () =>
+      panelH.value = withTiming(COMPACT_H, { duration: 220, easing: IOS_EASE }, () =>
         runOnJS(haptic)(Haptics.ImpactFeedbackStyle.Light),
       );
       setScrollEnabled(false);

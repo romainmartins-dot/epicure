@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "react-native";
 
 import Animated, { FadeIn } from "react-native-reanimated";
@@ -30,15 +30,19 @@ export default function Index() {
     hasMore,
   } = useAdressesList(recherche || undefined);
 
-  const rechercherVille = () => {
+  const rechercherVille = useCallback(() => {
     if (!mapRef.current || !recherche) return;
-    const filtrees = adresses.filter((a) =>
-      a.ville.toLowerCase().includes(recherche.toLowerCase()),
-    );
-    if (!filtrees.length) return;
-    const premier = filtrees[0];
+    const q = recherche.toLowerCase();
+    const premier = adresses.find((a) => a.ville.toLowerCase().includes(q));
+    if (!premier) return;
     mapRef.current.setView([parseFloat(premier.latitude), parseFloat(premier.longitude)], 14);
-  };
+  }, [adresses, recherche]);
+
+  const handleMapReady = useCallback((m: any) => {
+    mapRef.current = m;
+  }, []);
+
+  const handleClose = useCallback(() => setSelected(null), []);
 
   if (loading)
     return (
@@ -63,12 +67,10 @@ export default function Index() {
             adresses={adresses}
             selected={selected}
             onMarkerClick={setSelected}
-            onMapReady={(m) => {
-              mapRef.current = m;
-            }}
+            onMapReady={handleMapReady}
           />
           {!selected && <Legende />}
-          <Panel selected={selected} onClose={() => setSelected(null)} />
+          <Panel selected={selected} onClose={handleClose} />
         </Animated.View>
       ) : listeLoading ? (
         <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 40 }} />
@@ -78,8 +80,10 @@ export default function Index() {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
           renderItem={({ item }) => <AdresseCard item={item} />}
+          getItemLayout={(_, index) => ({ length: 94, offset: 94 * index, index })}
           onEndReached={hasMore ? loadMore : undefined}
           onEndReachedThreshold={0.3}
+          removeClippedSubviews
           ListFooterComponent={
             loadingMore ? (
               <ActivityIndicator color="#C0392B" style={{ marginVertical: 16 }} />

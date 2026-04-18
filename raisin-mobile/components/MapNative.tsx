@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
@@ -44,6 +44,33 @@ function MarkerPin({ item, isSelected }: { item: Adresse; isSelected: boolean })
 }
 
 export default function MapNative({ adresses, selected, onMarkerClick }: Props) {
+  // IDs qui nécessitent tracksViewChanges=true le temps de l'animation
+  // Actif brièvement sur sélection/désélection, puis désactivé — évite le clignotement react-native-maps
+  const [trackingIds, setTrackingIds] = useState<Set<number>>(new Set());
+  const prevSelectedId = useRef<number | null>(null);
+
+  useEffect(() => {
+    const ids = new Set<number>();
+    if (selected?.id != null) ids.add(selected.id);
+    if (prevSelectedId.current != null) ids.add(prevSelectedId.current);
+    prevSelectedId.current = selected?.id ?? null;
+
+    setTrackingIds(ids);
+    const t = setTimeout(() => setTrackingIds(new Set()), 400);
+    return () => clearTimeout(t);
+  }, [selected]);
+
+  const coords = useMemo(
+    () =>
+      new Map(
+        adresses.map((a) => [
+          a.id,
+          { latitude: parseFloat(a.latitude), longitude: parseFloat(a.longitude) },
+        ]),
+      ),
+    [adresses],
+  );
+
   return (
     <MapView
       style={{ flex: 1 }}
@@ -54,23 +81,17 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
         longitudeDelta: 8,
       }}
     >
-      {adresses.map((item) => {
-        const isSelected = selected?.id === item.id;
-        return (
-          <Marker
-            key={item.id}
-            coordinate={{
-              latitude: parseFloat(item.latitude),
-              longitude: parseFloat(item.longitude),
-            }}
-            onPress={() => onMarkerClick(item)}
-            anchor={{ x: 0.5, y: 0.5 }}
-            tracksViewChanges={isSelected}
-          >
-            <MarkerPin item={item} isSelected={isSelected} />
-          </Marker>
-        );
-      })}
+      {adresses.map((item) => (
+        <Marker
+          key={item.id}
+          coordinate={coords.get(item.id)!}
+          onPress={() => onMarkerClick(item)}
+          anchor={{ x: 0.5, y: 0.5 }}
+          tracksViewChanges={trackingIds.has(item.id)}
+        >
+          <MarkerPin item={item} isSelected={selected?.id === item.id} />
+        </Marker>
+      ))}
     </MapView>
   );
 }
