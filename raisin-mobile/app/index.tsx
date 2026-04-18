@@ -68,6 +68,7 @@ export default function Index() {
             selected={selected}
             onMarkerClick={setSelected}
             onMapReady={handleMapReady}
+            onMapInteraction={handleClose}
           />
           {!selected && <Legende />}
           <Panel selected={selected} onClose={handleClose} />

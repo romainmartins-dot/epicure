@@ -9,6 +9,7 @@ interface Props {
   selected: Adresse | null;
   onMarkerClick: (item: Adresse) => void;
   onMapReady?: (map: any) => void;
+  onMapInteraction?: () => void;
 }
 
 export default function Map(props: Props) {
@@ -18,6 +19,7 @@ export default function Map(props: Props) {
       adresses={props.adresses}
       selected={props.selected}
       onMarkerClick={props.onMarkerClick}
+      onMapInteraction={props.onMapInteraction}
     />
   );
 }

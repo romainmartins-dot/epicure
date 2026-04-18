@@ -11,9 +11,8 @@ interface Props {
   onMapReady?: (map: any) => void;
 }
 
-// Spring CSS — légère surcompensation pour feel vivant sans vrai rebond
-const SPRING = "transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)";
-const SNAP_BACK = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1)";
+const SPRING = "transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1)";
+const SNAP_BACK = "transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)";
 
 function markerHtml(type: string) {
   const color = typeCouleur(type);
@@ -97,7 +96,7 @@ export default function MapWeb({ adresses, selected, onMarkerClick, onMapReady }
     };
 
     setScale(prevSelectedId.current, 1, SNAP_BACK);
-    setScale(selected?.id ?? null, 1.45, SPRING);
+    setScale(selected?.id ?? null, 1.12, SPRING);
     prevSelectedId.current = selected?.id ?? null;
   }, [selected]);
 
