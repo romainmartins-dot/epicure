@@ -4,25 +4,63 @@
 
 Epicure n'est pas un aggrégateur. C'est **le guide de référence des vins naturels**, porté par une communauté d'experts reconnus.
 
-**Positionnement** : qualité absolue > quantité. Chaque adresse est une recommandation personnelle de Romain Martins (fondateur) ou d'un de ses curateurs experts (caviste nature reconnu, chefs gastronomiques amis, sommeliers).
+**Positionnement** : qualité absolue > quantité. Chaque adresse est une recommandation personnelle de Romain Martins (fondateur) ou d'un curateur expert de son réseau (caviste nature reconnu, chefs gastronomiques, sommeliers).
 
-Pas une adresse n'est dans Epicure si elle n'est pas **validée humainement** par un expert du réseau.
-
-**Références culturelles** : Le Fooding (à ses débuts), Guide Lebey, Noma Projects. Pas Google Maps. Pas TripAdvisor.
+**Références** : Apple Maps (pour l'UX carte), Le Fooding (pour l'éditorial), Guide Lebey. Pas Google Maps. Pas TripAdvisor.
 
 Marché : Lille → France → Europe. Langue : FR d'abord, EN ensuite.
 
-## Principes directeurs (ordre de priorité)
+---
 
-1. **Curation humaine** — chaque adresse a un curateur identifié, c'est le signal de confiance central
-2. **Performance** — 60fps partout, chargement initial < 1s, pas de feature qui ralentit l'app
-3. **Épure** — moins de features, mieux exécutées. Quand on doute d'ajouter quelque chose, on ne l'ajoute pas.
-4. **Beauté** — une app qu'on a envie d'ouvrir. Typographie, photos, espace.
+## Direction produit (non négociable)
+
+**1. Base du concept**
+App simple, lisible, fluide, centrée sur l'exploration d'adresses déjà en base. On ne recrée pas TripAdvisor.
+
+**2. Objectif principal**
+Mettre en valeur les adresses existantes. Pas ajouter de logique métier.
+
+**3. Carte en priorité**
+La carte est l'entrée principale. Elle doit permettre de repérer rapidement les lieux et de naviguer naturellement.
+
+**4. Style visuel**
+S'appuyer sur les codes Apple Maps :
+- icônes claires
+- repères lisibles
+- sensation native iOS
+- interface légère, propre, évidente
+
+**5. Scope initial**
+Au début, seulement :
+- afficher les adresses en base
+- bien les distinguer visuellement
+- bien les mettre en avant sur la carte
+- permettre une consultation simple et fluide
+
+**6. Pas de surcomplexité**
+Pas de logique avancée type TripAdvisor.
+Pas de multiplication de features tant que la base n'est pas parfaite.
+
+**7. Détails spécifiques ensuite**
+Une fois la base carte + adresses + lisibilité posée, on traite les besoins spécifiques.
+
+**8. Panel ensuite, pas avant**
+Le panel est important mais vient après la qualité de l'expérience principale. Il ne doit pas compliquer ou dégrader la fluidité de la carte.
+
+**9. Priorité UX absolue**
+Chaque interaction doit sembler naturelle, immédiate, simple.
+Si une feature gêne la fluidité, elle doit être simplifiée ou repoussée.
+
+**10. Règle de décision**
+Toujours privilégier : simplicité, clarté, fluidité, mise en valeur des adresses.
+Pas de sophistication prématurée.
+
+---
 
 ## Stack technique
 
 **Backend** (`/`)
-- Node.js v25 + Express (migration vers Fastify + TypeScript à venir)
+- Node.js v25 + Express (migration Fastify + TypeScript à venir)
 - PostgreSQL 17 + PostGIS 3.6
 - Architecture modulaire : `routes/`, `services/`, `db/`
 - Variables sensibles dans `.env`
@@ -33,53 +71,48 @@ Marché : Lille → France → Europe. Langue : FR d'abord, EN ensuite.
 - Architecture modulaire : `components/`, `hooks/`, `utils/`, `config.ts`
 - Carte : Leaflet (web) + react-native-maps (natif), dispatcher dans `Map.tsx`
 
+---
+
 ## Données : qualité absolue
 
 **Structure adresse** :
 - `id`, `nom`, `type` (cave/restaurant/bar)
 - `adresse`, `ville`, `latitude`, `longitude`
-- `description` — rédigée, pas copiée de Google
-- `curateur` — nom ou pseudo du curateur qui a validé
-- `note_curateur` — commentaire personnel du curateur
+- `description` rédigée (pas copiée de Google)
+- `curateur` — qui a validé
 - `cepages`, `styles` (pet-nat, orange, biodynamie) — filtres premium
-- `date_validation` — traçabilité
 
-**Règles strictes** :
+**Règles** :
 - ❌ Pas d'import OSM en masse, pas d'import Google Places automatique
 - ❌ Pas d'adresse sans curateur identifié
-- ✅ Chaque ajout passe par une validation humaine
-- ✅ Moins de 100 adresses la première année est acceptable si elles sont toutes excellentes
+- ✅ Chaque ajout = validation humaine
+- ✅ 50 adresses excellentes > 5000 adresses moyennes
+
+---
 
 ## Conventions de code
 
 **Général**
-- Noms de variables et fonctions en français quand c'est métier (adresses, cave, ville, curateur)
+- Noms métier en français (adresses, cave, ville, curateur)
 - Noms techniques en anglais (useState, fetch, render)
-- Pas de commentaires inutiles, le code doit être lisible
-- TypeScript en strict mode côté front
+- Pas de commentaires inutiles
+- TypeScript strict côté front
 
 **Backend**
-- Routes RESTful : GET `/adresses`, GET `/adresses/:id`, POST `/adresses`
+- Routes RESTful claires
 - Validation des inputs obligatoire
-- Réponses JSON cohérentes
 - Gestion d'erreurs : try/catch + status HTTP corrects
 - Cache obligatoire pour appels externes (photos Google)
 
 **Frontend**
-- Components : 1 fichier = 1 composant
-- Hooks : préfixés `use`, retournent un objet ou primitive
-- Pas de logique métier dans les components, déléguer aux hooks
-- Styles : StyleSheet en bas du fichier
-- Pas de styles inline sauf exception
+- 1 fichier = 1 composant
+- Hooks préfixés `use`, retournent objet ou primitive
+- Pas de logique métier dans les components
+- Styles : StyleSheet en bas du fichier, pas d'inline
 
-## Direction UX/UI : Apple-like, épurée, éditoriale
+---
 
-**Principes**
-- Beaucoup de blanc, beaucoup d'espace
-- Hiérarchie typographique forte
-- Photos grandes, bien cadrées
-- Animations subtiles (micro-interactions, pas d'effets gratuits)
-- Le curateur est toujours visible sur la fiche adresse (c'est l'USP)
+## UX/UI : Apple Maps style
 
 **Palette**
 - Fond principal : #FFFFFF
@@ -101,41 +134,50 @@ Marché : Lille → France → Europe. Langue : FR d'abord, EN ensuite.
 - Ombres légères : shadowOpacity 0.05-0.13
 - Boutons : padding généreux, fond plein pour action principale
 
+---
+
 ## Performance : non négociable
 
 - Images : lazy loading, placeholder avant chargement
-- Listes : virtualisation (FlatList) dès qu'elles dépassent 20 items
-- Animations : react-native-reanimated, toujours sur le thread UI
+- Listes : FlatList (virtualisation) dès >20 items
+- Animations : react-native-reanimated, toujours thread UI
 - Pas de setState en boucle
-- Mémoiser les composants lourds
+- Mémoriser les composants lourds
 - Debounce sur la recherche
-- Cache Redis côté back pour les photos Google
+- 60 fps partout, chargement < 1s
+- Standard d'interaction : iOS natif (aucune latence perceptible)
+
+---
 
 ## Règles strictes
 
-- ❌ Ne jamais commiter `.env`, `node_modules/`, ou la clé API Google
+- ❌ Ne jamais commiter `.env`, `node_modules/`, clé API Google
 - ❌ Pas de `console.log` en production
 - ❌ Pas d'emojis dans le code (sauf UI)
 - ❌ Pas d'ajout de feature sans validation Romain
-- ✅ Toujours tester sur web ET iPhone avant de commiter
+- ✅ Tester sur web ET iPhone avant commit
 - ✅ Commits clairs : "feat: ajout filtre cépage", "fix: panel mobile zoom"
-- ✅ Garder l'architecture modulaire (1 responsabilité par fichier)
+- ✅ Architecture modulaire (1 responsabilité par fichier)
+
+---
 
 ## Modèle business
 
 Freemium :
 - **Gratuit** : carte, recherche ville, fiches, avis
-- **Premium 4,99€/mois** : filtres avancés (cépage, pét-nat, orange, biodynamie), offline, listes illimitées, alertes
+- **Premium 4,99€/mois** : filtres avancés (cépage, pét-nat, orange, biodynamie), offline, listes illimitées
 - **Pro 19,99€/mois** : importateurs, notes privées, export PDF (cavistes, restaurateurs, sommeliers)
+
+---
 
 ## État actuel (avril 2026)
 
 - ✅ Backend Node + PostgreSQL routes CRUD + géolocalisation
-- ✅ Environ 2100 adresses importées (à nettoyer — stratégie curation)
-- ✅ 64 adresses Lille vérifiées avec photos Google Places
+- ✅ ~20 adresses Lille validées manuellement (V1)
+- ✅ Photos Google Places intégrées
 - ✅ App fonctionnelle web + iOS via Expo
+- ⏳ Priorité : perfectionner la carte (style Apple Maps)
 - ⏳ Ajout champ `curateur` dans DB
-- ⏳ Nettoyage des adresses non validées
 - ⏳ Migration Fastify + TypeScript
 - ⏳ Cache Redis photos
 - ⏳ Auth utilisateurs
