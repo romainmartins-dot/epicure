@@ -6,11 +6,18 @@ import MapWeb from "./MapWeb";
 
 interface Props {
   adresses: Adresse[];
+  selected: Adresse | null;
   onMarkerClick: (item: Adresse) => void;
   onMapReady?: (map: any) => void;
 }
 
 export default function Map(props: Props) {
   if (Platform.OS === "web") return <MapWeb {...props} />;
-  return <MapNative adresses={props.adresses} onMarkerClick={props.onMarkerClick} />;
+  return (
+    <MapNative
+      adresses={props.adresses}
+      selected={props.selected}
+      onMarkerClick={props.onMarkerClick}
+    />
+  );
 }

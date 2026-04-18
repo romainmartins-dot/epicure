@@ -61,6 +61,7 @@ export default function Index() {
         >
           <Map
             adresses={adresses}
+            selected={selected}
             onMarkerClick={setSelected}
             onMapReady={(m) => {
               mapRef.current = m;
