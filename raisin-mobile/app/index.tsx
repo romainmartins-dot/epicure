@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "react-native";
 
 import Animated, { FadeIn } from "react-native-reanimated";
@@ -30,7 +30,7 @@ export default function Index() {
     hasMore,
   } = useAdressesList(recherche || undefined);
 
-  const rechercherVille = () => {
+  const rechercherVille = useCallback(() => {
     if (!mapRef.current || !recherche) return;
     const filtrees = adresses.filter((a) =>
       a.ville.toLowerCase().includes(recherche.toLowerCase()),
@@ -38,7 +38,11 @@ export default function Index() {
     if (!filtrees.length) return;
     const premier = filtrees[0];
     mapRef.current.setView([parseFloat(premier.latitude), parseFloat(premier.longitude)], 14);
-  };
+  }, [adresses, recherche]);
+
+  const handleMapReady = useCallback((m: any) => {
+    mapRef.current = m;
+  }, []);
 
   if (loading)
     return (
@@ -63,9 +67,7 @@ export default function Index() {
             adresses={adresses}
             selected={selected}
             onMarkerClick={setSelected}
-            onMapReady={(m) => {
-              mapRef.current = m;
-            }}
+            onMapReady={handleMapReady}
           />
           {!selected && <Legende />}
           <Panel selected={selected} onClose={() => setSelected(null)} />

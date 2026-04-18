@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
@@ -9,7 +10,7 @@ interface Props {
   item: Adresse;
 }
 
-export default function AdresseCard({ item }: Props) {
+export default memo(function AdresseCard({ item }: Props) {
   const scale = useSharedValue(1);
   const cardStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -46,7 +47,7 @@ export default function AdresseCard({ item }: Props) {
       </Animated.View>
     </Pressable>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {

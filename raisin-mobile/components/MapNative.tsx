@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
@@ -21,59 +21,72 @@ interface Props {
 const SPRING_IN = Easing.bezier(0.34, 1.4, 0.64, 1);
 const SPRING_OUT = Easing.bezier(0.25, 1, 0.5, 1);
 
-function MarkerPin({ item, isSelected }: { item: Adresse; isSelected: boolean }) {
-  const scale = useSharedValue(1);
+const MarkerPin = memo(
+  function MarkerPin({ item, isSelected }: { item: Adresse; isSelected: boolean }) {
+    const scale = useSharedValue(1);
 
-  useEffect(() => {
-    scale.value = withTiming(isSelected ? 1.45 : 1, {
-      duration: isSelected ? 350 : 250,
-      easing: isSelected ? SPRING_IN : SPRING_OUT,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSelected]);
+    useEffect(() => {
+      scale.value = withTiming(isSelected ? 1.45 : 1, {
+        duration: isSelected ? 350 : 250,
+        easing: isSelected ? SPRING_IN : SPRING_OUT,
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSelected]);
 
-  const animStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+    const animStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
+    }));
 
-  return (
-    <Animated.View style={[styles.pin, { backgroundColor: typeCouleur(item.type) }, animStyle]}>
-      <Text style={styles.emoji}>{typeEmoji(item.type)}</Text>
-    </Animated.View>
-  );
-}
+    return (
+      <Animated.View style={[styles.pin, { backgroundColor: typeCouleur(item.type) }, animStyle]}>
+        <Text style={styles.emoji}>{typeEmoji(item.type)}</Text>
+      </Animated.View>
+    );
+  },
+  (prev, next) => prev.isSelected === next.isSelected && prev.item.id === next.item.id,
+);
 
-export default function MapNative({ adresses, selected, onMarkerClick }: Props) {
-  return (
-    <MapView
-      style={{ flex: 1 }}
-      initialRegion={{
-        latitude: 46.5,
-        longitude: 2.5,
-        latitudeDelta: 8,
-        longitudeDelta: 8,
-      }}
-    >
-      {adresses.map((item) => {
-        const isSelected = selected?.id === item.id;
-        return (
-          <Marker
-            key={item.id}
-            coordinate={{
-              latitude: parseFloat(item.latitude),
-              longitude: parseFloat(item.longitude),
-            }}
-            onPress={() => onMarkerClick(item)}
-            anchor={{ x: 0.5, y: 0.5 }}
-            tracksViewChanges={isSelected}
-          >
-            <MarkerPin item={item} isSelected={isSelected} />
-          </Marker>
-        );
-      })}
-    </MapView>
-  );
-}
+const MapNative = memo(
+  function MapNative({ adresses, selected, onMarkerClick }: Props) {
+    const handlePress = useCallback((item: Adresse) => () => onMarkerClick(item), [onMarkerClick]);
+
+    return (
+      <MapView
+        style={{ flex: 1 }}
+        initialRegion={{
+          latitude: 46.5,
+          longitude: 2.5,
+          latitudeDelta: 8,
+          longitudeDelta: 8,
+        }}
+      >
+        {adresses.map((item) => {
+          const isSelected = selected?.id === item.id;
+          return (
+            <Marker
+              key={item.id}
+              coordinate={{
+                latitude: parseFloat(item.latitude),
+                longitude: parseFloat(item.longitude),
+              }}
+              onPress={handlePress(item)}
+              anchor={{ x: 0.5, y: 0.5 }}
+              tracksViewChanges={isSelected}
+            >
+              <MarkerPin item={item} isSelected={isSelected} />
+            </Marker>
+          );
+        })}
+      </MapView>
+    );
+  },
+  (prev, next) =>
+    prev.adresses === next.adresses &&
+    prev.selected?.id === next.selected?.id &&
+    prev.onMarkerClick === next.onMarkerClick,
+);
+
+export default MapNative;
 
 const styles = StyleSheet.create({
   pin: {
