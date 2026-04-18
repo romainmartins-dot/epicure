@@ -123,27 +123,51 @@ export default function MapNative({ adresses, selected, onMarkerClick, onMapInte
     [validAdresses],
   );
 
-  const cityClusters = useMemo(() => clusterByKey(validAdresses, 0.5), [validAdresses]);
+  const inViewport = useCallback(
+    (a: Adresse, lat: number, lng: number, dLat: number, dLng: number, pad = 0.6) => {
+      const aLat = parseFloat(a.latitude);
+      const aLng = parseFloat(a.longitude);
+      return Math.abs(aLat - lat) < dLat * (0.5 + pad) && Math.abs(aLng - lng) < dLng * (0.5 + pad);
+    },
+    [],
+  );
+
+  const cityClusters = useMemo(() => {
+    const byVille = new Map<string, { latSum: number; lngSum: number; count: number }>();
+    for (const a of validAdresses) {
+      const c = byVille.get(a.ville);
+      const lat = parseFloat(a.latitude);
+      const lng = parseFloat(a.longitude);
+      if (c) {
+        c.latSum += lat;
+        c.lngSum += lng;
+        c.count += 1;
+      } else byVille.set(a.ville, { latSum: lat, lngSum: lng, count: 1 });
+    }
+    return Array.from(byVille.entries()).map(([ville, c]) => ({
+      key: ville,
+      latitude: c.latSum / c.count,
+      longitude: c.lngSum / c.count,
+      count: c.count,
+    }));
+  }, [validAdresses]);
 
   const neighborClusters = useMemo(() => {
-    const { latitudeDelta } = region;
+    const { latitude, longitude, latitudeDelta, longitudeDelta } = region;
     if (latitudeDelta >= CITY_THRESHOLD || latitudeDelta < LABEL_THRESHOLD) return [];
-    return clusterByKey(validAdresses, latitudeDelta / 4);
-  }, [validAdresses, region]);
+    const viewport = validAdresses.filter((a) =>
+      inViewport(a, latitude, longitude, latitudeDelta, longitudeDelta),
+    );
+    return clusterByKey(viewport, latitudeDelta / 4);
+  }, [validAdresses, region, inViewport]);
 
   const visibleLabels = useMemo(() => {
     const { latitude, longitude, latitudeDelta, longitudeDelta } = region;
     if (latitudeDelta >= LABEL_THRESHOLD) return [];
-    const pad = 0.5;
-    return validAdresses.filter((a) => {
-      const lat = parseFloat(a.latitude);
-      const lng = parseFloat(a.longitude);
-      return (
-        Math.abs(lat - latitude) < latitudeDelta * (0.5 + pad) &&
-        Math.abs(lng - longitude) < longitudeDelta * (0.5 + pad)
-      );
-    });
-  }, [validAdresses, region]);
+    return validAdresses.filter((a) =>
+      inViewport(a, latitude, longitude, latitudeDelta, longitudeDelta),
+    );
+  }, [validAdresses, region, inViewport]);
 
   const handleRegionChange = useCallback((r: Region) => {
     deltaRef.current = r.latitudeDelta;
