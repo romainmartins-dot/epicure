@@ -1,96 +1,106 @@
-# Epicure — Agent Instructions
+# Epicure — Instructions pour Claude Code
 
-## Project overview
+## Vision projet
 
-Epicure is a geolocated wine venue guide (caves, restaurants, bars à vins).
-Stack: Node/Express + PostGIS (API) · Expo/React Native + Leaflet (mobile/web).
-Target: worldwide, multi-platform, multi-agent development.
+Epicure est une app mobile pour découvrir les vins naturels et les lieux qui les servent (caves, bars, restaurants). Cible : passionnés de vin nature + professionnels (chefs, cavistes, importateurs).
 
-## Monorepo structure
+Marché : Lille → France → Europe. Langue : FR d'abord, EN ensuite.
 
-```
-epicure/
-├── db/               PostgreSQL pool singleton
-├── routes/           Express route handlers (one file per resource)
-├── services/         External API integrations (Google Places, …)
-├── index.js          Express entry point
-├── .env              Never commit — see .env.example
-└── raisin-mobile/    Expo app (iOS · Android · Web)
-    ├── app/          expo-router screens
-    ├── components/   Reusable UI components
-    ├── hooks/        Data-fetching hooks
-    └── utils/        Types, formatters, constants
-```
+## Stack technique
 
-## Non-negotiable rules
+**Backend** (`/`)
 
-- **Never push directly to `main`.** Always open a PR, even solo.
-- **Never commit `.env`** or any file containing secrets.
-- **Never use `git push --force`** on `main` or `develop`.
-- **Never skip hooks** (`--no-verify` is forbidden).
-- CI must be green before merging.
+- Node.js v25 + Express (en cours de migration vers Fastify + TypeScript)
+- PostgreSQL 17 + PostGIS 3.6
+- Architecture modulaire : `routes/`, `services/`, `db/`
+- Variables sensibles dans `.env`
 
-## Branch naming
+**Frontend** (`/raisin-mobile`)
 
-```
-feat/<short-description>      new feature
-fix/<short-description>       bug fix
-chore/<short-description>     tooling, deps, refacto
-perf/<short-description>      performance improvement
-docs/<short-description>      documentation only
-```
+- React Native + Expo (web + iOS + Android)
+- TypeScript strict
+- Architecture modulaire : `components/`, `hooks/`, `utils/`, `config.ts`
+- Carte : Leaflet (web) + react-native-maps (natif), dispatcher dans `Map.tsx`
 
-One concern per branch. Branches must be short-lived (≤ 3 days ideally).
+## Conventions de code
 
-## Commit messages — Conventional Commits
+**Général**
 
-```
-feat: add map clustering for >500 markers
-fix: panel touch area blocked by layout box
-perf: reduce animation duration to eliminate tail bounce
-chore: extract PhotoModal from PanelNative
-```
+- Noms de variables et fonctions en français quand c'est métier (adresses, cave, ville)
+- Noms techniques en anglais (useState, fetch, render)
+- Pas de commentaires inutiles, le code doit être lisible
+- Toujours TypeScript en strict mode côté front
 
-Format: `<type>(<optional scope>): <description>`  
-Types: `feat` `fix` `perf` `chore` `docs` `test` `refactor`  
-Body and footer optional. No period at end of subject.
+**Backend**
 
-## Code style
+- Routes RESTful : GET `/adresses`, GET `/adresses/:id`, POST `/adresses`
+- Validation des inputs obligatoire
+- Réponses JSON cohérentes : `{ data, error }` ou directement le résultat
+- Gestion d'erreurs : try/catch + status HTTP corrects
 
-- **Prettier** enforced — never manually reformat, let prettier handle it.
-- **TypeScript strict** in `raisin-mobile/` — no `any`, no `// @ts-ignore`.
-- **No comments that explain what** — only why (hidden constraint, workaround, non-obvious invariant).
-- **No unused imports**, no dead code.
-- **No feature flags or backward-compat shims** — just change the code.
-- Default exports for screens and components, named exports for hooks and utils.
+**Frontend**
 
-## API (Node/Express)
+- Components : 1 fichier = 1 composant
+- Hooks : préfixés `use`, retournent un objet ou primitive
+- Pas de logique métier dans les components, déléguer aux hooks
+- Styles : StyleSheet en bas du fichier
+- Pas de styles inline sauf cas exceptionnel
 
-- Routes in `routes/` — one file per resource, thin handlers.
-- DB queries only in route handlers or dedicated service files.
-- Always validate and sanitize user input at route entry.
-- Pagination via `limit` + `offset` query params (default limit 20, max 100).
-- Error responses: `{ error: string }` with appropriate HTTP status.
-- The Google Places API key lives in `.env` only — never proxy the key to the client.
+## Direction UX/UI : Apple-like
 
-## Mobile (Expo / React Native)
+**Principes**
 
-- Animations: `react-native-reanimated` with `withTiming` + `Easing.bezier` — no `withSpring` (causes perceived bounce).
-- Gestures: `react-native-gesture-handler` — always wrap root in `GestureHandlerRootView`.
-- Platform splits: use `Platform.OS` or `.native.tsx` / `.web.tsx` file suffixes.
-- Height animation over translateY for bottom panels (touch area = visible area).
-- Haptics: wrap in `if (Platform.OS !== "web")` guard.
-- `useSharedValue` / `useAnimatedStyle` for anything animated — never `useState` for animation values.
+- Épuré, blanc, beaucoup d'espace
+- Hiérarchie typographique forte (gros titres, petits secondaires)
+- Animations subtiles (pas d'effets gratuits)
+- Couleurs : neutres + accents par catégorie
 
-## Testing
+**Palette**
 
-- No tests yet — when adding, use Jest for API, and React Native Testing Library for components.
-- Never mock the database in integration tests.
+- Fond principal : #FFFFFF
+- Fond secondaire : #F2F2F7 (gris Apple)
+- Texte principal : #1A1A1A
+- Texte secondaire : #777
+- Cave (rouge bordeaux) : #C0392B
+- Restaurant (vert) : #27AE60
+- Bar (bleu) : #2980B9
 
-## What NOT to do
+**Typographie**
 
-- Do not add error handling for scenarios that can't happen.
-- Do not add abstractions for hypothetical future requirements.
-- Do not refactor code outside the scope of the current task.
-- Do not create `*.md` documentation files unless explicitly asked.
-- Do not add inline comments explaining what the code does — name things well instead.
+- System font (San Francisco sur iOS, Segoe sur Web)
+- Titres : 22-26px bold
+- Corps : 14-15px
+- Métadonnées : 11-12px
+
+**Composants**
+
+- Coins arrondis : 12-16px
+- Ombres légères : `shadowOpacity 0.05-0.13`
+- Boutons : padding généreux, fond plein pour action principale
+
+## Règles strictes
+
+- ❌ Ne jamais commiter `.env`, `node_modules/`, ou la clé API Google
+- ❌ Pas de `console.log` en production
+- ❌ Pas d'emojis dans le code (sauf UI)
+- ✅ Toujours tester sur web ET iPhone avant de commiter
+- ✅ Commits clairs : "feat: ajout filtre cépage", "fix: panel mobile zoom"
+- ✅ Garder l'architecture modulaire (1 responsabilité par fichier)
+
+## Modèle business
+
+Freemium :
+
+- Gratuit : carte, recherche ville, fiches, avis
+- Premium 4,99€/mois : filtres avancés (cépage, pét-nat, orange, biodynamie), offline, listes illimitées
+- Pro 19,99€/mois : importateurs, notes privées, export PDF (pour cavistes/restaurateurs)
+
+## État actuel (avril 2026)
+
+- ✅ Backend Node + PostgreSQL avec routes CRUD + géolocalisation
+- ✅ ~2100 adresses importées (OSM + manuel)
+- ✅ 64 adresses Lille vérifiées avec photos Google Places
+- ✅ App fonctionnelle web + iOS via Expo
+- ⏳ Migration Fastify + TypeScript en cours
+- ⏳ Auth utilisateurs à venir
+- ⏳ Cache Redis à venir
