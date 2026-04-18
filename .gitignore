@@ -1,0 +1,28 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+raisin-mobile/node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Expo
+raisin-mobile/.expo/
+raisin-mobile/expo-env.d.ts
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
