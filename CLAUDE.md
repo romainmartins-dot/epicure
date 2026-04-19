@@ -14,47 +14,34 @@ Marché : Lille → France → Europe. Langue : FR d'abord, EN ensuite.
 
 ## Direction produit (non négociable)
 
-**1. Base du concept**
-App simple, lisible, fluide, centrée sur l'exploration d'adresses déjà en base. On ne recrée pas TripAdvisor.
+**Positionnement fondamental**
+Epicure n'est pas une app de cartographie. C'est un guide éditorial porté par des curateurs experts.
 
-**2. Objectif principal**
-Mettre en valeur les adresses existantes. Pas ajouter de logique métier.
+La carte est un outil d'accès, pas notre plus-value. On ne rivalisera jamais avec Apple Maps sur la carte.
+Notre valeur = la sélection + les avis de curateurs reconnus.
 
-**3. Carte en priorité**
-La carte est l'entrée principale. Elle doit permettre de repérer rapidement les lieux et de naviguer naturellement.
+**Scope V1 (priorité absolue)**
 
-**4. Style visuel**
-S'appuyer sur les codes Apple Maps :
-- icônes claires
-- repères lisibles
-- sensation native iOS
-- interface légère, propre, évidente
+1. **Carte = commodity stable.** Elle doit fonctionner, ne pas ralentir, ne pas bugger. Point.
+2. **Marqueurs = épingles Apple Maps style.** Basiques, lisibles. Pas de sophistication.
+3. **Clustering standard** — intégré à react-native-maps, pas de dev custom.
+4. **Panel = notre produit.** C'est là qu'on met toute l'énergie : photo, nom, curateur, commentaire éditorial, type de vin, ambiance.
+5. **Fiche adresse** = expérience éditoriale premium (quand on passera du panel à la fiche complète).
 
-**5. Scope initial**
-Au début, seulement :
-- afficher les adresses en base
-- bien les distinguer visuellement
-- bien les mettre en avant sur la carte
-- permettre une consultation simple et fluide
+**Règles de scope**
 
-**6. Pas de surcomplexité**
-Pas de logique avancée type TripAdvisor.
-Pas de multiplication de features tant que la base n'est pas parfaite.
+- ❌ Ne pas chercher à réinventer la carte. Tout ce qui peut être fait par Apple Maps/Leaflet natif, on utilise le natif.
+- ❌ Pas d'animation custom de carte. Les animations natives suffisent.
+- ❌ Pas de clustering custom. Le clustering natif de react-native-maps fait le job.
+- ✅ Énergie et itérations concentrées sur le panel et les fiches adresses.
+- ✅ Curateur visible partout : c'est notre USP.
 
-**7. Détails spécifiques ensuite**
-Une fois la base carte + adresses + lisibilité posée, on traite les besoins spécifiques.
+**Règle de décision**
 
-**8. Panel ensuite, pas avant**
-Le panel est important mais vient après la qualité de l'expérience principale. Il ne doit pas compliquer ou dégrader la fluidité de la carte.
+À chaque fonctionnalité, se poser : "Est-ce que ça renforce la sélection et la curation (notre USP), ou est-ce que j'essaie d'améliorer la carte (commodity) ?"
 
-**9. Priorité UX absolue**
-Chaque interaction doit sembler naturelle, immédiate, simple.
-Si une feature gêne la fluidité, elle doit être simplifiée ou repoussée.
-
-**10. Règle de décision**
-Toujours privilégier : simplicité, clarté, fluidité, mise en valeur des adresses.
-Pas de sophistication prématurée.
-
+Si c'est la carte = repousser.
+Si c'est la curation/éditorial = prioriser.
 ---
 
 ## Stack technique
