@@ -32,7 +32,7 @@ Notre valeur = la sélection + les avis de curateurs reconnus.
 
 - ❌ Ne pas chercher à réinventer la carte. Tout ce qui peut être fait par Apple Maps/Leaflet natif, on utilise le natif.
 - ❌ Pas d'animation custom de carte. Les animations natives suffisent.
-- ❌ Pas de clustering custom. Le clustering natif de react-native-maps fait le job.
+- ✅ Clustering via `react-native-map-clustering` (wrapper léger MapView, décision 2026-04-19).
 - ✅ Énergie et itérations concentrées sur le panel et les fiches adresses.
 - ✅ Curateur visible partout : c'est notre USP.
 
