@@ -10,7 +10,15 @@ interface Props {
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
   return (
-    <MapView style={{ flex: 1 }}>
+    <MapView
+      style={{ flex: 1 }}
+      initialRegion={{
+        latitude: 50.633,
+        longitude: 3.063,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      }}
+    >
       {adresses.map((item) => (
         <Marker
           key={item.id}
