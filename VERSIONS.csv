@@ -1,0 +1,4 @@
+Tag,Date,Statut,Fonctionnalités principales,Notes
+v0,2026-04-19,Exploitable,"Carte Apple Maps plein écran, clustering react-native-map-clustering, pins colorés par type (cave/restaurant/bar), label nom toujours visible, tap → Panel, 19 adresses Lille, fix LayoutAnimation + AbortController fetch","Première version stable exploitable"
+rollback-20260419-0522,2026-04-19,Archive,"MarkerPin Reanimated, clustering custom, Header + SearchBar + Légende visibles","État de référence overnight — rollback point"
+stable-map-clustering-20260419,2026-04-19,Archive,"Clustering react-native-map-clustering fonctionnel, pins ronds avec emoji, fix crash LayoutAnimation","Snapshot stabilité avant itérations design"
