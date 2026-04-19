@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 
 import MapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
@@ -12,12 +12,11 @@ interface Props {
   onMarkerClick: (item: Adresse) => void;
 }
 
-const LILLE = {
-  latitude: 50.633,
-  longitude: 3.063,
-  latitudeDelta: 0.08,
-  longitudeDelta: 0.08,
-};
+// Lille globale : assez dézoomé pour que les 19 adresses tiennent en 1 cluster
+const LILLE = { latitude: 50.634, longitude: 3.063, latitudeDelta: 0.3, longitudeDelta: 0.3 };
+
+// À delta=0.3, Gabbro (outlier nord, ~2.3km) occupe ~58px → radius=65 suffit pour tout regrouper
+const CLUSTER_RADIUS = Math.round(Dimensions.get("window").width * 0.16);
 
 function MarkerPin({ item }: { item: Adresse }) {
   return (
@@ -29,7 +28,14 @@ function MarkerPin({ item }: { item: Adresse }) {
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
   return (
-    <MapView style={{ flex: 1 }} initialRegion={LILLE} clusterColor="#C0392B">
+    <MapView
+      style={{ flex: 1 }}
+      initialRegion={LILLE}
+      clusterColor="#C0392B"
+      radius={CLUSTER_RADIUS}
+      animationEnabled={false}
+      spiralEnabled={false}
+    >
       {adresses.map((item) => (
         <Marker
           key={item.id}

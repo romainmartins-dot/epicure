@@ -9,13 +9,17 @@ export function useAdresses() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API}/adresses?limit=500`)
+    const controller = new AbortController();
+    fetch(`${API}/adresses?limit=500`, { signal: controller.signal })
       .then((res) => res.json())
       .then((data) => {
         setAdresses(Array.isArray(data) ? data : (data.data ?? []));
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        if (err.name !== "AbortError") setLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
   return { adresses, loading };
