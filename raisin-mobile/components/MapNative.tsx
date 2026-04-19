@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 import MapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
 
-import { typeCouleur } from "../utils/formatters";
+import { colors, typeColor } from "../utils/theme";
 import { Adresse } from "../utils/types";
 
 interface Props {
@@ -20,7 +20,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
     <MapView
       style={{ flex: 1 }}
       initialRegion={LILLE}
-      clusterColor="#C0392B"
+      clusterColor={colors.cluster}
       radius={RADIUS}
       animationEnabled={false}
       spiralEnabled={false}
@@ -36,7 +36,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
           onPress={() => onMarkerClick(item)}
         >
           <View style={styles.pin}>
-            <View style={[styles.dot, { backgroundColor: typeCouleur(item.type) }]} />
+            <View style={[styles.dot, { backgroundColor: typeColor(item.type) }]} />
             <Text style={styles.label} numberOfLines={1}>
               {item.nom}
             </Text>
