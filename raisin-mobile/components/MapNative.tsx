@@ -13,8 +13,8 @@ interface Props {
 const INITIAL_REGION = {
   latitude: 50.633,
   longitude: 3.058,
-  latitudeDelta: 0.08,
-  longitudeDelta: 0.08,
+  latitudeDelta: 0.5,
+  longitudeDelta: 0.5,
 } as const;
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
