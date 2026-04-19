@@ -13,18 +13,7 @@ interface Props {
 }
 
 const LILLE = { latitude: 50.634, longitude: 3.063, latitudeDelta: 0.3, longitudeDelta: 0.3 };
-const CLUSTER_RADIUS = Math.round(Dimensions.get("window").width * 0.16);
-
-function MarkerPin({ item }: { item: Adresse }) {
-  return (
-    <View style={styles.wrap}>
-      <View style={[styles.dot, { backgroundColor: typeCouleur(item.type) }]} />
-      <Text style={styles.label} numberOfLines={1}>
-        {item.nom}
-      </Text>
-    </View>
-  );
-}
+const RADIUS = Math.round(Dimensions.get("window").width * 0.16);
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
   return (
@@ -32,7 +21,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
       style={{ flex: 1 }}
       initialRegion={LILLE}
       clusterColor="#C0392B"
-      radius={CLUSTER_RADIUS}
+      radius={RADIUS}
       animationEnabled={false}
       spiralEnabled={false}
     >
@@ -43,11 +32,15 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
             latitude: parseFloat(item.latitude),
             longitude: parseFloat(item.longitude),
           }}
-          tracksViewChanges={false}
-          anchor={{ x: 0.5, y: 0.5 }}
+          anchor={{ x: 0.5, y: 0 }}
           onPress={() => onMarkerClick(item)}
         >
-          <MarkerPin item={item} />
+          <View style={styles.wrap}>
+            <View style={[styles.dot, { backgroundColor: typeCouleur(item.type) }]} />
+            <Text style={styles.label} numberOfLines={1}>
+              {item.nom}
+            </Text>
+          </View>
         </Marker>
       ))}
     </MapView>
