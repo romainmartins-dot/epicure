@@ -36,12 +36,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
   return (
     <MapView style={{ flex: 1 }} initialRegion={INITIAL_REGION}>
       {markers.map(({ id, coordinate, item }) => (
-        <Marker
-          key={id}
-          coordinate={coordinate}
-          pinColor="#C0392B"
-          onPress={() => onMarkerClick(item)}
-        />
+        <Marker key={id} coordinate={coordinate} onPress={() => onMarkerClick(item)} />
       ))}
     </MapView>
   );
