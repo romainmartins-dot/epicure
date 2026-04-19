@@ -3,3 +3,4 @@ raisin-mobile
 dist
 build
 *.lock
+*.md
