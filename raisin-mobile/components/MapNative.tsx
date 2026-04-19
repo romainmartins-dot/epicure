@@ -48,7 +48,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
 }
 
 const styles = StyleSheet.create({
-  pin: { alignItems: "center", gap: 3 },
+  pin: { alignItems: "center", gap: 1 },
   dot: {
     width: 12,
     height: 12,
