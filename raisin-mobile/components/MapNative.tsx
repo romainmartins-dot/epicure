@@ -40,12 +40,11 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
       animationEnabled={false}
       clusterColor="#C0392B"
       clusterTextColor="#FFFFFF"
-      maxZoom={13}
       initialRegion={{
         latitude: 50.6292,
         longitude: 3.0573,
-        latitudeDelta: 0.15,
-        longitudeDelta: 0.15,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
       }}
     >
       {validAdresses.map((item) => (
