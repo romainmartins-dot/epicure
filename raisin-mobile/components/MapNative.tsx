@@ -40,6 +40,7 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
       animationEnabled={false}
       clusterColor="#C0392B"
       clusterTextColor="#FFFFFF"
+      maxZoom={13}
       initialRegion={{
         latitude: 50.6292,
         longitude: 3.0573,
