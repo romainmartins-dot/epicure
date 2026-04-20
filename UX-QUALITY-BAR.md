@@ -1,7 +1,7 @@
 # UX-QUALITY-BAR.md
 # Barre de qualité produit Raisin
 
-Dernière mise à jour : 2026-04-20
+Dernière mise à jour : 2026-04-20 (exception clustering)
 Décidé par Romain. Source de vérité pour tous les agents et toute PR.
 
 ---
@@ -54,6 +54,15 @@ Si arbitrage nécessaire : iOS gagne toujours.
 
 - Apple Maps natif uniquement
 - Clustering 100% natif Apple (aucune lib)
+
+  **EXCEPTION VALIDÉE LE 2026-04-20 :**
+  `react-native-map-clustering` est autorisée car :
+  1. Clustering Apple natif via MKClusterAnnotation impossible sans module Swift custom
+  2. Coût bénéfice du natif disproportionné en V1 solo
+  3. Lib utilisée par Airbnb, Yelp, Strava sur leurs apps RN
+  4. À reconsidérer en V2 si l'app dépasse 10k markers ou si on a un budget dev iOS Swift natif
+  Cette exception ne s'étend à AUCUNE autre lib (supercluster, deck.gl, etc. restent interdites).
+
 - `showsPointsOfInterest={false}` sur MapView
 - Zoom initial : **sur GPS utilisateur si autorisé**, sinon fallback France
 - MarkerPin existant autorisé, rien d'autre comme enfant de <Marker>
