@@ -1,19 +1,21 @@
 import { useCallback, useRef, useState } from "react";
-import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "react-native";
-
-import Animated, { FadeIn } from "react-native-reanimated";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import AdresseCard from "../components/AdresseCard";
 import Header from "../components/Header";
-import Legende from "../components/Legende";
 import Map from "../components/Map";
 import Panel from "../components/Panel";
 import SearchBar from "../components/SearchBar";
 import { useAdresses } from "../hooks/useAdresses";
 import { useAdressesList } from "../hooks/useAdressesList";
 import { Adresse } from "../utils/types";
-
-const isWeb = Platform.OS === "web";
 
 export default function Index() {
   const { adresses, loading } = useAdresses();
@@ -53,26 +55,30 @@ export default function Index() {
       </View>
     );
 
+  if (vue === "carte") {
+    return (
+      <View style={styles.container}>
+        <Map
+          adresses={adresses}
+          selected={selected}
+          onMarkerClick={setSelected}
+          onMapReady={handleMapReady}
+        />
+        <Panel selected={selected} onClose={handleClose} />
+        {!selected && (
+          <TouchableOpacity style={styles.listBtn} onPress={() => setVue("liste")}>
+            <Text style={styles.listBtnTxt}>≡ Liste</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Header vue={vue} setVue={setVue} />
       <SearchBar recherche={recherche} setRecherche={setRecherche} onSubmit={rechercherVille} />
-
-      {vue === "carte" ? (
-        <Animated.View
-          entering={isWeb ? undefined : FadeIn.duration(200)}
-          style={{ flex: 1, position: "relative" }}
-        >
-          <Map
-            adresses={adresses}
-            selected={selected}
-            onMarkerClick={setSelected}
-            onMapReady={handleMapReady}
-          />
-          {!selected && <Legende />}
-          <Panel selected={selected} onClose={handleClose} />
-        </Animated.View>
-      ) : listeLoading ? (
+      {listeLoading ? (
         <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 40 }} />
       ) : (
         <FlatList
@@ -110,4 +116,19 @@ const styles = StyleSheet.create({
     marginTop: 12,
     letterSpacing: 2,
   },
+  listBtn: {
+    position: "absolute",
+    bottom: 32,
+    left: 16,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  listBtnTxt: { fontSize: 14, fontWeight: "600", color: "#1A1A1A" },
 });
