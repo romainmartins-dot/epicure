@@ -4,8 +4,8 @@ import { StyleSheet, View } from "react-native";
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
 
-import { INITIAL_REGION } from "../config/map";
-import { Adresse, AdresseType } from "../utils/types";
+import { INITIAL_REGION } from "../../../config";
+import { Adresse, AdresseType } from "../../adresses/types";
 
 const PIN_COLOR: Record<AdresseType, string> = {
   cave: "#C0392B",

@@ -3,10 +3,8 @@ import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "rea
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Map from "../components/Map";
-import Panel from "../components/Panel";
-import { useAdresses } from "../hooks/useAdresses";
-import { Adresse } from "../utils/types";
+import { type Adresse } from "../src/features/adresses";
+import { Map, Panel, useAdresses } from "../src/features/map";
 import ListeView from "./liste";
 
 export default function Index() {

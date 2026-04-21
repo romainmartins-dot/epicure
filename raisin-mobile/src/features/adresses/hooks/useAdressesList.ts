@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { getList } from "../services/adresses";
-import { Adresse } from "../utils/types";
+import { getList } from "../api";
+import { Adresse } from "../types";
 
 const PAGE = 20;
 

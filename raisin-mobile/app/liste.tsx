@@ -9,9 +9,7 @@ import {
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import AdresseCard from "../components/AdresseCard";
-import { useAdressesList } from "../hooks/useAdressesList";
-import { Adresse } from "../utils/types";
+import { type Adresse, AdresseCard, useAdressesList } from "../src/features/adresses";
 
 interface Props {
   onBack: () => void;

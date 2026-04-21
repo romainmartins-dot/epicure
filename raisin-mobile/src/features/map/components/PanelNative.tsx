@@ -25,9 +25,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { usePhoto } from "../hooks/usePhoto";
-import { typeCouleur, typeEmoji, typeLabel } from "../utils/formatters";
-import { Adresse } from "../utils/types";
+import { usePhoto } from "../../../shared/hooks/usePhoto";
+import { typeCouleur, typeEmoji, typeLabel } from "../../../shared/utils/formatters";
+import { Adresse } from "../../adresses/types";
 
 interface Props {
   selected: Adresse | null;

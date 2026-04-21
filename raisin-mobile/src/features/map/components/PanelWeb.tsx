@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 
-import { usePhoto } from "../hooks/usePhoto";
-import { typeCouleur, typeEmoji, typeLabel } from "../utils/formatters";
-import { Adresse } from "../utils/types";
+import { usePhoto } from "../../../shared/hooks/usePhoto";
+import { typeCouleur, typeEmoji, typeLabel } from "../../../shared/utils/formatters";
+import { Adresse } from "../../adresses/types";
 
 interface Props {
   selected: Adresse | null;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getPhoto } from "../services/photos";
+import { getPhoto } from "../../features/adresses/api";
 
 export function usePhoto(id: number | null) {
   const [photo, setPhoto] = useState<string | null>(null);
