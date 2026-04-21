@@ -8,7 +8,6 @@ interface Props {
   adresses: Adresse[];
   selected: Adresse | null;
   onMarkerClick: (item: Adresse) => void;
-  onMapReady?: (map: any) => void;
 }
 
 // Spring CSS — légère surcompensation pour feel vivant sans vrai rebond
@@ -26,13 +25,11 @@ function markerHtml(type: string) {
   ">${typeEmoji(type)}</div>`;
 }
 
-export default function MapWeb({ adresses, selected, onMarkerClick, onMapReady }: Props) {
+export default function MapWeb({ adresses, selected, onMarkerClick }: Props) {
   const initialized = useRef(false);
   const markersRef = useRef<Map<number, any>>(new Map());
   const onMarkerClickRef = useRef(onMarkerClick);
-  const onMapReadyRef = useRef(onMapReady);
   onMarkerClickRef.current = onMarkerClick;
-  onMapReadyRef.current = onMapReady;
 
   useEffect(() => {
     if (initialized.current || adresses.length === 0) return;
@@ -71,7 +68,6 @@ export default function MapWeb({ adresses, selected, onMarkerClick, onMapReady }
       });
 
       initialized.current = true;
-      if (onMapReadyRef.current) onMapReadyRef.current(map);
     };
 
     if ((window as any).L) initMap();

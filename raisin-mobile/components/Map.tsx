@@ -8,7 +8,6 @@ interface Props {
   adresses: Adresse[];
   selected: Adresse | null;
   onMarkerClick: (item: Adresse) => void;
-  onMapReady?: (map: any) => void;
 }
 
 export default function Map(props: Props) {

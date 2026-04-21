@@ -157,6 +157,19 @@ Freemium :
 
 ---
 
+## Règle d'or — Discipline de vérification finale (PERMANENTE)
+
+Tu n'as PAS le droit d'écrire "MISSION TERMINÉE", "c'est OK", "validé", "ship it" ou équivalent sans avoir fait dans les 60 secondes précédentes :
+
+1. `xcrun simctl io screenshot /tmp/qa_xxx.png` — screenshot FRAIS
+2. `Read /tmp/qa_xxx.png` — lecture de l'image
+3. Comparaison EXPLICITE à la checklist, critère par critère, verdict OK/KO
+
+Si le simulateur est shutdown → reboot AVANT de déclarer quoi que ce soit.
+Si 1 critère KO → fix et recommence. Ne jamais déclarer terminé sans les 3 étapes.
+
+---
+
 ## État actuel (avril 2026)
 
 - ✅ Backend Node + PostgreSQL routes CRUD + géolocalisation
