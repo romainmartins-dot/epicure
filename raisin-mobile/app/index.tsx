@@ -1,36 +1,19 @@
 import { useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import AdresseCard from "../components/AdresseCard";
 import Map from "../components/Map";
 import Panel from "../components/Panel";
 import { useAdresses } from "../hooks/useAdresses";
-import { useAdressesList } from "../hooks/useAdressesList";
 import { Adresse } from "../utils/types";
+import ListeView from "./liste";
 
 export default function Index() {
   const { adresses, loading } = useAdresses();
   const [vue, setVue] = useState<"carte" | "liste">("carte");
   const [selected, setSelected] = useState<Adresse | null>(null);
   const insets = useSafeAreaInsets();
-
-  const {
-    adresses: listeAdresses,
-    loading: listeLoading,
-    loadingMore,
-    loadMore,
-    hasMore,
-  } = useAdressesList();
-
   const handleClose = useCallback(() => setSelected(null), []);
 
   if (loading)
@@ -41,58 +24,25 @@ export default function Index() {
       </View>
     );
 
-  if (vue === "carte") {
-    return (
-      <View style={StyleSheet.absoluteFill}>
-        <Map adresses={adresses} selected={selected} onMarkerClick={setSelected} />
-        <Panel selected={selected} onClose={handleClose} />
-        <TouchableOpacity
-          style={[styles.floatingBtn, { left: 16, bottom: insets.bottom + 16 }]}
-          onPress={() => setVue("liste")}
-        >
-          <Text style={styles.floatingBtnText}>Liste</Text>
-        </TouchableOpacity>
-      </View>
-    );
+  if (vue === "liste") {
+    return <ListeView onBack={() => setVue("carte")} />;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={StyleSheet.absoluteFill}>
+      <Map adresses={adresses} selected={selected} onMarkerClick={setSelected} />
+      <Panel selected={selected} onClose={handleClose} />
       <TouchableOpacity
-        style={[styles.floatingBtn, { left: 16, top: insets.top + 12 }]}
-        onPress={() => setVue("carte")}
+        style={[styles.floatingBtn, { left: 16, bottom: insets.bottom + 16 }]}
+        onPress={() => setVue("liste")}
       >
-        <Text style={styles.floatingBtnText}>Carte</Text>
+        <Text style={styles.floatingBtnText}>Liste</Text>
       </TouchableOpacity>
-      {listeLoading ? (
-        <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 80 }} />
-      ) : (
-        <FlatList
-          data={listeAdresses}
-          keyExtractor={(item: Adresse) => item.id.toString()}
-          contentContainerStyle={{
-            padding: 16,
-            paddingTop: insets.top + 60,
-            paddingBottom: insets.bottom + 24,
-          }}
-          renderItem={({ item }: { item: Adresse }) => <AdresseCard item={item} />}
-          getItemLayout={(_: unknown, index: number) => ({ length: 94, offset: 94 * index, index })}
-          onEndReached={hasMore ? loadMore : undefined}
-          onEndReachedThreshold={0.3}
-          removeClippedSubviews
-          ListFooterComponent={
-            loadingMore ? (
-              <ActivityIndicator color="#C0392B" style={{ marginVertical: 16 }} />
-            ) : null
-          }
-        />
-      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F2F2F7" },
   loader: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#1a0a00" },
   loaderTitle: { fontSize: 32, fontWeight: "bold", color: "#fff", letterSpacing: 2 },
   floatingBtn: {
