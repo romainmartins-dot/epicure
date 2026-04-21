@@ -43,8 +43,8 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
       initialRegion={{
         latitude: 50.6343,
         longitude: 3.0639,
-        latitudeDelta: 0.03,
-        longitudeDelta: 0.03,
+        latitudeDelta: 0.35,
+        longitudeDelta: 0.35,
       }}
     >
       {validAdresses.map((item) => (
