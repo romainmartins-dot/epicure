@@ -56,7 +56,6 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
       animationEnabled={false}
       clusterColor="#C0392B"
       clusterTextColor="#FFFFFF"
-      maxZoom={11}
       initialRegion={INITIAL_REGION}
     >
       {validAdresses.map((item) => (
