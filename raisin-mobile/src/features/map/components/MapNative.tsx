@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 
 import ClusteredMapView from "react-native-map-clustering";
@@ -28,6 +28,10 @@ interface Props {
 }
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
+  const mapRef = useRef<any>(null);
+  // Mis à jour immédiatement au tap — pas de race avec onRegionChangeComplete
+  const targetDelta = useRef<number>(INITIAL_REGION.latitudeDelta);
+
   const validAdresses = useMemo(
     () =>
       adresses.filter((a) => {
@@ -49,8 +53,19 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
     [validAdresses],
   );
 
+  const handleClusterPress = useCallback((cluster: any) => {
+    const [longitude, latitude] = cluster.geometry.coordinates;
+    const next = targetDelta.current / 4;
+    targetDelta.current = next;
+    mapRef.current?.animateToRegion(
+      { latitude, longitude, latitudeDelta: next, longitudeDelta: next },
+      350,
+    );
+  }, []);
+
   return (
     <ClusteredMapView
+      ref={mapRef}
       style={StyleSheet.absoluteFill}
       showsPointsOfInterest={false}
       animationEnabled={false}
@@ -58,6 +73,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
       clusterTextColor="#FFFFFF"
       maxZoom={12}
       initialRegion={INITIAL_REGION}
+      onClusterPress={handleClusterPress}
     >
       {validAdresses.map((item) => (
         <Marker
