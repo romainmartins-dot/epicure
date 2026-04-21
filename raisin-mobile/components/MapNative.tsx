@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
 
+import { INITIAL_REGION } from "../config/map";
 import { Adresse } from "../utils/types";
 
 interface Props {
@@ -40,12 +41,7 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
       animationEnabled={false}
       clusterColor="#C0392B"
       clusterTextColor="#FFFFFF"
-      initialRegion={{
-        latitude: 50.6343,
-        longitude: 3.0639,
-        latitudeDelta: 0.35,
-        longitudeDelta: 0.35,
-      }}
+      initialRegion={INITIAL_REGION}
     >
       {validAdresses.map((item) => (
         <Marker
