@@ -4,7 +4,13 @@ import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
 
 import { INITIAL_REGION } from "../config/map";
-import { Adresse } from "../utils/types";
+import { Adresse, AdresseType } from "../utils/types";
+
+const PIN_COLOR: Record<AdresseType, string> = {
+  cave: "#C0392B",
+  restaurant: "#27AE60",
+  bar: "#2980B9",
+};
 
 interface Props {
   adresses: Adresse[];
@@ -47,6 +53,7 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
         <Marker
           key={item.id}
           coordinate={coords.get(item.id)!}
+          pinColor={PIN_COLOR[item.type] ?? PIN_COLOR.cave}
           title={item.nom}
           onPress={() => onMarkerClick(item)}
         />
