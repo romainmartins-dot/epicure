@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { getAll } from "../services/adresses";
-import { Adresse } from "../utils/types";
+import { getAll } from "../../adresses/api";
+import { Adresse } from "../../adresses/types";
 
 export function useAdresses() {
   const [adresses, setAdresses] = useState<Adresse[]>([]);

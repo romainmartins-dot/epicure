@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
 
-import { INITIAL_REGION } from "../config/map";
-import { Adresse } from "../utils/types";
+import { INITIAL_REGION } from "../../../config";
+import { Adresse } from "../../adresses/types";
 
 interface Props {
   adresses: Adresse[];

@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 
-import { Adresse } from "../utils/types";
+import { Adresse } from "../../adresses/types";
 import MapNative from "./MapNative";
 import MapWeb from "./MapWeb";
 

@@ -1,4 +1,4 @@
-import { Adresse } from "../utils/types";
+import { Adresse } from "../src/features/adresses/types";
 
 const mock: Adresse[] = [
   {

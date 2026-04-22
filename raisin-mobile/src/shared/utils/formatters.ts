@@ -1,4 +1,4 @@
-import { AdresseType } from "./types";
+import { AdresseType } from "../../features/adresses/types";
 
 export const typeCouleur = (type: AdresseType | string) =>
   type === "cave" ? "#C0392B" : type === "restaurant" ? "#27AE60" : "#2980B9";

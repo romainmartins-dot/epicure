@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { View } from "react-native";
 
-import { typeCouleur, typeEmoji } from "../utils/formatters";
-import { Adresse } from "../utils/types";
+import { typeCouleur, typeEmoji } from "../../../shared/utils/formatters";
+import { Adresse } from "../../adresses/types";
 
 interface Props {
   adresses: Adresse[];

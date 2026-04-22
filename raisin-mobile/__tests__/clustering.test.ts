@@ -1,6 +1,6 @@
-import { INITIAL_REGION, MIN_CLUSTER_DELTA } from "../config/map";
 import mock from "../data/mock";
-import { getAll, getList } from "../services/adresses";
+import { INITIAL_REGION, MIN_CLUSTER_DELTA } from "../src/config";
+import { getAll, getList } from "../src/features/adresses/api";
 
 describe("mock data", () => {
   it("contains 19 adresses", () => {

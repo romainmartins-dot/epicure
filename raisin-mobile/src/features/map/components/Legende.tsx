@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { typeCouleur, typeLabel } from "../utils/formatters";
+import { typeCouleur, typeLabel } from "../../../shared/utils/formatters";
 
 export default function Legende() {
   const items: [string, string][] = [

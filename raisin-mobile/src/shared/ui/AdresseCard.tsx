@@ -2,8 +2,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
+import { Adresse } from "../../features/adresses/types";
 import { typeCouleur, typeEmoji, typeLabel } from "../utils/formatters";
-import { Adresse } from "../utils/types";
 
 interface Props {
   item: Adresse;
