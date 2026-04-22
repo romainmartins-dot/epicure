@@ -170,6 +170,150 @@ Si 1 critère KO → fix et recommence. Ne jamais déclarer terminé sans les 3 
 
 ---
 
+## 5. UX / DA
+
+Voir `UX-QUALITY-BAR.md` pour les règles UI détaillées.
+
+Règles clés résumées :
+- Standard Apple minimal, pas de bling
+- Zéro bug visuel toléré
+- iOS priorité absolue
+- Animations Apple natives (spring iOS) seulement
+- Tap pin → panel < 100ms
+- Pas d'émoji, pas de custom, sauf décision produit
+
+---
+
+## 6. COMMUNICATION AVEC ROMAIN
+
+### Il te faut interrompre Romain QUE pour :
+
+- Validation d'une décision produit structurante (modif archi, choix de lib)
+- Merge d'une PR
+- Blocage dur avec BLOCKERS.md
+
+### Tu n'interromps PAS Romain pour :
+
+- Demander s'il veut merger une PR mineure → fais la PR, il verra
+- Confirmer une commande standard git/npm → fais-la
+- Vérifier un choix technique dans ton périmètre → tranche toi-même et documente
+
+### Quand tu demandes à Romain
+
+- Question formulée en 1 phrase
+- Options explicites (A / B / C)
+- Recommandation par défaut
+
+### Quand tu réponds
+
+- Factuel, bref
+- Pas de "je vais essayer" → tu fais ou tu dis pourquoi tu peux pas
+- Pas de flatterie, pas de meta-commentaires
+
+---
+
+## 7. GESTION DES ERREURS
+
+### Si une commande bash échoue
+
+1. Lis le message d'erreur
+2. Identifie la cause (5 hypothèses max)
+3. Fix la cause la plus probable
+4. Si toujours KO après 2 tentatives : change d'approche, ne boucle pas
+
+### Si tu es bloqué
+
+1. Écris `BLOCKERS.md` à la racine avec :
+   - État actuel
+   - Ce qui a été tenté
+   - Hypothèses restantes
+   - Ce que tu attends de Romain
+2. Stop. Ne relance pas de boucle.
+
+### Si une CI casse
+
+1. REVERT immédiat le commit fautif
+2. Analyse logs CI
+3. Fix en local
+4. Re-commit + push
+5. Si 3 tentatives KO : BLOCKERS.md
+
+---
+
+## 8. INTERDICTIONS ABSOLUES
+
+- Modifier des fichiers hors `~/epicure/` sans autorisation explicite
+- Installation globale (`npm install -g`, `brew install`)
+- Modifier `.github/workflows/` sans raison technique documentée
+- Push direct sur main
+- Déclarer "terminé" sans screenshot lu à l'instant T
+- Boucle infinie (max 15 itérations sur une même mission)
+- Amélioration non demandée
+- Refacto hors périmètre
+- Supprimer un fichier sans vérifier qu'il n'est plus importé
+- Commit message qui ment sur ce qui a été fait
+
+---
+
+## 9. QUALITÉ DE CODE
+
+- TypeScript strict, pas de `any` sauf justification dans un commentaire
+- Noms explicites (`adressesActives` plutôt que `data`)
+- Fonctions < 40 lignes
+- Fichiers < 300 lignes (si plus : découper)
+- 1 composant = 1 fichier
+- Pas de logique métier dans les components (toujours dans hooks ou store)
+- Tests pour toute fonction métier non triviale
+
+---
+
+## 10. DOCUMENTATION OBLIGATOIRE
+
+À maintenir à jour à chaque session :
+
+- `STRATEGY.md` : vision, phases, modèles éco
+- `ARCHI.md` : architecture technique
+- `UX-QUALITY-BAR.md` : règles UX/DA
+- `CLAUDE.md` : ces guidelines (ce fichier)
+
+À générer pour chaque mission :
+
+- `docs/specs/[feature].md` : spec PO/PM avant dev
+- `docs/qa/[feature].md` : rapport QA après dev
+
+À générer en cas de blocage :
+
+- `BLOCKERS.md` : état bloquant + attente
+
+---
+
+## 11. CHECKLIST DÉBUT DE SESSION
+
+Avant toute mission, Claude Code doit :
+
+1. Lire `CLAUDE.md` (ce fichier)
+2. Lire `STRATEGY.md`
+3. Lire `ARCHI.md`
+4. Lire `UX-QUALITY-BAR.md`
+5. Vérifier l'état Git (`git status`, `git log --oneline -5`)
+6. Confirmer la branche courante
+7. Lister les PRs ouvertes (`gh pr list`)
+8. Répondre explicitement : "Guidelines lues, prêt pour mission."
+
+---
+
+## 12. PRINCIPE FINAL
+
+**Rigueur > Vitesse.**
+
+Une PR lente mais propre > 10 PRs rapides bancales.
+Tu n'es pas jugé sur le nombre de commits, mais sur la stabilité et la qualité du livrable.
+
+Si un doute : tu arrêtes, tu documentes, tu demandes.
+Jamais de bluff. Jamais de "ça marche" non vérifié.
+
+---
+
 ## État actuel (avril 2026)
 
 - ✅ Backend Node + PostgreSQL routes CRUD + géolocalisation
