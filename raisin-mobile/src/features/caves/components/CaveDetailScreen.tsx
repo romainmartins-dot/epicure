@@ -1,9 +1,9 @@
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { VinsList } from "../../vins";
 import { Cave } from "../types";
 import { CaveHeader } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
-import { VinsListPlaceholder } from "./VinsListPlaceholder";
 
 interface Props {
   cave: Cave | null;
@@ -31,7 +31,7 @@ export function CaveDetailScreen({ cave, loading }: Props) {
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       <CaveHeader id={cave.id} />
       <CaveInfo cave={cave} />
-      <VinsListPlaceholder />
+      <VinsList caveId={cave.id} />
     </ScrollView>
   );
 }
