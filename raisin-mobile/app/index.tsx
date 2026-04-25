@@ -3,15 +3,11 @@ import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "r
 
 import Animated, { FadeIn } from "react-native-reanimated";
 
-import AdresseCard from "../components/AdresseCard";
-import Header from "../components/Header";
-import Legende from "../components/Legende";
-import Map from "../components/Map";
-import Panel from "../components/Panel";
-import SearchBar from "../components/SearchBar";
-import { useAdresses } from "../hooks/useAdresses";
-import { useAdressesList } from "../hooks/useAdressesList";
-import { Adresse } from "../utils/types";
+import { type Adresse, AdresseCard, useAdressesList } from "../src/features/adresses";
+import { Map, Panel, useAdresses } from "../src/features/map";
+import Header from "../src/features/map/components/Header";
+import Legende from "../src/features/map/components/Legende";
+import SearchBar from "../src/features/map/components/SearchBar";
 
 const isWeb = Platform.OS === "web";
 
