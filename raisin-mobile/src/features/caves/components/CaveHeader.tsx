@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePhoto } from "../../../shared/hooks/usePhoto";
 
 const { width } = Dimensions.get("window");
-const PHOTO_HEIGHT = Math.round(width * (3 / 4));
+const PHOTO_HEIGHT = Math.round(width * (9 / 16));
 
 interface Props {
   id: number;
@@ -19,7 +19,7 @@ export function CaveHeader({ id }: Props) {
   if (!photo) {
     return (
       <View style={styles.placeholder}>
-        <Ionicons name="wine-outline" size={48} color="#C7C7CC" />
+        <Ionicons name="wine-outline" size={64} color="#C7C7CC" />
       </View>
     );
   }
@@ -28,12 +28,19 @@ export function CaveHeader({ id }: Props) {
 }
 
 const styles = StyleSheet.create({
-  photo: { width, height: PHOTO_HEIGHT },
+  photo: {
+    width,
+    height: PHOTO_HEIGHT,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
   placeholder: {
     width,
     height: PHOTO_HEIGHT,
-    backgroundColor: "#F2F2F7",
+    backgroundColor: "#EBEBF0",
     justifyContent: "center",
     alignItems: "center",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
 });

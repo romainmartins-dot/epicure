@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false, title: "" }} />
         <Stack.Screen
           name="cave/[id]"
           options={{ headerTransparent: true, headerTitle: "", headerTintColor: "#fff" }}
