@@ -1,4 +1,6 @@
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+
+import { ScrollView } from "react-native-gesture-handler";
 
 import { VinsList } from "../../vins";
 import { Cave } from "../types";
