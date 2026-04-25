@@ -1,13 +1,36 @@
+export type VinType = "blanc" | "rouge" | "rose" | "petillant" | "doux";
+
 export interface Vin {
-  id: number;
-  cave_id: number;
-  domaine: string;
-  vigneron: string;
+  id: string;
   cuvee: string;
-  millesime: number;
-  so2_libre: string | null;
-  so2_total: string | null;
-  mise: string | null;
-  description: string | null;
-  accords: string[];
+  appellation: string;
+  type: VinType;
+  millesime: number | null;
+  millesimes_assemblage?: number[];
+  cepage: string;
+  terroir: string;
+  elevage: string;
+  alcool_pct: number;
+  description_courte: string;
+  description_longue: string;
+  accords_mets: string[];
+  service_temperature_c: string;
+  potentiel_garde: string;
+  so2: string;
+}
+
+export interface Domaine {
+  id: string;
+  nom: string;
+  vigneron: string;
+  region: string;
+  appellation_principale: string;
+  village: string;
+  departement: string;
+  surface_ha: number;
+  anciennete_bio: string;
+  philosophie: string;
+  histoire: string;
+  site_web: string | null;
+  vins: Vin[];
 }
