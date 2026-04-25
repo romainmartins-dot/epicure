@@ -13,34 +13,30 @@ interface Props {
 }
 
 export function CaveDetailScreen({ cave, loading }: Props) {
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#C0392B" />
-      </View>
-    );
-  }
-
-  if (!cave) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorTxt}>Adresse introuvable</Text>
-      </View>
-    );
-  }
-
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-      <CaveHeader id={cave.id} />
-      <CaveInfo cave={cave} />
-      <VinsList caveId={cave.id} />
+      {loading ? (
+        <View style={styles.centered}>
+          <ActivityIndicator size="large" color="#C0392B" />
+        </View>
+      ) : !cave ? (
+        <View style={styles.centered}>
+          <Text style={styles.errorTxt}>Adresse introuvable</Text>
+        </View>
+      ) : (
+        <>
+          <CaveHeader id={cave.id} />
+          <CaveInfo cave={cave} />
+          <VinsList caveId={cave.id} />
+        </>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   scroll: { flex: 1, backgroundColor: "#fff" },
-  content: { paddingBottom: 40 },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
+  content: { flexGrow: 1, paddingBottom: 40 },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
   errorTxt: { fontSize: 15, color: "#777" },
 });
