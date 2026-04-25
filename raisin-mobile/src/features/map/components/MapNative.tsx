@@ -14,7 +14,9 @@ const TIP_H = 9;
 
 const PinMarker = memo(() => (
   <View style={pin.container}>
-    <View style={pin.head} />
+    <View style={pin.head}>
+      <View style={pin.dot} />
+    </View>
     <View style={pin.tip} />
   </View>
 ));
@@ -81,6 +83,14 @@ const pin = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#fff",
   },
   tip: {
     width: 0,
