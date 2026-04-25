@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getPhoto } from "../../features/adresses/api";
+import { fetchPhoto } from "../api/photoApi";
 
 export function usePhoto(id: number | null) {
   const [photo, setPhoto] = useState<string | null>(null);
@@ -10,7 +10,7 @@ export function usePhoto(id: number | null) {
       setPhoto(null);
       return;
     }
-    getPhoto(id)
+    fetchPhoto(id)
       .then(setPhoto)
       .catch(() => {});
   }, [id]);

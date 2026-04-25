@@ -20,7 +20,7 @@ async function getPhotoRef(id, nom, adresse, ville) {
 }
 
 async function proxyPhoto(photoRef, res) {
-  const url = `https://places.googleapis.com/v1/${photoRef}/media?maxHeightPx=800&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+  const url = `https://places.googleapis.com/v1/${photoRef}/media?maxWidthPx=1200&maxHeightPx=1200&key=${process.env.GOOGLE_PLACES_API_KEY}`;
   const response = await fetch(url);
   res.set("Content-Type", response.headers.get("content-type") || "image/jpeg");
   res.set("Cache-Control", "public, max-age=86400");
