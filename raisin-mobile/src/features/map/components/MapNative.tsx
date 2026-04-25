@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
+import { StyleSheet, View } from "react-native";
 
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
@@ -6,13 +7,25 @@ import { Marker } from "react-native-maps";
 import { INITIAL_REGION } from "../../../config";
 import { Adresse } from "../../adresses/types";
 
+const PIN_COLOR = "#C0392B";
+const PIN_SIZE = 28;
+const TIP_W = 6;
+const TIP_H = 9;
+
+const PinMarker = memo(() => (
+  <View style={pin.container}>
+    <View style={pin.head} />
+    <View style={pin.tip} />
+  </View>
+));
+
 interface Props {
   adresses: Adresse[];
   selected: Adresse | null;
   onMarkerClick: (item: Adresse) => void;
 }
 
-export default function MapNative({ adresses, selected, onMarkerClick }: Props) {
+export default function MapNative({ adresses, onMarkerClick }: Props) {
   const validAdresses = useMemo(
     () =>
       adresses.filter((a) => {
@@ -39,7 +52,7 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
       style={{ flex: 1 }}
       showsPointsOfInterest={false}
       animationEnabled={false}
-      clusterColor="#C0392B"
+      clusterColor={PIN_COLOR}
       clusterTextColor="#FFFFFF"
       initialRegion={INITIAL_REGION}
     >
@@ -47,10 +60,37 @@ export default function MapNative({ adresses, selected, onMarkerClick }: Props) 
         <Marker
           key={item.id}
           coordinate={coords.get(item.id)!}
-          title={item.nom}
+          tracksViewChanges={false}
           onPress={() => onMarkerClick(item)}
-        />
+        >
+          <PinMarker />
+        </Marker>
       ))}
     </ClusteredMapView>
   );
 }
+
+const pin = StyleSheet.create({
+  container: { alignItems: "center" },
+  head: {
+    width: PIN_SIZE,
+    height: PIN_SIZE,
+    borderRadius: PIN_SIZE / 2,
+    backgroundColor: PIN_COLOR,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  tip: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: TIP_W,
+    borderRightWidth: TIP_W,
+    borderTopWidth: TIP_H,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderTopColor: PIN_COLOR,
+    marginTop: -1,
+  },
+});
