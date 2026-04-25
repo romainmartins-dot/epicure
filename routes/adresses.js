@@ -58,6 +58,19 @@ router.get("/proximite", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, nom, type, adresse, ville, latitude, longitude, description FROM adresses WHERE id = $1",
+      [req.params.id],
+    );
+    if (!rows.length) return res.status(404).json({ erreur: "non trouvée" });
+    res.json(rows[0]);
+  } catch {
+    res.status(500).json({ erreur: "Erreur serveur" });
+  }
+});
+
 // Retourne une URL proxifiée (clé Google jamais exposée au client)
 router.get("/:id/photo", async (req, res) => {
   try {
