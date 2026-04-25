@@ -8,7 +8,6 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import { AdresseCard, useAdressesList } from "../src/features/adresses";
 import { Map, useAdresses } from "../src/features/map";
 import Header from "../src/features/map/components/Header";
-import Legende from "../src/features/map/components/Legende";
 import SearchBar from "../src/features/map/components/SearchBar";
 
 const isWeb = Platform.OS === "web";
@@ -65,7 +64,6 @@ export default function Index() {
             onMarkerClick={(item) => router.push(`/cave/${item.id}`)}
             onMapReady={handleMapReady}
           />
-          <Legende />
         </Animated.View>
       ) : listeLoading ? (
         <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 40 }} />
