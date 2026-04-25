@@ -1,6 +1,8 @@
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useRouter } from "expo-router";
+
+import { FlatList } from "react-native-gesture-handler";
 
 import { Domaine, Vin, useVins } from "../../vins";
 import { Cave } from "../types";
