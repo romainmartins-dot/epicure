@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: "#fff",
     borderRadius: 12,
-    overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
