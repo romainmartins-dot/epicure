@@ -1,10 +1,12 @@
 import { useCallback, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "react-native";
 
+import { useRouter } from "expo-router";
+
 import Animated, { FadeIn } from "react-native-reanimated";
 
-import { type Adresse, AdresseCard, useAdressesList } from "../src/features/adresses";
-import { Map, Panel, useAdresses } from "../src/features/map";
+import { AdresseCard, useAdressesList } from "../src/features/adresses";
+import { Map, useAdresses } from "../src/features/map";
 import Header from "../src/features/map/components/Header";
 import Legende from "../src/features/map/components/Legende";
 import SearchBar from "../src/features/map/components/SearchBar";
@@ -15,7 +17,7 @@ export default function Index() {
   const { adresses, loading } = useAdresses();
   const [vue, setVue] = useState<"carte" | "liste">("carte");
   const [recherche, setRecherche] = useState("");
-  const [selected, setSelected] = useState<Adresse | null>(null);
+  const router = useRouter();
   const mapRef = useRef<any>(null);
 
   const {
@@ -38,8 +40,6 @@ export default function Index() {
     mapRef.current = m;
   }, []);
 
-  const handleClose = useCallback(() => setSelected(null), []);
-
   if (loading)
     return (
       <View style={styles.loaderContainer}>
@@ -61,12 +61,11 @@ export default function Index() {
         >
           <Map
             adresses={adresses}
-            selected={selected}
-            onMarkerClick={setSelected}
+            selected={null}
+            onMarkerClick={(item) => router.push(`/cave/${item.id}`)}
             onMapReady={handleMapReady}
           />
-          {!selected && <Legende />}
-          <Panel selected={selected} onClose={handleClose} />
+          <Legende />
         </Animated.View>
       ) : listeLoading ? (
         <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 40 }} />
