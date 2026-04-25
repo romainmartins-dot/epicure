@@ -8,6 +8,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="cave/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="vin/[id]" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

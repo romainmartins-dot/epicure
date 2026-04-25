@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
 import { getVinsByCaveId } from "../api/vinsApi";
-import { Vin } from "../types";
+import { Domaine } from "../types";
 
 export function useVins(caveId: number) {
-  const [vins, setVins] = useState<Vin[]>([]);
+  const [domaines, setDomaines] = useState<Domaine[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     getVinsByCaveId(caveId)
-      .then(setVins)
-      .catch(() => setVins([]))
+      .then(setDomaines)
+      .catch(() => setDomaines([]))
       .finally(() => setLoading(false));
   }, [caveId]);
 
-  return { vins, loading };
+  return { domaines, loading };
 }
