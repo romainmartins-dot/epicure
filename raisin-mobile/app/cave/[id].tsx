@@ -14,7 +14,11 @@ export default function CavePage() {
   return (
     <View style={styles.container}>
       <CaveDetailScreen cave={cave} loading={loading} />
-      <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.backBtn}
+        onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
+        activeOpacity={0.8}
+      >
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
       </TouchableOpacity>
     </View>
