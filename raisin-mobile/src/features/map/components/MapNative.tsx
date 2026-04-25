@@ -33,10 +33,7 @@ interface Props {
 }
 
 export default function MapNative({ adresses, onMarkerClick }: Props) {
-  const [regionCenter, setRegionCenter] = useState<{ latitude: number; longitude: number }>({
-    latitude: INITIAL_REGION.latitude,
-    longitude: INITIAL_REGION.longitude,
-  });
+  const [region, setRegion] = useState<Region>(INITIAL_REGION);
 
   const validAdresses = useMemo(
     () =>
@@ -59,20 +56,39 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
     [validAdresses],
   );
 
-  const labeledId = useMemo(() => {
-    let best: { id: number; dist: number } | null = null;
-    for (const a of validAdresses) {
-      const c = coords.get(a.id)!;
-      const dist =
-        (c.latitude - regionCenter.latitude) ** 2 + (c.longitude - regionCenter.longitude) ** 2;
-      if (!best || dist < best.dist) best = { id: a.id, dist };
-    }
-    return best?.id ?? null;
-  }, [validAdresses, coords, regionCenter]);
+  // Greedy deconfliction : label si aucun autre label placé à moins de N degrés.
+  // Seuils calés sur la taille des labels (90pt max) relative au viewport courant.
+  const labeledIds = useMemo(() => {
+    const result = new Set<number>();
+    const placed: Array<{ lat: number; lng: number }> = [];
 
-  const handleRegionChangeComplete = (region: Region) => {
-    setRegionCenter({ latitude: region.latitude, longitude: region.longitude });
-  };
+    const lngThreshold = region.longitudeDelta * 0.25;
+    const latThreshold = region.latitudeDelta * 0.06;
+
+    // Priorité : les plus proches du centre d'abord
+    const sorted = [...validAdresses].sort((a, b) => {
+      const ca = coords.get(a.id)!;
+      const cb = coords.get(b.id)!;
+      const da = (ca.latitude - region.latitude) ** 2 + (ca.longitude - region.longitude) ** 2;
+      const db = (cb.latitude - region.latitude) ** 2 + (cb.longitude - region.longitude) ** 2;
+      return da - db;
+    });
+
+    for (const a of sorted) {
+      const c = coords.get(a.id)!;
+      const overlaps = placed.some(
+        (p) =>
+          Math.abs(p.lng - c.longitude) < lngThreshold &&
+          Math.abs(p.lat - c.latitude) < latThreshold,
+      );
+      if (!overlaps) {
+        result.add(a.id);
+        placed.push({ lat: c.latitude, lng: c.longitude });
+      }
+    }
+
+    return result;
+  }, [validAdresses, coords, region]);
 
   return (
     <ClusteredMapView
@@ -82,16 +98,16 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
       clusterColor={PIN_COLOR}
       clusterTextColor="#FFFFFF"
       initialRegion={INITIAL_REGION}
-      onRegionChangeComplete={handleRegionChangeComplete}
+      onRegionChangeComplete={setRegion}
     >
       {validAdresses.map((item) => (
         <Marker
-          key={`${item.id}-${labeledId === item.id}`}
+          key={`${item.id}-${labeledIds.has(item.id)}`}
           coordinate={coords.get(item.id)!}
           tracksViewChanges={false}
           onPress={() => onMarkerClick(item)}
         >
-          <PinMarker nom={item.nom} showLabel={labeledId === item.id} />
+          <PinMarker nom={item.nom} showLabel={labeledIds.has(item.id)} />
         </Marker>
       ))}
     </ClusteredMapView>
