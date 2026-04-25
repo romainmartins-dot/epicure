@@ -26,7 +26,7 @@ export default function CavePage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#fff" },
   backBtn: {
     position: "absolute",
     top: 56,

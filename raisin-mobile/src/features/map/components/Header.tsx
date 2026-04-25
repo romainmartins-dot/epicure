@@ -41,7 +41,7 @@ export default function Header({ vue, setVue }: Props) {
 
   return (
     <View style={styles.header}>
-      <Text style={styles.titre}>🍷 Raisin</Text>
+      <Text style={styles.titre}>Raisin</Text>
       <View style={styles.toggle} onLayout={(e) => setPillWidth(e.nativeEvent.layout.width / 2)}>
         <Animated.View style={[styles.pill, { width: pillWidth - 2 }, pillStyle]} />
         <TouchableOpacity style={styles.toggleBtn} onPress={() => setVue("carte")}>

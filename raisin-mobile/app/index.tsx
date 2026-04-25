@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Platform, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -42,9 +42,7 @@ export default function Index() {
   if (loading)
     return (
       <View style={styles.loaderContainer}>
-        <Text style={{ fontSize: 60 }}>🍷</Text>
-        <Text style={styles.loaderText}>Raisin</Text>
-        <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 20 }} />
+        <ActivityIndicator size="large" color="#999" />
       </View>
     );
 
@@ -55,7 +53,7 @@ export default function Index() {
 
       {vue === "carte" ? (
         <Animated.View
-          entering={isWeb ? undefined : FadeIn.duration(200)}
+          entering={isWeb ? undefined : FadeIn.duration(300)}
           style={{ flex: 1, position: "relative" }}
         >
           <Map
@@ -94,13 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1a0a00",
-  },
-  loaderText: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: 12,
-    letterSpacing: 2,
+    backgroundColor: "#fff",
   },
 });

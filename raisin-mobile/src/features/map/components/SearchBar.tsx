@@ -1,7 +1,9 @@
 import { useEffect } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+
+import { Ionicons } from "@expo/vector-icons";
 
 interface Props {
   recherche: string;
@@ -24,7 +26,7 @@ export default function SearchBar({ recherche, setRecherche, onSubmit }: Props) 
 
   return (
     <View style={styles.searchBar}>
-      <Text style={styles.searchIcon}>🔍</Text>
+      <Ionicons name="search" size={16} color="#999" style={styles.searchIcon} />
       <TextInput
         style={styles.input}
         placeholder="Rechercher une ville..."
@@ -35,7 +37,7 @@ export default function SearchBar({ recherche, setRecherche, onSubmit }: Props) 
       />
       <Animated.View style={clearStyle} pointerEvents={recherche.length > 0 ? "auto" : "none"}>
         <TouchableOpacity onPress={() => setRecherche("")} style={styles.clearBtn}>
-          <Text style={styles.clearTxt}>✕</Text>
+          <Ionicons name="close-circle" size={18} color="#C7C7CC" />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -56,8 +58,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 4,
   },
-  searchIcon: { fontSize: 16, marginRight: 8 },
+  searchIcon: { marginRight: 8 },
   input: { flex: 1, fontSize: 15, color: "#1a0a00" },
   clearBtn: { padding: 4 },
-  clearTxt: { color: "#999", fontSize: 14 },
 });
