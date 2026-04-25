@@ -1,18 +1,25 @@
-import { ActivityIndicator, Pressable, SectionList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useRouter } from "expo-router";
+
+import { FlatList } from "react-native-gesture-handler";
 
 import { Domaine, Vin, useVins } from "../../vins";
 import { Cave } from "../types";
 import { CaveHeader } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
 
-type Section = { domaine: Domaine; data: Vin[] };
+type Row =
+  | { kind: "header"; domaine: Domaine; key: string }
+  | { kind: "vin"; vin: Vin; key: string };
 
-interface Props {
-  cave: Cave | null;
-  loading: boolean;
-}
+const TYPE_COLORS: Record<string, string> = {
+  blanc: "#F0A500",
+  rouge: "#C0392B",
+  rose: "#E07080",
+  petillant: "#5B9BD5",
+  doux: "#8E44AD",
+};
 
 function VinRow({ vin }: { vin: Vin }) {
   const router = useRouter();
@@ -40,13 +47,21 @@ function VinRow({ vin }: { vin: Vin }) {
   );
 }
 
-const TYPE_COLORS: Record<string, string> = {
-  blanc: "#F0A500",
-  rouge: "#C0392B",
-  rose: "#E07080",
-  petillant: "#5B9BD5",
-  doux: "#8E44AD",
-};
+function DomaineHeader({ domaine }: { domaine: Domaine }) {
+  return (
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionNom}>{domaine.nom}</Text>
+      <Text style={styles.sectionVigneron}>
+        {domaine.vigneron} · {domaine.village}
+      </Text>
+    </View>
+  );
+}
+
+interface Props {
+  cave: Cave | null;
+  loading: boolean;
+}
 
 export function CaveDetailScreen({ cave, loading }: Props) {
   const { domaines, loading: vinsLoading } = useVins(cave?.id ?? 0);
@@ -67,21 +82,22 @@ export function CaveDetailScreen({ cave, loading }: Props) {
     );
   }
 
-  const sections: Section[] = domaines.map((d) => ({ domaine: d, data: d.vins }));
+  const rows: Row[] = domaines.flatMap((d) => [
+    { kind: "header", domaine: d, key: `h-${d.id}` },
+    ...d.vins.map((v) => ({ kind: "vin" as const, vin: v, key: v.id })),
+  ]);
 
   return (
-    <SectionList<Vin, Section>
-      sections={sections}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <VinRow vin={item} />}
-      renderSectionHeader={({ section }) => (
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionNom}>{section.domaine.nom}</Text>
-          <Text style={styles.sectionVigneron}>
-            {section.domaine.vigneron} · {section.domaine.village}
-          </Text>
-        </View>
-      )}
+    <FlatList<Row>
+      data={rows}
+      keyExtractor={(item) => item.key}
+      renderItem={({ item }) =>
+        item.kind === "header" ? (
+          <DomaineHeader domaine={item.domaine} />
+        ) : (
+          <VinRow vin={item.vin} />
+        )
+      }
       ListHeaderComponent={
         <>
           <CaveHeader id={cave.id} />
@@ -89,18 +105,16 @@ export function CaveDetailScreen({ cave, loading }: Props) {
           {!vinsLoading && domaines.length > 0 && (
             <Text style={styles.vinsTitle}>Vins disponibles</Text>
           )}
+          {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
         </>
       }
       ListEmptyComponent={
-        vinsLoading ? (
-          <ActivityIndicator color="#C0392B" style={styles.loader} />
-        ) : (
+        !vinsLoading ? (
           <View style={styles.empty}>
             <Text style={styles.emptyTxt}>Aucun vin renseigné</Text>
           </View>
-        )
+        ) : null
       }
-      stickySectionHeadersEnabled={false}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.content}
       style={styles.list}
@@ -120,7 +134,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 8,
     paddingBottom: 16,
-    backgroundColor: "#fff",
   },
   sectionHeader: {
     paddingHorizontal: 16,
