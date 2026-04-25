@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
@@ -12,12 +12,15 @@ const PIN_SIZE = 28;
 const TIP_W = 6;
 const TIP_H = 9;
 
-const PinMarker = memo(() => (
+const PinMarker = memo(({ nom }: { nom: string }) => (
   <View style={pin.container}>
     <View style={pin.head}>
       <View style={pin.dot} />
     </View>
     <View style={pin.tip} />
+    <Text style={pin.label} numberOfLines={1}>
+      {nom}
+    </Text>
   </View>
 ));
 
@@ -65,7 +68,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
           tracksViewChanges={false}
           onPress={() => onMarkerClick(item)}
         >
-          <PinMarker />
+          <PinMarker nom={item.nom} />
         </Marker>
       ))}
     </ClusteredMapView>
@@ -91,6 +94,17 @@ const pin = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: "#fff",
+  },
+  label: {
+    marginTop: 4,
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#1A1A1A",
+    textShadowColor: "rgba(255,255,255,0.95)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 3,
+    maxWidth: 90,
+    textAlign: "center",
   },
   tip: {
     width: 0,
