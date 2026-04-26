@@ -32,5 +32,6 @@ export interface Domaine {
   philosophie: string;
   histoire: string;
   site_web: string | null;
+  photo_url: string | null;
   vins: Vin[];
 }

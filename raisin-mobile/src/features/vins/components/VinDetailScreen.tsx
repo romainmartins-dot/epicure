@@ -1,8 +1,13 @@
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import { Image } from "expo-image";
 
 import { Ionicons } from "@expo/vector-icons";
 
 import { Domaine, Vin } from "../types";
+
+const { width } = Dimensions.get("window");
+const HERO_HEIGHT = Math.round(width * (3 / 4));
 
 const TYPE_COLORS: Record<string, string> = {
   blanc: "#F0A500",
@@ -56,9 +61,18 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
       showsVerticalScrollIndicator={true}
       bounces={true}
     >
-      <View style={styles.hero}>
-        <Ionicons name="wine" size={48} color="#C7C7CC" />
-      </View>
+      {domaine?.photo_url ? (
+        <Image
+          source={domaine.photo_url}
+          style={styles.hero}
+          contentFit="cover"
+          cachePolicy="disk"
+        />
+      ) : (
+        <View style={[styles.hero, styles.heroPlaceholder]}>
+          <Ionicons name="wine" size={48} color="#C7C7CC" />
+        </View>
+      )}
 
       <View style={styles.body}>
         <View style={[styles.badge, { backgroundColor: typeColor + "1F" }]}>
@@ -107,7 +121,10 @@ const styles = StyleSheet.create({
   errorTxt: { fontSize: 15, color: "#777" },
 
   hero: {
-    aspectRatio: 4 / 3,
+    width,
+    height: HERO_HEIGHT,
+  },
+  heroPlaceholder: {
     backgroundColor: "#F2F2F7",
     justifyContent: "center",
     alignItems: "center",
