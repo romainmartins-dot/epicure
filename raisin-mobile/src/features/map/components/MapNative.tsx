@@ -12,19 +12,21 @@ const PIN_SIZE = 28;
 const TIP_W = 6;
 const TIP_H = 9;
 
-const PinMarker = memo(({ nom, showLabel }: { nom: string; showLabel: boolean }) => (
-  <View style={pin.container}>
-    <View style={pin.head}>
-      <View style={pin.dot} />
+const PinMarker = memo(function PinMarker({ nom, showLabel }: { nom: string; showLabel: boolean }) {
+  return (
+    <View style={pin.container}>
+      <View style={pin.head}>
+        <View style={pin.dot} />
+      </View>
+      <View style={pin.tip} />
+      {showLabel ? (
+        <Text style={pin.label} numberOfLines={1}>
+          {nom}
+        </Text>
+      ) : null}
     </View>
-    <View style={pin.tip} />
-    {showLabel ? (
-      <Text style={pin.label} numberOfLines={1}>
-        {nom}
-      </Text>
-    ) : null}
-  </View>
-));
+  );
+});
 
 interface Props {
   adresses: Adresse[];
@@ -60,7 +62,7 @@ export default function MapNative({ adresses, onMarkerClick }: Props) {
   // Seuils calés sur la taille des labels (90pt max) relative au viewport courant.
   const labeledIds = useMemo(() => {
     const result = new Set<number>();
-    const placed: Array<{ lat: number; lng: number }> = [];
+    const placed: { lat: number; lng: number }[] = [];
 
     const lngThreshold = region.longitudeDelta * 0.25;
     const latThreshold = region.latitudeDelta * 0.06;
