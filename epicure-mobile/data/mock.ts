@@ -19,7 +19,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.628710",
     longitude: "3.058837",
-    description: "Cave à vins naturels et bio, très bon conseil",
+    description:
+      "Cyrille et Ji-yun Duparcq ont ouvert Biovino en 2010 avec une ligne claire : aucune bouteille qui ne soit bio, biodynamique ou nature. Plus de 400 références sur la Place Sébastopol, toutes choisies en contact direct avec le vigneron. Jo Landron, Claude Courtois, Julien Meyer, Domaine de la Tournelle — une sélection qui dit d'où elle vient. Le jeudi et vendredi soirs, la cave devient bar.",
   },
   {
     id: 2070,
@@ -80,7 +81,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.644312",
     longitude: "3.057793",
-    description: "Caviste passionné, ambiance maison, vins nature",
+    description:
+      "Simon Pagès et Matthieu Durand ont fondé Gabbro en 2013 dans le Vieux-Lille — d'abord restaurant bistronomique (Bib Gourmand Michelin 2016, Coup de cœur Gault & Millau), puis cave à manger. Briques, bois, grande table commune : une centaine de références renouvelées selon les arrivages. Jura, Loire, Alsace, Rhône — des vins choisis pour ce qu'ils racontent, pas pour l'étiquette.",
   },
   {
     id: 2057,
@@ -120,7 +122,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.633833",
     longitude: "3.060887",
-    description: "Caviste incontournable, sélection naturelle et bio exceptionnelle",
+    description:
+      "Aurélien Chutaux a tout quitté — la pub parisienne, le confort du salariat — pour ouvrir cette cave en 2012 à 27 ans. Dans ses 70 m², près de 1 000 références entièrement goûtées avant achat, sans contrainte commerciale. Entre 50 et 90 % de vins natures ou bios. Une sélection internationale et pointue : Tissot en Jura, Alexandre Bain en Loire, Occhipinti en Sicile, Pheasant's Tears en Géorgie. Ateliers whisky et rhum chaque mois.",
   },
   {
     id: 2103,
