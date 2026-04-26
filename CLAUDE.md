@@ -274,6 +274,7 @@ Règles clés résumées :
 - `STRATEGY.md` : vision, phases, modèles éco
 - `ARCHI.md` : architecture technique
 - `UX-QUALITY-BAR.md` : règles UX/DA
+- `DA.md` : direction artistique Epicure (palette, typo, composants)
 - `CLAUDE.md` : ces guidelines (ce fichier)
 
 À générer pour chaque mission :
@@ -295,10 +296,11 @@ Avant toute mission, Claude Code doit :
 2. Lire `STRATEGY.md`
 3. Lire `ARCHI.md`
 4. Lire `UX-QUALITY-BAR.md`
-5. Vérifier l'état Git (`git status`, `git log --oneline -5`)
-6. Confirmer la branche courante
-7. Lister les PRs ouvertes (`gh pr list`)
-8. Répondre explicitement : "Guidelines lues, prêt pour mission."
+5. Lire `DA.md`
+6. Vérifier l'état Git (`git status`, `git log --oneline -5`)
+7. Confirmer la branche courante
+8. Lister les PRs ouvertes (`gh pr list`)
+9. Répondre explicitement : "Guidelines lues, prêt pour mission."
 
 ---
 
