@@ -48,6 +48,8 @@ function DomaineSection({
   isExpanded: boolean;
   onPress: () => void;
 }) {
+  const router = useRouter();
+
   return (
     <View style={isFirst ? styles.domaineFirst : styles.domaineOther}>
       <Pressable
@@ -63,6 +65,16 @@ function DomaineSection({
           )}
         </View>
         <View style={styles.domaineHeaderRight}>
+          <Pressable
+            style={({ pressed }) => [styles.domaineLink, pressed && { opacity: 0.5 }]}
+            onPress={(e) => {
+              e.stopPropagation();
+              router.push(`/domaine/${domaine.id}`);
+            }}
+            hitSlop={8}
+          >
+            <Ionicons name="arrow-forward-circle-outline" size={20} color="#C0392B" />
+          </Pressable>
           <Text style={styles.vinCount}>{domaine.vins.length}</Text>
           <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={13} color="#C7C7CC" />
         </View>
@@ -180,6 +192,7 @@ const styles = StyleSheet.create({
   domaineHeaderPressed: { backgroundColor: "#F2F2F7" },
   domaineHeaderLeft: { flex: 1, marginRight: 12 },
   domaineHeaderRight: { flexDirection: "row", alignItems: "center", gap: 6 },
+  domaineLink: { padding: 2 },
 
   sectionNom: { fontSize: 17, fontWeight: "600", color: "#1C1C1E" },
   sectionVigneron: { fontSize: 13, color: "#8E8E93", marginTop: 2 },

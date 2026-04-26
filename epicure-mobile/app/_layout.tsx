@@ -10,6 +10,7 @@ export default function RootLayout() {
         <Stack.Screen name="cave/[id]" options={{ headerShown: false, presentation: "card" }} />
         <Stack.Screen name="restaurant/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="vin/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="domaine/[id]" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );
