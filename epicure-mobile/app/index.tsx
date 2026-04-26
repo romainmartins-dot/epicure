@@ -74,7 +74,16 @@ export default function Index() {
           data={listeAdresses}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-          renderItem={({ item }) => <AdresseCard item={item} />}
+          renderItem={({ item }) => (
+            <AdresseCard
+              item={item}
+              onPress={() =>
+                router.push(
+                  item.type === "restaurant" ? `/restaurant/${item.id}` : `/cave/${item.id}`,
+                )
+              }
+            />
+          )}
           getItemLayout={(_, index) => ({ length: 94, offset: 94 * index, index })}
           onEndReached={hasMore ? loadMore : undefined}
           onEndReachedThreshold={0.3}
