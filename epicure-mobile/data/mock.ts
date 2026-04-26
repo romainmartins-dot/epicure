@@ -59,7 +59,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.628420",
     longitude: "3.058403",
-    description: "Caviste pointu, soirées dégustation, excellents conseils",
+    description:
+      "Thomas Martin et Stéphane Marty ont ouvert cette cave en 2014 avec une conviction simple : un bon vin doit raconter quelque chose. Nichée place Sébastopol, la sélection — majoritairement naturelle, bio et biodynamique — est rangée dans des caisses en bois avec des étiquettes manuscrites. Dégustations le premier jeudi du mois.",
   },
   {
     id: 2072,

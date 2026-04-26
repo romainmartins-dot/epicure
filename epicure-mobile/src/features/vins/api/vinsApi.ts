@@ -2,7 +2,10 @@ import pocData from "../data/vins-poc.json";
 import { Domaine, Vin } from "../types";
 
 const API = process.env.EXPO_PUBLIC_API_URL;
-const allDomaines = pocData.domaines as Domaine[];
+const allDomaines = [
+  ...(pocData.domaines as unknown as Domaine[]),
+  ...((pocData as unknown as { domaines_extra?: Domaine[] }).domaines_extra ?? []),
+];
 const caveDomains = pocData.cave_domains as Record<string, string[]>;
 
 function mockDomainesByCaveId(caveId: number): Domaine[] {
