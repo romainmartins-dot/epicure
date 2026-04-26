@@ -59,7 +59,11 @@ export default function Index() {
           <Map
             adresses={adresses}
             selected={null}
-            onMarkerClick={(item) => router.push(`/cave/${item.id}`)}
+            onMarkerClick={(item) =>
+              router.push(
+                item.type === "restaurant" ? `/restaurant/${item.id}` : `/cave/${item.id}`,
+              )
+            }
             onMapReady={handleMapReady}
           />
         </Animated.View>

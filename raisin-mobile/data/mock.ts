@@ -129,7 +129,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.628787",
     longitude: "3.058885",
-    description: "Restaurant gastronomique, cuisine créative, note 4.8/5",
+    description:
+      "Nicolas en cuisine, Stéphanie en salle. Bistronomie de marché, produits locaux, carte des vins naturels soignée. Gault & Millau.",
   },
   {
     id: 2102,

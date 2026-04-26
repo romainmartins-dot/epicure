@@ -1,0 +1,55 @@
+{
+  "restaurants": [
+    {
+      "id": 2103,
+      "photo_url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+      "carte_vins": [
+        {
+          "cuvee": "Vent d'Ange",
+          "domaine": "Pattes Loup",
+          "appellation": "Chablis",
+          "type": "blanc",
+          "millesime": 2021,
+          "prix_verre": 9,
+          "prix_bouteille": 42
+        },
+        {
+          "cuvee": "Mâcon-Chaintré",
+          "domaine": "Maison Valette",
+          "appellation": "Mâcon-Chaintré",
+          "type": "blanc",
+          "millesime": null,
+          "prix_verre": 8,
+          "prix_bouteille": 38
+        },
+        {
+          "cuvee": "Morgon",
+          "domaine": "Marcel Lapierre",
+          "appellation": "Morgon",
+          "type": "rouge",
+          "millesime": 2022,
+          "prix_verre": 10,
+          "prix_bouteille": 46
+        },
+        {
+          "cuvee": "Fleurie",
+          "domaine": "Yvon Métras",
+          "appellation": "Fleurie",
+          "type": "rouge",
+          "millesime": 2021,
+          "prix_verre": null,
+          "prix_bouteille": 52
+        },
+        {
+          "cuvee": "Bulles de Comptoir",
+          "domaine": "La Grange Tiphaine",
+          "appellation": "Touraine",
+          "type": "petillant",
+          "millesime": 2023,
+          "prix_verre": 8,
+          "prix_bouteille": 34
+        }
+      ]
+    }
+  ]
+}
