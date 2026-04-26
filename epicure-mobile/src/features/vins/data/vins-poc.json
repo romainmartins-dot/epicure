@@ -241,6 +241,7 @@
   ],
   "cave_domains": {
     "2061": ["jo-landron", "claude-courtois", "pattes-loup", "maison-valette", "domaine-berlioz"],
+    "2067": ["domaine-berlioz", "robert-plageoles", "claude-courtois"],
     "2062": ["domaine-tissot", "alexandre-bain", "arianna-occhipinti"],
     "2064": ["fanny-sabre", "domaine-apffel", "robert-plageoles"],
     "2068": ["dard-et-ribo", "domaine-de-la-pinte", "domaine-deiss"]

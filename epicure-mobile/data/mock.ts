@@ -9,7 +9,8 @@ const mock: Adresse[] = [
     ville: "Lille",
     latitude: "50.641103",
     longitude: "3.061589",
-    description: "Bar-cave à vins naturels, accueil chaleureux",
+    description:
+      "Benjamin Lefebvre a ouvert Au Gré du Vin en 2018 dans le quartier Saint-Maurice avec une idée simple : un bar de quartier où le vin nature serait la règle, pas l'exception. Une trentaine de références tournantes, choisies au fil des rencontres avec les vignerons. Ardoise le soir, plateau de charcuterie, pas de chichi — juste de bons vins et des gens qui aiment en parler.",
   },
   {
     id: 2061,
