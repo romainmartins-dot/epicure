@@ -31,16 +31,12 @@ const styles = StyleSheet.create({
   photo: {
     width,
     height: PHOTO_HEIGHT,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   placeholder: {
     width,
     height: PHOTO_HEIGHT,
-    backgroundColor: "#EBEBF0",
+    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
 });

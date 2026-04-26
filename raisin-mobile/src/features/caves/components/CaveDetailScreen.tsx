@@ -100,11 +100,14 @@ export function CaveDetailScreen({ cave, loading }: Props) {
       ListHeaderComponent={
         <>
           <CaveHeader id={cave.id} />
-          <CaveInfo cave={cave} />
-          {!vinsLoading && domaines.length > 0 && (
-            <Text style={styles.vinsTitle}>Vins disponibles</Text>
-          )}
-          {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
+          <View style={styles.card}>
+            <View style={styles.pullIndicator} />
+            <CaveInfo cave={cave} />
+            {!vinsLoading && domaines.length > 0 && (
+              <Text style={styles.vinsTitle}>Vins disponibles</Text>
+            )}
+            {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
+          </View>
         </>
       }
       ListEmptyComponent={
@@ -122,8 +125,28 @@ export function CaveDetailScreen({ cave, loading }: Props) {
 }
 
 const styles = StyleSheet.create({
-  list: { flex: 1, backgroundColor: "#fff" },
-  content: { paddingBottom: 48 },
+  list: { flex: 1, backgroundColor: "#E5E5EA" },
+  content: { paddingBottom: 80, backgroundColor: "#fff" },
+
+  card: {
+    marginTop: -24,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingTop: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+  },
+  pullIndicator: {
+    alignSelf: "center",
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#C7C7CC",
+    marginBottom: 8,
+  },
   centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
   errorTxt: { fontSize: 15, color: "#777" },
   vinsTitle: {

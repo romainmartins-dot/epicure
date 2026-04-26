@@ -17,15 +17,6 @@ const TYPE_COLORS: Record<string, string> = {
   doux: "#8E44AD",
 };
 
-function MetaCell({ label, value }: { label: string; value: string }) {
-  return (
-    <View style={styles.metaCell}>
-      <Text style={styles.metaLabel}>{label}</Text>
-      <Text style={styles.metaValue}>{value}</Text>
-    </View>
-  );
-}
-
 function SectionBlock({ label, value }: { label: string; value: string }) {
   return (
     <View style={styles.sectionBlock}>
@@ -84,7 +75,9 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
       )}
 
       <View style={styles.card}>
-        {/* Badges */}
+        <View style={styles.pullIndicator} />
+
+        {/* Badges type + alcool */}
         <View style={styles.badgeRow}>
           <View style={[styles.badge, { backgroundColor: typeColor + "18" }]}>
             <Text style={[styles.badgeText, { color: typeColor }]}>{vin.type.toUpperCase()}</Text>
@@ -94,7 +87,7 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
           </View>
         </View>
 
-        {/* Titre */}
+        {/* Titre + subtitle */}
         <Text style={styles.title}>{vin.cuvee}</Text>
         <Text style={styles.subtitle}>
           {vin.appellation} · {millesimeLabel}
@@ -118,26 +111,45 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 
         <View style={styles.separator} />
 
-        {/* Description courte — pull quote */}
+        {/* Pull quote + description */}
         <Text style={styles.pullQuote}>{vin.description_courte}</Text>
-
         <Text style={styles.body}>{vin.description_longue}</Text>
 
         <View style={styles.separator} />
 
-        {/* Grille métadata 2×2 */}
+        {/* Grille 2×2 */}
         <View style={styles.metaGrid}>
-          <MetaCell label="CÉPAGE" value={vin.cepage} />
-          <MetaCell label="MILLÉSIME" value={millesimeLabel} />
-          <MetaCell label="ÉLEVAGE" value={vin.elevage} />
-          <MetaCell label="TERROIR" value={vin.terroir} />
+          <View style={styles.metaCell}>
+            <Text style={styles.metaLabel}>CÉPAGE</Text>
+            <Text style={styles.metaValue}>{vin.cepage}</Text>
+          </View>
+          <View style={styles.metaCell}>
+            <Text style={styles.metaLabel}>MILLÉSIME</Text>
+            <Text style={styles.metaValue}>{millesimeLabel}</Text>
+          </View>
+          <View style={styles.metaCell}>
+            <Text style={styles.metaLabel}>ÉLEVAGE</Text>
+            <Text style={styles.metaValue}>{vin.elevage}</Text>
+          </View>
+          <View style={styles.metaCell}>
+            <Text style={styles.metaLabel}>TERROIR</Text>
+            <Text style={styles.metaValue}>{vin.terroir}</Text>
+          </View>
         </View>
 
         <View style={styles.separator} />
 
-        {/* Sections éditoriales */}
-        <SectionBlock label="EN BOUCHE" value={vin.description_longue} />
-        <SectionBlock label="ACCORDS" value={vin.accords_mets.join(" · ")} />
+        {/* Accords — une ligne par accord */}
+        <View style={styles.sectionBlock}>
+          <Text style={styles.sectionLabel}>ACCORDS</Text>
+          {vin.accords_mets.map((accord, i) => (
+            <View key={i} style={styles.accordRow}>
+              <View style={styles.accordDot} />
+              <Text style={styles.sectionValue}>{accord}</Text>
+            </View>
+          ))}
+        </View>
+
         <SectionBlock
           label="SERVICE"
           value={`Servir entre ${vin.service_temperature_c} — Garde ${vin.potentiel_garde}`}
@@ -149,8 +161,8 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#F2F2F7" },
-  scrollContent: { paddingBottom: 48 },
+  scroll: { flex: 1, backgroundColor: "#E5E5EA" },
+  scrollContent: { paddingBottom: 80 },
   centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
 
@@ -167,15 +179,24 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
-    paddingTop: 28,
+    paddingTop: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+  },
+
+  pullIndicator: {
+    alignSelf: "center",
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#C7C7CC",
+    marginBottom: 20,
   },
 
   badgeRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
+  badge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
   badgeText: { fontSize: 11, fontWeight: "600", letterSpacing: 0.5, textTransform: "uppercase" },
   badgeAlcool: {
     paddingHorizontal: 8,
@@ -185,13 +206,7 @@ const styles = StyleSheet.create({
   },
   badgeAlcoolText: { fontSize: 11, fontWeight: "500", color: "#8E8E93", letterSpacing: 0.3 },
 
-  title: {
-    fontSize: 34,
-    lineHeight: 41,
-    fontWeight: "700",
-    color: "#1C1C1E",
-    letterSpacing: 0.37,
-  },
+  title: { fontSize: 34, lineHeight: 41, fontWeight: "700", color: "#1C1C1E", letterSpacing: 0.37 },
   subtitle: { fontSize: 15, lineHeight: 20, color: "#8E8E93", marginTop: 4, marginBottom: 16 },
 
   domaineRow: {
@@ -221,7 +236,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: "600",
     color: "#1C1C1E",
-    marginBottom: 12,
+    marginBottom: 10,
   },
   body: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
 
@@ -249,7 +264,17 @@ const styles = StyleSheet.create({
     color: "#8E8E93",
     letterSpacing: 0.5,
     textTransform: "uppercase",
-    marginBottom: 6,
+    marginBottom: 8,
   },
   sectionValue: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
+
+  accordRow: { flexDirection: "row", alignItems: "flex-start", gap: 8, marginBottom: 4 },
+  accordDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: "#C7C7CC",
+    marginTop: 8,
+    flexShrink: 0,
+  },
 });
