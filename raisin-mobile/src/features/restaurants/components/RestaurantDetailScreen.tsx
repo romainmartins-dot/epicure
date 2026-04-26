@@ -1,6 +1,16 @@
-import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { Image } from "expo-image";
+import * as WebBrowser from "expo-web-browser";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -90,6 +100,35 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 
         {adresse.description ? <Text style={styles.description}>{adresse.description}</Text> : null}
 
+        {(restaurant?.reservation_url || restaurant?.telephone) && (
+          <View style={styles.ctaRow}>
+            {restaurant.reservation_url && (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.ctaBtn,
+                  styles.ctaBtnPrimary,
+                  pressed && styles.ctaBtnPressed,
+                ]}
+                onPress={() => WebBrowser.openBrowserAsync(restaurant.reservation_url!)}
+              >
+                <Text style={styles.ctaBtnTextPrimary}>Réserver</Text>
+              </Pressable>
+            )}
+            {restaurant.telephone && (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.ctaBtn,
+                  styles.ctaBtnSecondary,
+                  pressed && styles.ctaBtnPressed,
+                ]}
+                onPress={() => Linking.openURL(`tel:${restaurant.telephone}`)}
+              >
+                <Text style={styles.ctaBtnTextSecondary}>Appeler</Text>
+              </Pressable>
+            )}
+          </View>
+        )}
+
         {restaurant?.carte?.length ? (
           <>
             <View style={styles.separator} />
@@ -168,6 +207,19 @@ const styles = StyleSheet.create({
   title: { fontSize: 34, lineHeight: 41, fontWeight: "700", color: "#1C1C1E", letterSpacing: 0.37 },
   subtitle: { fontSize: 15, lineHeight: 20, color: "#8E8E93", marginTop: 4 },
   description: { fontSize: 15, lineHeight: 22, color: "#3C3C43", marginTop: 12 },
+
+  ctaRow: { flexDirection: "row", gap: 12, marginTop: 20 },
+  ctaBtn: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: "center",
+  },
+  ctaBtnPrimary: { backgroundColor: "#27AE60" },
+  ctaBtnSecondary: { backgroundColor: "#F2F2F7" },
+  ctaBtnPressed: { opacity: 0.75 },
+  ctaBtnTextPrimary: { fontSize: 16, fontWeight: "600", color: "#fff" },
+  ctaBtnTextSecondary: { fontSize: 16, fontWeight: "600", color: "#1C1C1E" },
 
   separator: { height: 0.5, backgroundColor: "#C6C6C8", marginVertical: 24 },
 

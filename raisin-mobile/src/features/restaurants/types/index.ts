@@ -11,4 +11,6 @@ export interface RestaurantPoc {
   id: number;
   photo_url: string | null;
   carte: CartePlat[];
+  reservation_url: string | null;
+  telephone: string | null;
 }
