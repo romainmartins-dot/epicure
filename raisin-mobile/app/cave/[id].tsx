@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -14,13 +14,12 @@ export default function CavePage() {
   return (
     <View style={styles.container}>
       <CaveDetailScreen cave={cave} loading={loading} />
-      <TouchableOpacity
+      <Pressable
         style={styles.backBtn}
         onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
-        activeOpacity={0.8}
       >
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

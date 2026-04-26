@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -13,13 +13,12 @@ export default function VinPage() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <Pressable
         style={styles.backBtn}
         onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
-        activeOpacity={0.8}
       >
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
-      </TouchableOpacity>
+      </Pressable>
       <View style={styles.content}>
         <Text style={styles.placeholder}>Détail vin à venir</Text>
         {!loading && vin ? <Text style={styles.cuvee}>{vin.cuvee}</Text> : null}
