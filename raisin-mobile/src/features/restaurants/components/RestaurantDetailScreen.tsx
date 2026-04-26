@@ -5,37 +5,29 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Adresse } from "../../adresses/types";
-import { CarteVin, CarteVinType, RestaurantPoc } from "../types";
+import { CartePlat, CarteSectionType, RestaurantPoc } from "../types";
 
 const { width } = Dimensions.get("window");
 const HERO_HEIGHT = Math.round(width * (3 / 4));
 
-const TYPE_COLORS: Record<CarteVinType, string> = {
-  blanc: "#F0A500",
-  rouge: "#C0392B",
-  rose: "#E07080",
-  petillant: "#5B9BD5",
-  doux: "#8E44AD",
+const SECTION_LABELS: Record<CarteSectionType, string> = {
+  entree: "ENTRÉES",
+  plat: "PLATS",
+  dessert: "DESSERTS",
 };
 
-function CarteVinRow({ vin }: { vin: CarteVin }) {
-  const color = TYPE_COLORS[vin.type];
-  const millesime = vin.millesime ? String(vin.millesime) : "Assemblage";
+const SECTIONS: CarteSectionType[] = ["entree", "plat", "dessert"];
+
+function PlatRow({ plat }: { plat: CartePlat }) {
   return (
-    <View style={styles.vinRow}>
-      <View style={[styles.vinDot, { backgroundColor: color }]} />
-      <View style={styles.vinInfo}>
-        <Text style={styles.vinCuvee} numberOfLines={1}>
-          {vin.cuvee}
-        </Text>
-        <Text style={styles.vinMeta} numberOfLines={1}>
-          {vin.domaine} · {vin.appellation} · {millesime}
+    <View style={styles.platRow}>
+      <View style={styles.platInfo}>
+        <Text style={styles.platNom}>{plat.nom}</Text>
+        <Text style={styles.platDescription} numberOfLines={2}>
+          {plat.description}
         </Text>
       </View>
-      <View style={styles.vinPrix}>
-        {vin.prix_verre ? <Text style={styles.vinPrixVerre}>{vin.prix_verre}€ /v</Text> : null}
-        <Text style={styles.vinPrixBouteille}>{vin.prix_bouteille}€</Text>
-      </View>
+      <Text style={styles.platPrix}>{plat.prix}€</Text>
     </View>
   );
 }
@@ -98,16 +90,24 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 
         {adresse.description ? <Text style={styles.description}>{adresse.description}</Text> : null}
 
-        {restaurant?.carte_vins?.length ? (
+        {restaurant?.carte?.length ? (
           <>
             <View style={styles.separator} />
-            <Text style={styles.sectionTitle}>Carte des vins</Text>
-            <Text style={styles.sectionSubtitle}>Sélection naturelle · vins du moment</Text>
-            <View style={styles.vinList}>
-              {restaurant.carte_vins.map((vin, i) => (
-                <CarteVinRow key={i} vin={vin} />
-              ))}
-            </View>
+            <Text style={styles.carteTitle}>Carte</Text>
+            <Text style={styles.carteSubtitle}>Cuisine de marché · saison en cours</Text>
+
+            {SECTIONS.map((section) => {
+              const plats = restaurant.carte.filter((p) => p.section === section);
+              if (!plats.length) return null;
+              return (
+                <View key={section} style={styles.section}>
+                  <Text style={styles.sectionLabel}>{SECTION_LABELS[section]}</Text>
+                  {plats.map((plat, i) => (
+                    <PlatRow key={i} plat={plat} />
+                  ))}
+                </View>
+              );
+            })}
           </>
         ) : null}
       </View>
@@ -171,23 +171,29 @@ const styles = StyleSheet.create({
 
   separator: { height: 0.5, backgroundColor: "#C6C6C8", marginVertical: 24 },
 
-  sectionTitle: { fontSize: 20, fontWeight: "700", color: "#1C1C1E", marginBottom: 2 },
-  sectionSubtitle: { fontSize: 13, color: "#8E8E93", marginBottom: 16 },
+  carteTitle: { fontSize: 20, fontWeight: "700", color: "#1C1C1E", marginBottom: 2 },
+  carteSubtitle: { fontSize: 13, color: "#8E8E93", marginBottom: 20 },
 
-  vinList: { gap: 0 },
-  vinRow: {
+  section: { marginBottom: 24 },
+  sectionLabel: {
+    fontSize: 11,
+    fontWeight: "500",
+    color: "#8E8E93",
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+    marginBottom: 12,
+  },
+
+  platRow: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     paddingVertical: 12,
     gap: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "#C6C6C8",
   },
-  vinDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
-  vinInfo: { flex: 1 },
-  vinCuvee: { fontSize: 15, fontWeight: "600", color: "#1C1C1E" },
-  vinMeta: { fontSize: 12, color: "#8E8E93", marginTop: 1 },
-  vinPrix: { alignItems: "flex-end", gap: 1 },
-  vinPrixVerre: { fontSize: 12, color: "#8E8E93" },
-  vinPrixBouteille: { fontSize: 14, fontWeight: "600", color: "#1C1C1E" },
+  platInfo: { flex: 1 },
+  platNom: { fontSize: 15, fontWeight: "600", color: "#1C1C1E", marginBottom: 3 },
+  platDescription: { fontSize: 12, color: "#8E8E93", lineHeight: 17 },
+  platPrix: { fontSize: 15, fontWeight: "600", color: "#1C1C1E", paddingTop: 1 },
 });

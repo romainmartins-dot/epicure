@@ -3,51 +3,54 @@
     {
       "id": 2103,
       "photo_url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
-      "carte_vins": [
+      "carte": [
         {
-          "cuvee": "Vent d'Ange",
-          "domaine": "Pattes Loup",
-          "appellation": "Chablis",
-          "type": "blanc",
-          "millesime": 2021,
-          "prix_verre": 9,
-          "prix_bouteille": 42
+          "nom": "Poulpe grillé, câpres, citron confit",
+          "description": "Poulpe de Méditerranée, marinade au thym, câpres de Pantelleria",
+          "prix": 18,
+          "section": "entree"
         },
         {
-          "cuvee": "Mâcon-Chaintré",
-          "domaine": "Maison Valette",
-          "appellation": "Mâcon-Chaintré",
-          "type": "blanc",
-          "millesime": null,
-          "prix_verre": 8,
-          "prix_bouteille": 38
+          "nom": "Tartare de daurade, huile de combava",
+          "description": "Daurade sauvage du jour, combava, radis et herbes fraîches",
+          "prix": 16,
+          "section": "entree"
         },
         {
-          "cuvee": "Morgon",
-          "domaine": "Marcel Lapierre",
-          "appellation": "Morgon",
-          "type": "rouge",
-          "millesime": 2022,
-          "prix_verre": 10,
-          "prix_bouteille": 46
+          "nom": "Velouté de petits pois, lard fumé",
+          "description": "Petits pois du jardin, crème légère, chips de lard maison",
+          "prix": 12,
+          "section": "entree"
         },
         {
-          "cuvee": "Fleurie",
-          "domaine": "Yvon Métras",
-          "appellation": "Fleurie",
-          "type": "rouge",
-          "millesime": 2021,
-          "prix_verre": null,
-          "prix_bouteille": 52
+          "nom": "Saint-Pierre, beurre noisette, asperges",
+          "description": "Saint-Pierre de ligne, beurre noisette aux câpres, asperges vertes",
+          "prix": 34,
+          "section": "plat"
         },
         {
-          "cuvee": "Bulles de Comptoir",
-          "domaine": "La Grange Tiphaine",
-          "appellation": "Touraine",
-          "type": "petillant",
-          "millesime": 2023,
-          "prix_verre": 8,
-          "prix_bouteille": 34
+          "nom": "Pigeonneau rôti, jus corsé, pommes grenaille",
+          "description": "Pigeonneau de Racan, cuisson basse température, jus de volaille réduit",
+          "prix": 32,
+          "section": "plat"
+        },
+        {
+          "nom": "Ris de veau, morilles, crème légère",
+          "description": "Ris de veau du Limousin, morilles fraîches, crème de morilles",
+          "prix": 36,
+          "section": "plat"
+        },
+        {
+          "nom": "Tarte fine aux fraises, crème chiboust",
+          "description": "Fraises Mara des Bois, pâte feuilletée inversée, crème chiboust vanille",
+          "prix": 12,
+          "section": "dessert"
+        },
+        {
+          "nom": "Chocolat Araguani, sorbet cacao",
+          "description": "Ganache Araguani 72%, crumble cacao, sorbet cacao intense",
+          "prix": 13,
+          "section": "dessert"
         }
       ]
     }
