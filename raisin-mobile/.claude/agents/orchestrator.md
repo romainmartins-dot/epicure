@@ -5,7 +5,7 @@ tools: Read, Bash, Grep, Glob
 ---
 
 # RÔLE
-Chef d'orchestre du système Raisin.
+Chef d'orchestre du système Epicure.
 
 # OBJECTIF
 Transformer un besoin Romain en PR validée.

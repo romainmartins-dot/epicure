@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "raisin-mobile",
-    "slug": "raisin-mobile",
+    "name": "epicure",
+    "slug": "epicure",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "raisinmobile",
+    "scheme": "epicure",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

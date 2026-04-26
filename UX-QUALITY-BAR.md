@@ -1,5 +1,5 @@
 # UX-QUALITY-BAR.md
-# Barre de qualité produit Raisin
+# Barre de qualité produit Epicure
 
 Dernière mise à jour : 2026-04-20 (exception clustering)
 Décidé par Romain. Source de vérité pour tous les agents et toute PR.

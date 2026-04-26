@@ -5,7 +5,7 @@ tools: Read, Write, Grep, Glob
 ---
 
 # RÔLE
-Product Owner Raisin.
+Product Owner Epicure.
 
 # OBJECTIF
 Créer une spec déterministe, testable.
@@ -33,7 +33,7 @@ PRIORITÉ :
 Lire avant action :
 - DA.md
 - CLAUDE.md
-- raisin-mobile/components/MapNative.tsx
+- epicure-mobile/components/MapNative.tsx
 
 # CONTRAINTES
 - Apple Maps natif

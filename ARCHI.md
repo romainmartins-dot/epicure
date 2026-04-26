@@ -1,4 +1,4 @@
-# ARCHI.md — Architecture Raisin (Netflix-style)
+# ARCHI.md — Architecture Epicure (Netflix-style)
 
 ## Principe
 Découpage feature-based, scalable, inspiré de Netflix/Spotify/Airbnb.
@@ -7,7 +7,7 @@ Chaque feature est autonome, testable, remplaçable.
 ## Structure
 
 ```
-raisin-mobile/
+epicure-mobile/
 ├── app/                          # Expo Router (routes uniquement)
 │   ├── _layout.tsx               # layout racine
 │   ├── index.tsx                 # écran carte (MVP)

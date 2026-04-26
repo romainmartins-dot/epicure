@@ -52,7 +52,7 @@ Si c'est la curation/éditorial = prioriser.
 - Architecture modulaire : `routes/`, `services/`, `db/`
 - Variables sensibles dans `.env`
 
-**Frontend** (`/raisin-mobile`)
+**Frontend** (`/epicure-mobile`)
 - React Native + Expo (web + iOS + Android)
 - TypeScript strict
 - Architecture modulaire : `components/`, `hooks/`, `utils/`, `config.ts`
