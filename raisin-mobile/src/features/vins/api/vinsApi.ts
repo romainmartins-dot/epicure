@@ -32,3 +32,11 @@ export async function getDomaineById(id: string): Promise<Domaine | null> {
   if (!res.ok) return domaine ?? null;
   return res.json();
 }
+
+export async function getDomaineByVinId(vinId: string): Promise<Domaine | null> {
+  const domaine = allDomaines.find((d) => d.vins.some((v) => v.id === vinId));
+  if (!API) return domaine ?? null;
+  const res = await fetch(`${API}/vins/${vinId}/domaine`);
+  if (!res.ok) return domaine ?? null;
+  return res.json();
+}
