@@ -30,15 +30,15 @@ export function CaveInfo({ cave }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 8 },
+  container: { paddingHorizontal: 20, paddingTop: 4, paddingBottom: 20, gap: 8 },
   badge: {
     alignSelf: "flex-start",
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 8,
+    borderRadius: 6,
   },
-  badgeTxt: { fontSize: 11, fontWeight: "700", letterSpacing: 0.8 },
-  nom: { fontSize: 26, fontWeight: "800", color: "#1A1A1A", lineHeight: 32 },
-  adresse: { fontSize: 15, color: "#777", lineHeight: 20 },
-  description: { fontSize: 15, color: "#555", lineHeight: 22, marginTop: 4 },
+  badgeTxt: { fontSize: 11, fontWeight: "600", letterSpacing: 0.5, textTransform: "uppercase" },
+  nom: { fontSize: 28, fontWeight: "700", color: "#1C1C1E", lineHeight: 34 },
+  adresse: { fontSize: 15, color: "#8E8E93", lineHeight: 20 },
+  description: { fontSize: 15, color: "#3C3C43", lineHeight: 22, marginTop: 4 },
 });
