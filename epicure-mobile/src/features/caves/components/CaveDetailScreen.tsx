@@ -1,16 +1,15 @@
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useRouter } from "expo-router";
+
+import { Ionicons } from "@expo/vector-icons";
 
 import { Domaine, Vin, useVins } from "../../vins";
 import { WINE_TYPE_COLORS } from "../../vins/data/wineTypeColors";
 import { Cave } from "../types";
 import { CaveHeader } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
-
-type Row =
-  | { kind: "header"; domaine: Domaine; key: string; isFirst: boolean }
-  | { kind: "vin"; vin: Vin; key: string };
 
 function VinRow({ vin }: { vin: Vin }) {
   const router = useRouter();
@@ -38,18 +37,36 @@ function VinRow({ vin }: { vin: Vin }) {
   );
 }
 
-function DomaineHeader({ domaine, isFirst }: { domaine: Domaine; isFirst: boolean }) {
+function DomaineSection({
+  domaine,
+  isFirst,
+  isExpanded,
+  onPress,
+}: {
+  domaine: Domaine;
+  isFirst: boolean;
+  isExpanded: boolean;
+  onPress: () => void;
+}) {
   return (
-    <View
-      style={[
-        styles.sectionHeader,
-        isFirst ? styles.sectionHeaderFirst : styles.sectionHeaderOther,
-      ]}
-    >
-      <Text style={styles.sectionNom}>{domaine.nom}</Text>
-      <Text style={styles.sectionVigneron}>
-        {domaine.vigneron} · {domaine.village}
-      </Text>
+    <View style={isFirst ? styles.domaineFirst : styles.domaineOther}>
+      <Pressable
+        style={({ pressed }) => [styles.domaineHeader, pressed && styles.domaineHeaderPressed]}
+        onPress={onPress}
+      >
+        <View style={styles.domaineHeaderLeft}>
+          <Text style={styles.sectionNom}>{domaine.nom}</Text>
+          <Text style={styles.sectionVigneron}>
+            {domaine.vigneron} · {domaine.village}
+          </Text>
+        </View>
+        <View style={styles.domaineHeaderRight}>
+          <Text style={styles.vinCount}>{domaine.vins.length} vins</Text>
+          <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={13} color="#C7C7CC" />
+        </View>
+      </Pressable>
+
+      {isExpanded && domaine.vins.map((v) => <VinRow key={v.id} vin={v} />)}
     </View>
   );
 }
@@ -61,6 +78,16 @@ interface Props {
 
 export function CaveDetailScreen({ cave, loading }: Props) {
   const { domaines, loading: vinsLoading } = useVins(cave?.id ?? 0);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const toggle = (id: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   if (loading) {
     return (
@@ -78,50 +105,41 @@ export function CaveDetailScreen({ cave, loading }: Props) {
     );
   }
 
-  const rows: Row[] = domaines.flatMap((d, i) => [
-    { kind: "header", domaine: d, key: `h-${d.id}`, isFirst: i === 0 },
-    ...d.vins.map((v) => ({ kind: "vin" as const, vin: v, key: v.id })),
-  ]);
-
   return (
-    <FlatList<Row>
-      data={rows}
-      keyExtractor={(item) => item.key}
-      renderItem={({ item }) =>
-        item.kind === "header" ? (
-          <DomaineHeader domaine={item.domaine} isFirst={item.isFirst} />
-        ) : (
-          <VinRow vin={item.vin} />
-        )
-      }
-      ListHeaderComponent={
-        <>
-          <CaveHeader id={cave.id} />
-          <View style={styles.card}>
-            <CaveInfo cave={cave} />
-            {!vinsLoading && domaines.length > 0 && (
-              <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>
-            )}
-            {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
-          </View>
-        </>
-      }
-      ListEmptyComponent={
-        !vinsLoading ? (
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      <CaveHeader id={cave.id} />
+      <View style={styles.card}>
+        <CaveInfo cave={cave} />
+
+        {!vinsLoading && domaines.length > 0 && <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>}
+        {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
+
+        {domaines.map((d, i) => (
+          <DomaineSection
+            key={d.id}
+            domaine={d}
+            isFirst={i === 0}
+            isExpanded={expanded.has(d.id)}
+            onPress={() => toggle(d.id)}
+          />
+        ))}
+
+        {!vinsLoading && domaines.length === 0 && (
           <View style={styles.empty}>
             <Text style={styles.emptyTxt}>Aucun vin renseigné</Text>
           </View>
-        ) : null
-      }
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.content}
-      style={styles.list}
-    />
+        )}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  list: { flex: 1, backgroundColor: "#E5E5EA" },
+  scroll: { flex: 1, backgroundColor: "#E5E5EA" },
   content: { paddingBottom: 80, backgroundColor: "#fff" },
 
   card: {
@@ -129,14 +147,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    paddingTop: 0,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.06,
     shadowRadius: 12,
   },
+
   centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
+
   vinsTitle: {
     fontSize: 11,
     fontWeight: "500",
@@ -147,22 +166,34 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 16,
   },
-  sectionHeader: {
+
+  domaineFirst: { marginTop: 8 },
+  domaineOther: { marginTop: 0 },
+
+  domaineHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingBottom: 12,
-    backgroundColor: "#fff",
+    paddingVertical: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: "#C6C6C8",
   },
-  sectionHeaderFirst: { paddingTop: 8 },
-  sectionHeaderOther: { paddingTop: 40 },
-  sectionNom: { fontSize: 22, fontWeight: "700", color: "#1C1C1E" },
-  sectionVigneron: { fontSize: 15, color: "#8E8E93", marginTop: 4 },
+  domaineHeaderPressed: { backgroundColor: "#F2F2F7" },
+  domaineHeaderLeft: { flex: 1, marginRight: 12 },
+  domaineHeaderRight: { flexDirection: "row", alignItems: "center", gap: 6 },
+
+  sectionNom: { fontSize: 17, fontWeight: "600", color: "#1C1C1E" },
+  sectionVigneron: { fontSize: 13, color: "#8E8E93", marginTop: 2 },
+  vinCount: { fontSize: 13, color: "#C7C7CC" },
+
   row: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 20,
     gap: 12,
-    backgroundColor: "#fff",
+    backgroundColor: "#F9F9F9",
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "#C6C6C8",
   },
@@ -173,6 +204,7 @@ const styles = StyleSheet.create({
   appellation: { fontSize: 12, color: "#8E8E93", marginTop: 1 },
   millesime: { fontSize: 13, color: "#C7C7CC" },
   chevron: { fontSize: 18, color: "#C7C7CC", lineHeight: 22 },
+
   loader: { marginTop: 24 },
   empty: {
     backgroundColor: "#F2F2F7",
