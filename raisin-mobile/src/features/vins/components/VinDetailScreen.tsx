@@ -17,11 +17,20 @@ const TYPE_COLORS: Record<string, string> = {
   doux: "#8E44AD",
 };
 
-function InfoSection({ label, value }: { label: string; value: string }) {
+function MetaCell({ label, value }: { label: string; value: string }) {
   return (
-    <View style={styles.infoSection}>
-      <Text style={styles.infoLabel}>{label}</Text>
-      <Text style={styles.infoValue}>{value}</Text>
+    <View style={styles.metaCell}>
+      <Text style={styles.metaLabel}>{label}</Text>
+      <Text style={styles.metaValue}>{value}</Text>
+    </View>
+  );
+}
+
+function SectionBlock({ label, value }: { label: string; value: string }) {
+  return (
+    <View style={styles.sectionBlock}>
+      <Text style={styles.sectionLabel}>{label}</Text>
+      <Text style={styles.sectionValue}>{value}</Text>
     </View>
   );
 }
@@ -57,8 +66,8 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
   return (
     <ScrollView
       style={styles.scroll}
-      contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={true}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
       bounces={true}
     >
       {domaine?.photo_url ? (
@@ -70,81 +79,111 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
         />
       ) : (
         <View style={[styles.hero, styles.heroPlaceholder]}>
-          <Ionicons name="wine" size={48} color="#C7C7CC" />
+          <Ionicons name="wine" size={64} color="#C7C7CC" />
         </View>
       )}
 
-      <View style={styles.body}>
-        <View style={[styles.badge, { backgroundColor: typeColor + "1F" }]}>
-          <Text style={[styles.badgeText, { color: typeColor }]}>{vin.type.toUpperCase()}</Text>
+      <View style={styles.card}>
+        {/* Badges */}
+        <View style={styles.badgeRow}>
+          <View style={[styles.badge, { backgroundColor: typeColor + "18" }]}>
+            <Text style={[styles.badgeText, { color: typeColor }]}>{vin.type.toUpperCase()}</Text>
+          </View>
+          <View style={styles.badgeAlcool}>
+            <Text style={styles.badgeAlcoolText}>{vin.alcool_pct}% vol.</Text>
+          </View>
         </View>
 
+        {/* Titre */}
         <Text style={styles.title}>{vin.cuvee}</Text>
         <Text style={styles.subtitle}>
           {vin.appellation} · {millesimeLabel}
         </Text>
 
+        {/* Domaine row */}
         {domaine && (
-          <Text style={styles.domaineLine}>
-            {domaine.nom} — {domaine.vigneron} · {domaine.village}
-          </Text>
+          <View style={styles.domaineRow}>
+            <View style={styles.domaineIcon}>
+              <Ionicons name="location" size={14} color="#8E8E93" />
+            </View>
+            <View style={styles.domaineInfo}>
+              <Text style={styles.domaineNom}>{domaine.nom}</Text>
+              <Text style={styles.domaineVigneron}>
+                {domaine.vigneron} · {domaine.village}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="#C7C7CC" />
+          </View>
         )}
 
         <View style={styles.separator} />
 
-        <Text style={styles.descriptionCourte}>{vin.description_courte}</Text>
+        {/* Description courte — pull quote */}
+        <Text style={styles.pullQuote}>{vin.description_courte}</Text>
+
+        <Text style={styles.body}>{vin.description_longue}</Text>
 
         <View style={styles.separator} />
 
-        <Text style={styles.descriptionLongue}>{vin.description_longue}</Text>
+        {/* Grille métadata 2×2 */}
+        <View style={styles.metaGrid}>
+          <MetaCell label="CÉPAGE" value={vin.cepage} />
+          <MetaCell label="MILLÉSIME" value={millesimeLabel} />
+          <MetaCell label="ÉLEVAGE" value={vin.elevage} />
+          <MetaCell label="TERROIR" value={vin.terroir} />
+        </View>
 
         <View style={styles.separator} />
 
-        <InfoSection label="CÉPAGE" value={vin.cepage} />
-        <InfoSection label="TERROIR" value={vin.terroir} />
-        <InfoSection label="ÉLEVAGE" value={vin.elevage} />
-        <InfoSection label="ACCORDS" value={vin.accords_mets.join(", ")} />
-        <InfoSection
+        {/* Sections éditoriales */}
+        <SectionBlock label="EN BOUCHE" value={vin.description_longue} />
+        <SectionBlock label="ACCORDS" value={vin.accords_mets.join(" · ")} />
+        <SectionBlock
           label="SERVICE"
-          value={`${vin.service_temperature_c} · Garde ${vin.potentiel_garde}`}
+          value={`Servir entre ${vin.service_temperature_c} — Garde ${vin.potentiel_garde}`}
         />
-        {vin.so2 ? <InfoSection label="SO₂" value={vin.so2} /> : null}
+        {vin.so2 ? <SectionBlock label="SO₂ TOTAL" value={vin.so2} /> : null}
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#fff" },
-  content: { paddingBottom: 48 },
+  scroll: { flex: 1, backgroundColor: "#F2F2F7" },
+  scrollContent: { paddingBottom: 48 },
   centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
-  errorTxt: { fontSize: 15, color: "#777" },
+  errorTxt: { fontSize: 15, color: "#8E8E93" },
 
-  hero: {
-    width,
-    height: HERO_HEIGHT,
-  },
+  hero: { width, height: HERO_HEIGHT },
   heroPlaceholder: {
-    backgroundColor: "#F2F2F7",
+    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
   },
 
-  body: { paddingHorizontal: 20, paddingTop: 20 },
+  card: {
+    marginTop: -24,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 20,
+    paddingTop: 28,
+  },
 
+  badgeRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 },
   badge: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 4,
-    marginBottom: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
   },
-  badgeText: {
-    fontSize: 11,
-    fontWeight: "500",
-    letterSpacing: 0.5,
-    textTransform: "uppercase",
+  badgeText: { fontSize: 11, fontWeight: "600", letterSpacing: 0.5, textTransform: "uppercase" },
+  badgeAlcool: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    backgroundColor: "#F2F2F7",
   },
+  badgeAlcoolText: { fontSize: 11, fontWeight: "500", color: "#8E8E93", letterSpacing: 0.3 },
 
   title: {
     fontSize: 34,
@@ -153,53 +192,64 @@ const styles = StyleSheet.create({
     color: "#1C1C1E",
     letterSpacing: 0.37,
   },
-  subtitle: {
-    fontSize: 15,
-    lineHeight: 20,
-    color: "#8E8E93",
-    marginTop: 4,
-  },
-  domaineLine: {
-    fontSize: 16,
-    lineHeight: 21,
-    color: "#3C3C43",
-    marginTop: 8,
-  },
+  subtitle: { fontSize: 15, lineHeight: 20, color: "#8E8E93", marginTop: 4, marginBottom: 16 },
 
-  separator: {
-    height: 0.5,
-    backgroundColor: "#C6C6C8",
-    marginLeft: 0,
-    marginVertical: 20,
+  domaineRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F2F2F7",
+    borderRadius: 12,
+    padding: 12,
+    gap: 10,
   },
+  domaineIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#E5E5EA",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  domaineInfo: { flex: 1 },
+  domaineNom: { fontSize: 15, fontWeight: "600", color: "#1C1C1E" },
+  domaineVigneron: { fontSize: 13, color: "#8E8E93", marginTop: 1 },
 
-  descriptionCourte: {
+  separator: { height: 0.5, backgroundColor: "#C6C6C8", marginVertical: 24 },
+
+  pullQuote: {
     fontSize: 17,
-    lineHeight: 22,
+    lineHeight: 24,
     fontWeight: "600",
     color: "#1C1C1E",
+    marginBottom: 12,
   },
-  descriptionLongue: {
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: "400",
-    color: "#1C1C1E",
-  },
+  body: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
 
-  infoSection: { marginBottom: 16 },
-  infoLabel: {
+  metaGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
+  metaCell: {
+    width: (width - 40 - 12) / 2,
+    backgroundColor: "#F2F2F7",
+    borderRadius: 12,
+    padding: 14,
+  },
+  metaLabel: {
     fontSize: 11,
-    lineHeight: 13,
     fontWeight: "500",
     color: "#8E8E93",
     letterSpacing: 0.5,
     textTransform: "uppercase",
-    marginBottom: 4,
+    marginBottom: 6,
   },
-  infoValue: {
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: "400",
-    color: "#1C1C1E",
+  metaValue: { fontSize: 15, fontWeight: "500", color: "#1C1C1E", lineHeight: 20 },
+
+  sectionBlock: { marginBottom: 20 },
+  sectionLabel: {
+    fontSize: 11,
+    fontWeight: "500",
+    color: "#8E8E93",
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+    marginBottom: 6,
   },
+  sectionValue: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
 });
