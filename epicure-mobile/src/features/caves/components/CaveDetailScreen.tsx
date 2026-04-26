@@ -56,12 +56,14 @@ function DomaineSection({
       >
         <View style={styles.domaineHeaderLeft}>
           <Text style={styles.sectionNom}>{domaine.nom}</Text>
-          <Text style={styles.sectionVigneron}>
-            {domaine.vigneron} · {domaine.village}
-          </Text>
+          {isExpanded && (
+            <Text style={styles.sectionVigneron}>
+              {domaine.vigneron} · {domaine.village}
+            </Text>
+          )}
         </View>
         <View style={styles.domaineHeaderRight}>
-          <Text style={styles.vinCount}>{domaine.vins.length} vins</Text>
+          <Text style={styles.vinCount}>{domaine.vins.length}</Text>
           <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={13} color="#C7C7CC" />
         </View>
       </Pressable>
@@ -139,7 +141,7 @@ export function CaveDetailScreen({ cave, loading }: Props) {
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#E5E5EA" },
+  scroll: { flex: 1, backgroundColor: "#fff" },
   content: { paddingBottom: 80, backgroundColor: "#fff" },
 
   card: {
@@ -147,10 +149,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
   },
 
   centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },

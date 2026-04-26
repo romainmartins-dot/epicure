@@ -46,5 +46,5 @@ const styles = StyleSheet.create({
   },
   nom: { fontSize: 28, fontWeight: "700", color: "#1C1C1E", lineHeight: 34, marginTop: 12 },
   adresse: { fontSize: 15, color: "#8E8E93", lineHeight: 20, marginTop: 6 },
-  description: { fontSize: 15, color: "#3C3C43", lineHeight: 22, marginTop: 24 },
+  description: { fontSize: 15, color: "#3C3C43", lineHeight: 24, marginTop: 24 },
 });
