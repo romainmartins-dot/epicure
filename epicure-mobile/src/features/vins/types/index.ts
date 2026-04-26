@@ -3,6 +3,7 @@ export type VinType = "blanc" | "rouge" | "rose" | "petillant" | "doux";
 export interface Vin {
   id: string;
   cuvee: string;
+  note_curateur: string | null;
   appellation: string;
   type: VinType;
   millesime: number | null;
@@ -33,5 +34,6 @@ export interface Domaine {
   histoire: string;
   site_web: string | null;
   photo_url: string | null;
+  curateur_nom: string | null;
   vins: Vin[];
 }

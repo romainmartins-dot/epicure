@@ -115,6 +115,19 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
         <Text style={styles.pullQuote}>{vin.description_courte}</Text>
         <Text style={styles.body}>{vin.description_longue}</Text>
 
+        {vin.note_curateur && domaine?.curateur_nom && (
+          <>
+            <View style={styles.separator} />
+            <View style={styles.curateurBlock}>
+              <View style={styles.curateurAccent} />
+              <View style={styles.curateurBody}>
+                <Text style={styles.curateurNom}>{domaine.curateur_nom.toUpperCase()}</Text>
+                <Text style={styles.curateurNote}>{vin.note_curateur}</Text>
+              </View>
+            </View>
+          </>
+        )}
+
         <View style={styles.separator} />
 
         {/* Grille 2×2 */}
@@ -276,5 +289,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#C7C7CC",
     marginTop: 8,
     flexShrink: 0,
+  },
+
+  curateurBlock: { flexDirection: "row", gap: 14 },
+  curateurAccent: { width: 3, borderRadius: 2, backgroundColor: "#C0392B", flexShrink: 0 },
+  curateurBody: { flex: 1 },
+  curateurNom: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#C0392B",
+    letterSpacing: 0.8,
+    marginBottom: 8,
+  },
+  curateurNote: {
+    fontSize: 15,
+    lineHeight: 22,
+    color: "#3C3C43",
+    fontStyle: "italic",
   },
 });

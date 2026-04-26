@@ -14,10 +14,12 @@
       "histoire": "Thomas Pico reprend le domaine familial en 2003 et bascule immédiatement en biodynamie. Il devient une référence mondiale du Chablis nature, reconnu par les plus grands sommeliers pour sa pureté minérale.",
       "site_web": null,
       "photo_url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "curateur_nom": "Cyril",
       "vins": [
         {
           "id": "pl-vent-ange-2020",
           "cuvee": "Vent d'Ange",
+          "note_curateur": "Le Chablis que je sers à mes clients qui découvrent le nature. Accessible mais jamais banal — il convertit à tous les coups.",
           "appellation": "Chablis",
           "type": "blanc",
           "millesime": 2020,
@@ -36,6 +38,7 @@
         {
           "id": "pl-cote-jouan-2020",
           "cuvee": "Côte de Jouan 1er Cru",
+          "note_curateur": "Mon premier cru Pico de cœur. La salinité de la finale est une leçon de terroir à elle seule. Je le garde toujours en cave pour les grandes tables.",
           "appellation": "Chablis Premier Cru",
           "type": "blanc",
           "millesime": 2020,
@@ -54,6 +57,7 @@
         {
           "id": "pl-beauregard-2021",
           "cuvee": "Beauregard 1er Cru",
+          "note_curateur": "Plus ample que les autres Pico, c'est celui que je recommande sur du veau à la crème. Le gras du Portlandien fait des merveilles avec les sauces riches.",
           "appellation": "Chablis Premier Cru",
           "type": "blanc",
           "millesime": 2021,
@@ -72,6 +76,7 @@
         {
           "id": "pl-butteaux-2020",
           "cuvee": "Butteaux 1er Cru",
+          "note_curateur": "Pour les clients curieux, pas pour les timides. L'amphore donne un registre aromatique qu'on ne trouve nulle part ailleurs en Chablis — safran, encaustique, orange amère.",
           "appellation": "Chablis Premier Cru",
           "type": "blanc",
           "millesime": 2020,
@@ -90,6 +95,7 @@
         {
           "id": "pl-vaillons-2022",
           "cuvee": "Vaillons 1er Cru",
+          "note_curateur": "Le 2022 m'a stupéfait. Dans un millésime chaud où beaucoup ont raté leur Chablis, Pico a gardé une fraîcheur remarquable. Probablement le meilleur rapport qualité-garde du domaine.",
           "appellation": "Chablis Premier Cru",
           "type": "blanc",
           "millesime": 2022,
@@ -121,10 +127,12 @@
       "histoire": "Philippe Valette est l'un des pionniers du vin nature en Bourgogne du sud. Sa pratique des assemblages inter-millésimes — inspirée de la méthode solera — lui vaut une reconnaissance internationale dans les cercles les plus pointus.",
       "site_web": null,
       "photo_url": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=80",
+      "curateur_nom": "Cyril",
       "vins": [
         {
           "id": "mv-vv-asm",
           "cuvee": "Vieilles Vignes",
+          "note_curateur": "Mon introduction Valette pour les non-initiés. L'assemblage de millésimes déroute au début, mais une fois compris, impossible de revenir aux monocépages classiques.",
           "appellation": "Mâcon-Chaintré",
           "type": "blanc",
           "millesime": null,
@@ -147,6 +155,7 @@
         {
           "id": "mv-chaintré-asm1",
           "cuvee": "Mâcon-Chaintré",
+          "note_curateur": "Le 2021 apporte une nervosité que j'adore. C'est l'assemblage le plus tendu de la gamme — idéal sur des escargots ou une tarte à l'oignon bien dorée.",
           "appellation": "Mâcon-Chaintré",
           "type": "blanc",
           "millesime": null,
@@ -169,6 +178,7 @@
         {
           "id": "mv-chaintré-asm2",
           "cuvee": "Mâcon-Chaintré",
+          "note_curateur": "La version la plus dynamique. Le 2022 et 2023 donnent un tranchant que le 2018 vient équilibrer avec élégance. C'est le Valette que je bois le plus facilement au quotidien.",
           "appellation": "Mâcon-Chaintré",
           "type": "blanc",
           "millesime": null,
@@ -187,6 +197,7 @@
         {
           "id": "mv-et-pourtant",
           "cuvee": "Et Pourtant...",
+          "note_curateur": "Ce vin m'a convaincu que le Mâconnais pouvait rivaliser avec Meursault. Moins de 800 bouteilles par an. Quand j'en reçois, elles partent en 48h — réservé à mes meilleurs clients.",
           "appellation": "Viré-Clessé",
           "type": "blanc",
           "millesime": null,
@@ -205,6 +216,7 @@
         {
           "id": "mv-noly",
           "cuvee": "Clos de Monsieur Noly",
+          "note_curateur": "Le saint-graal de ma cave. Un monopole planté en 1952, plein sud, muré de pierre. Je n'en parle qu'à ceux qui savent attendre — il faut 10 ans minimum pour qu'il commence à s'exprimer.",
           "appellation": "Pouilly-Fuissé",
           "type": "blanc",
           "millesime": null,
