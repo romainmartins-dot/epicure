@@ -178,14 +178,15 @@ const styles = StyleSheet.create({
   },
 
   domaineFirst: { marginTop: 8 },
-  domaineOther: { marginTop: 0 },
+  domaineOther: { marginTop: 40 },
 
   domaineHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingTop: 14,
+    paddingBottom: 12,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: "#C6C6C8",
   },
@@ -194,8 +195,8 @@ const styles = StyleSheet.create({
   domaineHeaderRight: { flexDirection: "row", alignItems: "center", gap: 6 },
   domaineLink: { padding: 2 },
 
-  sectionNom: { fontSize: 17, fontWeight: "600", color: "#1C1C1E" },
-  sectionVigneron: { fontSize: 13, color: "#8E8E93", marginTop: 2 },
+  sectionNom: { fontSize: 22, fontWeight: "700", color: "#1C1C1E", lineHeight: 28 },
+  sectionVigneron: { fontSize: 15, color: "#8E8E93", lineHeight: 20, marginTop: 4 },
   vinCount: { fontSize: 13, color: "#C7C7CC" },
 
   row: {
