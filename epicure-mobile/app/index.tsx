@@ -1,0 +1,110 @@
+import { useCallback, useRef, useState } from "react";
+import { ActivityIndicator, FlatList, Platform, StyleSheet, View } from "react-native";
+
+import { useRouter } from "expo-router";
+
+import Animated, { FadeIn } from "react-native-reanimated";
+
+import { AdresseCard, useAdressesList } from "../src/features/adresses";
+import { Map, useAdresses } from "../src/features/map";
+import Header from "../src/features/map/components/Header";
+import SearchBar from "../src/features/map/components/SearchBar";
+
+const isWeb = Platform.OS === "web";
+
+export default function Index() {
+  const { adresses, loading } = useAdresses();
+  const [vue, setVue] = useState<"carte" | "liste">("carte");
+  const [recherche, setRecherche] = useState("");
+  const router = useRouter();
+  const mapRef = useRef<any>(null);
+
+  const {
+    adresses: listeAdresses,
+    loading: listeLoading,
+    loadingMore,
+    loadMore,
+    hasMore,
+  } = useAdressesList(recherche || undefined);
+
+  const rechercherVille = useCallback(() => {
+    if (!mapRef.current || !recherche) return;
+    const q = recherche.toLowerCase();
+    const premier = adresses.find((a) => a.ville.toLowerCase().includes(q));
+    if (!premier) return;
+    mapRef.current.setView([parseFloat(premier.latitude), parseFloat(premier.longitude)], 14);
+  }, [adresses, recherche]);
+
+  const handleMapReady = useCallback((m: any) => {
+    mapRef.current = m;
+  }, []);
+
+  if (loading)
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#999" />
+      </View>
+    );
+
+  return (
+    <View style={styles.container}>
+      <Header vue={vue} setVue={setVue} />
+      <SearchBar recherche={recherche} setRecherche={setRecherche} onSubmit={rechercherVille} />
+
+      {vue === "carte" ? (
+        <Animated.View
+          entering={isWeb ? undefined : FadeIn.duration(300)}
+          style={{ flex: 1, position: "relative" }}
+        >
+          <Map
+            adresses={adresses}
+            selected={null}
+            onMarkerClick={(item) =>
+              router.push(
+                item.type === "restaurant" ? `/restaurant/${item.id}` : `/cave/${item.id}`,
+              )
+            }
+            onMapReady={handleMapReady}
+          />
+        </Animated.View>
+      ) : listeLoading ? (
+        <ActivityIndicator size="large" color="#C0392B" style={{ marginTop: 40 }} />
+      ) : (
+        <FlatList
+          data={listeAdresses}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+          renderItem={({ item }) => (
+            <AdresseCard
+              item={item}
+              onPress={() =>
+                router.push(
+                  item.type === "restaurant" ? `/restaurant/${item.id}` : `/cave/${item.id}`,
+                )
+              }
+            />
+          )}
+          getItemLayout={(_, index) => ({ length: 94, offset: 94 * index, index })}
+          onEndReached={hasMore ? loadMore : undefined}
+          onEndReachedThreshold={0.3}
+          removeClippedSubviews
+          ListFooterComponent={
+            loadingMore ? (
+              <ActivityIndicator color="#C0392B" style={{ marginVertical: 16 }} />
+            ) : null
+          }
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#F2F2F7" },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+});

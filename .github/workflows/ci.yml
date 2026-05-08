@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: raisin-mobile
+        working-directory: epicure-mobile
 
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: raisin-mobile/package-lock.json
+          cache-dependency-path: epicure-mobile/package-lock.json
 
       - run: npm ci
 

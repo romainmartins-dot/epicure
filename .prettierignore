@@ -1,5 +1,6 @@
 node_modules
 raisin-mobile
+epicure-mobile
 dist
 build
 *.lock

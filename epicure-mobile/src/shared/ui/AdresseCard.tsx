@@ -7,9 +7,10 @@ import { typeCouleur, typeEmoji, typeLabel } from "../utils/formatters";
 
 interface Props {
   item: Adresse;
+  onPress?: () => void;
 }
 
-export default function AdresseCard({ item }: Props) {
+export default function AdresseCard({ item, onPress }: Props) {
   const scale = useSharedValue(1);
   const cardStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -17,6 +18,7 @@ export default function AdresseCard({ item }: Props) {
 
   return (
     <Pressable
+      onPress={onPress}
       onPressIn={() => {
         scale.value = withSpring(0.97, { damping: 15, stiffness: 400 });
       }}
