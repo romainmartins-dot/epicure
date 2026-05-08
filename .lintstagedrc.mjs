@@ -1,8 +1,9 @@
 import path from "path";
 
 // Files relative to each workspace root, so prettier picks up the right config + plugins
+// Paths are double-quoted to prevent the shell from interpreting special chars like () in route groups
 const toMobileRelative = (files) =>
-  files.map((f) => path.relative("/Users/romain/epicure/epicure-mobile", f));
+  files.map((f) => `"${path.relative("/Users/romain/epicure/epicure-mobile", f)}"`);
 
 export default {
   // API (root workspace) — JS + JSON outside epicure-mobile
