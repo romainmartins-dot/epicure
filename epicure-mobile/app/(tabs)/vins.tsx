@@ -1,5 +1,5 @@
-import { VinsSearchScreen } from "../../src/features/vins";
+import { RegionsScreen } from "../../src/features/regions";
 
 export default function VinsTab() {
-  return <VinsSearchScreen />;
+  return <RegionsScreen />;
 }
