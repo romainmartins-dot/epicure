@@ -19,13 +19,19 @@ interface Props {
   curateurId: string;
 }
 
-function InitialesHero({ nom }: { nom: string }) {
-  const initiales = nom
+function computeInitiales(nom: string): string {
+  return nom
     .split(" ")
+    .map((w) => w.replace(/^L[''']/i, ""))
+    .filter((w) => w.length > 0)
     .map((w) => w[0])
     .join("")
     .toUpperCase()
     .slice(0, 2);
+}
+
+function InitialesHero({ nom }: { nom: string }) {
+  const initiales = computeInitiales(nom);
 
   return (
     <View style={styles.initialesHero}>
@@ -68,8 +74,16 @@ export function CurateurProfileScreen({ curateurId }: Props) {
 
       <View style={styles.identite}>
         <Text style={styles.nom}>{curateur.nom}</Text>
-        <Text style={styles.titre}>{curateur.titre}</Text>
-        <Text style={styles.localisation}>{curateur.ville}</Text>
+        {curateur.cave_id == null ? (
+          <Text style={styles.titre}>
+            {curateur.titre} · {curateur.ville}
+          </Text>
+        ) : (
+          <>
+            <Text style={styles.titre}>{curateur.titre}</Text>
+            <Text style={styles.localisation}>{curateur.ville}</Text>
+          </>
+        )}
       </View>
 
       <View style={[styles.separator, { backgroundColor: separatorColor }]} />

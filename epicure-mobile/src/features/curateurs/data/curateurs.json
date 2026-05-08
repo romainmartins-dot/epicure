@@ -2,6 +2,17 @@
   "_note_ia": "Bio et citation rédigées comme proposition à valider par Cyril Duparcq. À remplacer par sa version validée dès accord.",
   "curateurs": [
     {
+      "id": "equipe-epicure",
+      "nom": "L'équipe Epicure",
+      "titre": "Fondateur",
+      "cave_id": null,
+      "ville": "Lille",
+      "bio_courte": "L'équipe éditoriale d'Epicure sélectionne les domaines qui font le vin nature en France. Sélection lente, contact direct, pas de raccourci.",
+      "citation_phare": "Une cartographie humaine du vin vivant, signée par celles et ceux qui le boivent vraiment.",
+      "photo_url": null,
+      "domaines_recommandes": []
+    },
+    {
       "id": "cyril-duparcq",
       "nom": "Cyril Duparcq",
       "titre": "Caviste",
