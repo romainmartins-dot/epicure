@@ -16,6 +16,12 @@ const pocDomaines = [
 ];
 const pocCaveDomains = pocData.cave_domains as Record<string, string[]>;
 
+// Retourne uniquement les domaines des fichiers caves/*.json (sources officielles V2).
+// Ne pas utiliser vins-poc.json ici — c'est un dataset legacy à supprimer (TODO).
+export function getCavesDomaines(): Domaine[] {
+  return caves.flatMap((c) => c.domaines);
+}
+
 export function getDomainesByCaveId(caveId: number): Domaine[] {
   const cave = caves.find((c) => c.cave_id === caveId);
   if (cave) return cave.domaines;

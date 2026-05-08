@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { getAllDomaines } from "../data";
+import { getCavesDomaines } from "../data";
 import { Vin } from "../types";
 
 export interface VinFlat extends Vin {
@@ -31,7 +31,7 @@ export interface VinSection {
 
 export function useAllVins() {
   const sections = useMemo<VinSection[]>(() => {
-    const domaines = getAllDomaines();
+    const domaines = getCavesDomaines();
     const vins: VinFlat[] = domaines.flatMap((d) =>
       d.vins.map((v) => ({ ...v, domaine_nom: d.nom })),
     );
