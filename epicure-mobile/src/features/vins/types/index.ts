@@ -10,6 +10,7 @@ export type VinNiveau =
 
 export interface Vin {
   id: string;
+  domaine_id?: string;
   cuvee: string;
   note_curateur?: string | null;
   appellation: string;
