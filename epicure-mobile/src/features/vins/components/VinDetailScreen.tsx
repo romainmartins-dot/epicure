@@ -155,7 +155,7 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
         {/* Accords — une ligne par accord */}
         <View style={styles.sectionBlock}>
           <Text style={styles.sectionLabel}>ACCORDS</Text>
-          {vin.accords_mets.map((accord, i) => (
+          {(vin.accords_mets ?? []).map((accord, i) => (
             <View key={i} style={styles.accordRow}>
               <View style={styles.accordDot} />
               <Text style={styles.sectionValue}>{accord}</Text>
