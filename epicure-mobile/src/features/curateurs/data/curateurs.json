@@ -1,0 +1,29 @@
+{
+  "_note_ia": "Bio et citation rédigées comme proposition à valider par Cyril Duparcq. À remplacer par sa version validée dès accord.",
+  "curateurs": [
+    {
+      "id": "cyril-duparcq",
+      "nom": "Cyril Duparcq",
+      "titre": "Caviste",
+      "cave_id": 2061,
+      "ville": "Lille",
+      "bio_courte": "Cyril Duparcq a ouvert Biovino en 2010 avec sa femme Ji-yun avec une obsession : ne référencer que des vins bio, biodynamiques ou nature. Quinze ans plus tard, sa cave de la Place Sébastopol est devenue une référence du vin nature à Lille. Sélection humaine, contact direct vigneron, refus catégorique des intermédiaires.",
+      "citation_phare": "Une seule règle : aucune bouteille qui ne soit bio, biodynamique ou nature.",
+      "photo_url": null,
+      "domaines_recommandes": [
+        "pattes-loup",
+        "maison-valette",
+        "domaine-de-la-louvetrie",
+        "les-cailloux-du-paradis",
+        "domaine-berlioz",
+        "maison-bonnard",
+        "domaine-des-rouges-queues",
+        "yann-bertrand",
+        "matthieu-dumarcher",
+        "santa-duc",
+        "pierre-andre",
+        "cosse-et-maisonneuve"
+      ]
+    }
+  ]
+}
