@@ -14,6 +14,7 @@ export default function RootLayout() {
           <Stack.Screen name="restaurant/[id]" options={{ headerShown: false }} />
           <Stack.Screen name="vin/[id]" options={{ headerShown: false }} />
           <Stack.Screen name="domaine/[id]" options={{ headerShown: false }} />
+          <Stack.Screen name="region/[id]" options={{ headerShown: false }} />
           <Stack.Screen
             name="curateur/[id]"
             options={{ headerShown: false, presentation: "card" }}
