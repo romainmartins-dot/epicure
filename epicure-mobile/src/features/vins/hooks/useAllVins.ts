@@ -5,6 +5,7 @@ import { Vin } from "../types";
 
 export interface VinFlat extends Vin {
   domaine_nom: string;
+  vigneron_nom: string | null;
 }
 
 function normaliserPourTri(cuvee: string): string {
@@ -33,7 +34,7 @@ export function useAllVins() {
   const sections = useMemo<VinSection[]>(() => {
     const domaines = getCavesDomaines();
     const vins: VinFlat[] = domaines.flatMap((d) =>
-      d.vins.map((v) => ({ ...v, domaine_nom: d.nom })),
+      d.vins.map((v) => ({ ...v, domaine_nom: d.nom, vigneron_nom: d.vigneron ?? null })),
     );
 
     const sorted = [...vins].sort((a, b) =>
