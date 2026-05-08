@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { typeCouleur, typeLabel } from "../../../shared/utils/formatters";
+import { CurateurSignature } from "../../curateurs";
 import { Cave } from "../types";
 
 interface Props {
@@ -25,6 +26,8 @@ export function CaveInfo({ cave }: Props) {
       </Text>
 
       {cave.description ? <Text style={styles.description}>{cave.description}</Text> : null}
+
+      <CurateurSignature caveId={cave.id} caveNom={cave.nom} />
     </View>
   );
 }
