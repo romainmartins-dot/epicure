@@ -1,5 +1,5 @@
-import { VinsGlossaireScreen } from "../../src/features/vins/components/VinsGlossaireScreen";
+import { VinsSearchScreen } from "../../src/features/vins";
 
 export default function VinsTab() {
-  return <VinsGlossaireScreen />;
+  return <VinsSearchScreen />;
 }
