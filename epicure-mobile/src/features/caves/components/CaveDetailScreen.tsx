@@ -1,87 +1,37 @@
-import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Domaine, Vin, useVins } from "../../vins";
-import { WINE_TYPE_COLORS } from "../../vins/data/wineTypeColors";
+import { Domaine, useVins } from "../../vins";
 import { Cave } from "../types";
 import { CaveHeader } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
 
-function VinRow({ vin }: { vin: Vin }) {
+function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) {
   const router = useRouter();
-  const millesimeLabel = vin.millesime
-    ? String(vin.millesime)
-    : (vin.millesimes_assemblage?.join(" · ") ?? "—");
+  const subtitle = [domaine.vigneron, domaine.village].filter(Boolean).join(" · ");
 
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-      onPress={() => router.push(`/vin/${vin.id}`)}
+      onPress={() => router.push(`/domaine/${domaine.id}`)}
     >
-      <View style={[styles.dot, { backgroundColor: WINE_TYPE_COLORS[vin.type] ?? "#C7C7CC" }]} />
-      <View style={styles.rowInfo}>
-        <Text style={styles.cuvee} numberOfLines={1}>
-          {vin.cuvee}
+      <View style={styles.rowLeft}>
+        <Text style={styles.rowNom} numberOfLines={1}>
+          {domaine.nom}
         </Text>
-        <Text style={styles.appellation} numberOfLines={1}>
-          {vin.appellation}
-        </Text>
+        {subtitle ? (
+          <Text style={styles.rowSub} numberOfLines={1}>
+            {subtitle}
+          </Text>
+        ) : null}
       </View>
-      <Text style={styles.millesime}>{millesimeLabel}</Text>
-      <Text style={styles.chevron}>›</Text>
+      <Text style={styles.rowCount}>{domaine.vins.length}</Text>
+      <Ionicons name="chevron-forward" size={12} color="#C7C7CC" />
+      {!isLast && <View style={styles.separator} />}
     </Pressable>
-  );
-}
-
-function DomaineSection({
-  domaine,
-  isFirst,
-  isExpanded,
-  onPress,
-}: {
-  domaine: Domaine;
-  isFirst: boolean;
-  isExpanded: boolean;
-  onPress: () => void;
-}) {
-  const router = useRouter();
-
-  return (
-    <View style={isFirst ? styles.domaineFirst : styles.domaineOther}>
-      <Pressable
-        style={({ pressed }) => [styles.domaineHeader, pressed && styles.domaineHeaderPressed]}
-        onPress={onPress}
-      >
-        <View style={styles.domaineHeaderLeft}>
-          <Text style={styles.sectionNom}>{domaine.nom}</Text>
-          {isExpanded && (
-            <Text style={styles.sectionVigneron}>
-              {domaine.vigneron} · {domaine.village}
-            </Text>
-          )}
-        </View>
-        <View style={styles.domaineHeaderRight}>
-          <Pressable
-            style={({ pressed }) => [styles.domaineLink, pressed && { opacity: 0.5 }]}
-            onPress={(e) => {
-              e.stopPropagation();
-              router.push(`/domaine/${domaine.id}`);
-            }}
-            hitSlop={8}
-          >
-            <Ionicons name="arrow-forward-circle-outline" size={20} color="#C0392B" />
-          </Pressable>
-          <Text style={styles.vinCount}>{domaine.vins.length}</Text>
-          <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={13} color="#C7C7CC" />
-        </View>
-      </Pressable>
-
-      {isExpanded && domaine.vins.map((v) => <VinRow key={v.id} vin={v} />)}
-    </View>
   );
 }
 
@@ -92,16 +42,6 @@ interface Props {
 
 export function CaveDetailScreen({ cave, loading }: Props) {
   const { domaines, loading: vinsLoading } = useVins(cave?.id ?? 0);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
-
-  const toggle = (id: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
 
   if (loading) {
     return (
@@ -133,13 +73,7 @@ export function CaveDetailScreen({ cave, loading }: Props) {
         {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
 
         {domaines.map((d, i) => (
-          <DomaineSection
-            key={d.id}
-            domaine={d}
-            isFirst={i === 0}
-            isExpanded={expanded.has(d.id)}
-            onPress={() => toggle(d.id)}
-          />
+          <DomaineRow key={d.id} domaine={d} isLast={i === domaines.length - 1} />
         ))}
 
         {!vinsLoading && domaines.length === 0 && (
@@ -174,48 +108,29 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     paddingHorizontal: 20,
     paddingTop: 40,
-    paddingBottom: 16,
-  },
-
-  domaineFirst: { marginTop: 8 },
-  domaineOther: { marginTop: 40 },
-
-  domaineHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 14,
     paddingBottom: 12,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "#C6C6C8",
   },
-  domaineHeaderPressed: { backgroundColor: "#F2F2F7" },
-  domaineHeaderLeft: { flex: 1, marginRight: 12 },
-  domaineHeaderRight: { flexDirection: "row", alignItems: "center", gap: 6 },
-  domaineLink: { padding: 2 },
-
-  sectionNom: { fontSize: 22, fontWeight: "700", color: "#1C1C1E", lineHeight: 28 },
-  sectionVigneron: { fontSize: 15, color: "#8E8E93", lineHeight: 20, marginTop: 4 },
-  vinCount: { fontSize: 13, color: "#C7C7CC" },
 
   row: {
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
     paddingHorizontal: 20,
-    gap: 12,
-    backgroundColor: "#F9F9F9",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#C6C6C8",
+    backgroundColor: "#fff",
   },
   rowPressed: { backgroundColor: "#F2F2F7" },
-  dot: { width: 6, height: 6, borderRadius: 3, flexShrink: 0 },
-  rowInfo: { flex: 1 },
-  cuvee: { fontSize: 15, fontWeight: "600", color: "#1C1C1E" },
-  appellation: { fontSize: 12, color: "#8E8E93", marginTop: 1 },
-  millesime: { fontSize: 13, color: "#C7C7CC" },
-  chevron: { fontSize: 18, color: "#C7C7CC", lineHeight: 22 },
+  rowLeft: { flex: 1, marginRight: 8 },
+  rowNom: { fontSize: 17, fontWeight: "600", color: "#1C1C1E", lineHeight: 22 },
+  rowSub: { fontSize: 13, color: "#8E8E93", lineHeight: 18, marginTop: 1 },
+  rowCount: { fontSize: 15, color: "#8E8E93", marginRight: 8 },
+  separator: {
+    position: "absolute",
+    bottom: 0,
+    left: 20,
+    right: 0,
+    height: 0.5,
+    backgroundColor: "#C6C6C8",
+  },
 
   loader: { marginTop: 24 },
   empty: {
