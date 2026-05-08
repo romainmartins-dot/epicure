@@ -21,7 +21,7 @@
         {
           "id": "pl-vent-ange-2020",
           "cuvee": "Vent d'Ange",
-          "note_curateur": "Le Chablis que je sers à mes clients qui découvrent le nature. Accessible mais jamais banal — il convertit à tous les coups.",
+          "note_curateur": null,
           "appellation": "Chablis",
           "region": "Bourgogne",
           "type": "blanc",
@@ -41,7 +41,7 @@
         {
           "id": "pl-cote-jouan-2020",
           "cuvee": "Côte de Jouan 1er Cru",
-          "note_curateur": "Mon premier cru Pico de cœur. La salinité de la finale est une leçon de terroir à elle seule. Je le garde toujours en cave pour les grandes tables.",
+          "note_curateur": null,
           "appellation": "Chablis Premier Cru",
           "region": "Bourgogne",
           "type": "blanc",
@@ -61,7 +61,7 @@
         {
           "id": "pl-beauregard-2021",
           "cuvee": "Beauregard 1er Cru",
-          "note_curateur": "Plus ample que les autres Pico, c'est celui que je recommande sur du veau à la crème. Le gras du Portlandien fait des merveilles avec les sauces riches.",
+          "note_curateur": null,
           "appellation": "Chablis Premier Cru",
           "region": "Bourgogne",
           "type": "blanc",
@@ -81,7 +81,7 @@
         {
           "id": "pl-butteaux-2020",
           "cuvee": "Butteaux 1er Cru",
-          "note_curateur": "Pour les clients curieux, pas pour les timides. L'amphore donne un registre aromatique qu'on ne trouve nulle part ailleurs en Chablis — safran, encaustique, orange amère.",
+          "note_curateur": null,
           "appellation": "Chablis Premier Cru",
           "region": "Bourgogne",
           "type": "blanc",
@@ -101,7 +101,7 @@
         {
           "id": "pl-vaillons-2022",
           "cuvee": "Vaillons 1er Cru",
-          "note_curateur": "Le 2022 m'a stupéfait. Dans un millésime chaud où beaucoup ont raté leur Chablis, Pico a gardé une fraîcheur remarquable. Probablement le meilleur rapport qualité-garde du domaine.",
+          "note_curateur": null,
           "appellation": "Chablis Premier Cru",
           "region": "Bourgogne",
           "type": "blanc",
@@ -139,7 +139,7 @@
         {
           "id": "mv-vv-asm",
           "cuvee": "Vieilles Vignes",
-          "note_curateur": "Mon introduction Valette pour les non-initiés. L'assemblage de millésimes déroute au début, mais une fois compris, impossible de revenir aux monocépages classiques.",
+          "note_curateur": null,
           "appellation": "Mâcon-Chaintré",
           "region": "Bourgogne",
           "type": "blanc",
@@ -163,7 +163,7 @@
         {
           "id": "mv-chaintré-asm1",
           "cuvee": "Mâcon-Chaintré",
-          "note_curateur": "Le 2021 apporte une nervosité que j'adore. C'est l'assemblage le plus tendu de la gamme — idéal sur des escargots ou une tarte à l'oignon bien dorée.",
+          "note_curateur": null,
           "appellation": "Mâcon-Chaintré",
           "region": "Bourgogne",
           "type": "blanc",
@@ -187,7 +187,7 @@
         {
           "id": "mv-chaintré-asm2",
           "cuvee": "Mâcon-Chaintré",
-          "note_curateur": "La version la plus dynamique. Le 2022 et 2023 donnent un tranchant que le 2018 vient équilibrer avec élégance. C'est le Valette que je bois le plus facilement au quotidien.",
+          "note_curateur": null,
           "appellation": "Mâcon-Chaintré",
           "region": "Bourgogne",
           "type": "blanc",
@@ -207,7 +207,7 @@
         {
           "id": "mv-et-pourtant",
           "cuvee": "Et Pourtant...",
-          "note_curateur": "Ce vin m'a convaincu que le Mâconnais pouvait rivaliser avec Meursault. Moins de 800 bouteilles par an. Quand j'en reçois, elles partent en 48h — réservé à mes meilleurs clients.",
+          "note_curateur": null,
           "appellation": "Viré-Clessé",
           "region": "Bourgogne",
           "type": "blanc",
@@ -227,7 +227,7 @@
         {
           "id": "mv-noly",
           "cuvee": "Clos de Monsieur Noly",
-          "note_curateur": "Le saint-graal de ma cave. Un monopole planté en 1952, plein sud, muré de pierre. Je n'en parle qu'à ceux qui savent attendre — il faut 10 ans minimum pour qu'il commence à s'exprimer.",
+          "note_curateur": null,
           "appellation": "Pouilly-Fuissé",
           "region": "Bourgogne",
           "type": "blanc",
@@ -251,7 +251,7 @@
         {
           "id": "mv-pouilly-fuisse",
           "cuvee": "Pouilly-Fuissé",
-          "note_curateur": "Quand Philippe assemble un Pouilly-Fuissé, les règles de l'appellation sont déjà loin derrière lui. Ce vin m'a prouvé que le Mâconnais pouvait penser Meursault — même en prix de cave.",
+          "note_curateur": null,
           "appellation": "Pouilly-Fuissé",
           "region": "Bourgogne",
           "type": "blanc",
@@ -310,7 +310,7 @@
         {
           "id": "jl-amphibolite-2022",
           "cuvee": "Amphibolite Nature",
-          "note_curateur": "Le Muscadet qui réconcilie tout le monde. Jo travaille sur gabbro et amphibolite depuis 30 ans — ça s'entend dans le verre. Minéralité pierreuse, longueur en bouche qu'on ne soupçonne pas dans un Muscadet. Un de mes meilleurs ventes à l'apéro.",
+          "note_curateur": null,
           "appellation": "Muscadet Sèvre et Maine sur Lie",
           "region": "Loire",
           "type": "blanc",
@@ -334,7 +334,7 @@
         {
           "id": "jl-fief-breil-2020",
           "cuvee": "Le Fief du Breil",
-          "note_curateur": "La cuvée de garde de Jo. Sur le même gabbro mais élevage plus long — 36 mois sur lies. Je le conseille aux clients qui veulent voir vieillir un Muscadet sur 10 ans. C'est une expérience.",
+          "note_curateur": null,
           "appellation": "Muscadet Sèvre et Maine sur Lie",
           "region": "Loire",
           "type": "blanc",
@@ -372,7 +372,7 @@
         {
           "id": "cc-envoles-2021",
           "cuvee": "Envolées",
-          "note_curateur": "Le blanc de Claude. Sauvignon vinifié sans soufre en Sologne, dans un terroir argilo-siliceux que personne ne voulait. Le résultat est étrange et magnifique — fruité, oxydatif, vivant. Il faut le laisser respirer une heure avant.",
+          "note_curateur": null,
           "appellation": "Vin de France",
           "region": "Loire",
           "type": "blanc",
@@ -396,7 +396,7 @@
         {
           "id": "cc-racines-2021",
           "cuvee": "Racines",
-          "note_curateur": "Le rouge qui m'a ouvert les yeux sur ce que peut faire Gamay en Sologne. Claude mélange Gamay et Cot — assemblage interdit par toutes les appellations de la Loire. Résultat : un rouge frais, juteux, presque sauvage. Parfait à 16°C.",
+          "note_curateur": null,
           "appellation": "Vin de France",
           "region": "Loire",
           "type": "rouge",
@@ -438,7 +438,7 @@
         {
           "id": "berlioz-jacquere-2022",
           "cuvee": "Les Grandes Côtes",
-          "note_curateur": "Mon Jacquère de référence absolu. Sur les moraines glaciaires de Saint-Jeoire, Florian tire de ce cépage bafoué une minéralité pierreuse qu'on ne soupçonne pas. Léger, salin, d'une longueur surprenante — je le sers à l'apéro et mes clients redemandent toujours.",
+          "note_curateur": null,
           "appellation": "Vin de Savoie Jacquère",
           "region": "Savoie",
           "type": "blanc",
@@ -462,7 +462,7 @@
         {
           "id": "berlioz-altesse-2021",
           "cuvee": "Roussette de Savoie",
-          "note_curateur": "L'Altesse est le cépage noble de Savoie — mais personne ou presque ne le vinifie comme Florian. Un blanc de garde, complexe, avec une légère oxydation maîtrisée qui rappelle le Jura. Mes meilleurs clients en prennent une caisse entière.",
+          "note_curateur": null,
           "appellation": "Roussette de Savoie",
           "region": "Savoie",
           "type": "blanc",
@@ -482,7 +482,7 @@
         {
           "id": "berlioz-mondeuse-2021",
           "cuvee": "Mondeuse",
-          "note_curateur": "La Mondeuse est le grand cépage rouge oublié des Alpes. Florian la vinifie sans soufre sur granit — un rouge sombre, poivré, avec une structure tannique qui tient la route. Je le glisse dans toutes mes dégustations à l'aveugle, personne ne trouve la Savoie.",
+          "note_curateur": null,
           "appellation": "Vin de Savoie Mondeuse",
           "region": "Savoie",
           "type": "rouge",
@@ -502,7 +502,7 @@
         {
           "id": "berlioz-petnat-2023",
           "cuvee": "Bulles de Savoie",
-          "note_curateur": "Le pét-nat alpin de Florian — Jacquère en méthode ancestrale, 7% d'alcool, bulle légère et fraîche comme un torrent de montagne. Je l'ouvre l'été sur ma terrasse. Impossible de s'arrêter.",
+          "note_curateur": null,
           "appellation": "Vin de France Pétillant Naturel",
           "region": "Savoie",
           "type": "petillant",
@@ -540,7 +540,7 @@
         {
           "id": "maison-bonnard-la-thomasse",
           "cuvee": "La Thomasse",
-          "note_curateur": "Le Pinot Noir de Bugey est un secret bien gardé. Sur les éboulis calcaires de Montagnieu, Roland tire une légèreté et une transparence qu'on ne soupçonne pas à cette latitude alpine. Un vin que je sors quand on me demande une alternative fraîche à la Bourgogne.",
+          "note_curateur": null,
           "appellation": "Bugey",
           "region": "Bugey",
           "type": "rouge",
@@ -606,7 +606,7 @@
         {
           "id": "domaine-des-rouges-queues-maranges-2022",
           "cuvee": "Maranges",
-          "note_curateur": "Les Vantey font un Maranges qu'on n'attendait pas ici — propre, précis, avec ce fruit de cerise noire qui claque. Biodynamie, labour au cheval, grappe entière : toute la démarche se sent dans le verre. Un des meilleurs rapports qualité-terroir de la Côte de Beaune.",
+          "note_curateur": null,
           "appellation": "Maranges",
           "region": "Bourgogne",
           "type": "rouge",
@@ -658,7 +658,7 @@
         {
           "id": "yann-bertrand-cuvee-du-chaos-2023",
           "cuvee": "Cuvée du Chaos",
-          "note_curateur": "La cuvée de Yann qui fait le plus parler. Sur les sables granitiques du Grand Pré, le Gamay donne quelque chose de floral et d'électrique qu'on ne trouve nulle part ailleurs à Fleurie. Je la sors quand un client me dit que le Beaujolais c'est pour les pique-niques — le débat est clos en deux gorgées.",
+          "note_curateur": null,
           "appellation": "Fleurie",
           "region": "Beaujolais",
           "type": "rouge",
@@ -710,7 +710,7 @@
         {
           "id": "matthieu-dumarcher-reserve-2023",
           "cuvee": "Réserve",
-          "note_curateur": "Matthieu est l'un des vignerons les plus discrets du Rhône — et l'un des plus fiables. Sa Réserve, c'est l'assemblage de ses meilleures barriques de Grenache et Syrah. Dense, solaire, mais avec une fraîcheur de Drôme qui allège tout. Je la compare souvent à un Gramenon jeune.",
+          "note_curateur": null,
           "appellation": "Vin de France",
           "region": "Drôme",
           "type": "rouge",
@@ -762,7 +762,7 @@
         {
           "id": "santa-duc-clos-derriere-vieille-2021",
           "cuvee": "Clos Derrière Vieille",
-          "note_curateur": "Le Gigondas de Benjamin Gras m'a réconcilié avec le Rhône puissant. Les marnes crétacées du Clos à 350m d'altitude donnent une minéralité et une fraîcheur qu'on n'attend pas dans l'appellation. Élevage en foudre Stockinger et amphore — de la noblesse, pas de la brutalité.",
+          "note_curateur": null,
           "appellation": "Gigondas",
           "region": "Vallée du Rhône",
           "type": "rouge",
@@ -814,7 +814,7 @@
         {
           "id": "pierre-andre-chateauneuf-du-pape-2020",
           "cuvee": "Châteauneuf-du-Pape",
-          "note_curateur": "Jacqueline André vinifie en biodynamie depuis 1992 — avant que ça soit une mode. Ce Châteauneuf 2020 est impressionnant de maîtrise sur un millésime solaire : la complexité des vieilles vignes, la fraîcheur que seule la biodynamie semble préserver dans ce contexte. Un vin qui demande du temps mais qui le rend au centuple.",
+          "note_curateur": null,
           "appellation": "Châteauneuf-du-Pape",
           "region": "Vallée du Rhône",
           "type": "rouge",
@@ -866,7 +866,7 @@
         {
           "id": "cosse-et-maisonneuve-les-laquets-2020",
           "cuvee": "Les Laquets",
-          "note_curateur": "Le Cahors de Matthieu Cosse m'a réconcilié avec l'appellation. Les Laquets, c'est le Malbec comme on ne l'imaginait pas — profond, graphite, long, sans la rusticité qui colle au cru. Un vin de garde sérieux qui mérite autant d'attention qu'un Saint-Émilion de premier rang.",
+          "note_curateur": null,
           "appellation": "Cahors",
           "region": "Sud-Ouest",
           "type": "rouge",
