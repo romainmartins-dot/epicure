@@ -2,7 +2,7 @@ export interface Curateur {
   id: string;
   nom: string;
   titre: string;
-  cave_id: number;
+  cave_id: number | null;
   ville: string;
   bio_courte: string | null;
   citation_phare: string | null;
