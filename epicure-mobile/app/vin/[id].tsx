@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { FavoriButton } from "../../src/features/favoris";
 import { VinDetailScreen, useVinDetail } from "../../src/features/vins";
 
 export default function VinPage() {
@@ -20,6 +21,7 @@ export default function VinPage() {
       >
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
       </Pressable>
+      {id && <FavoriButton vinId={id} top={56} />}
     </View>
   );
 }
