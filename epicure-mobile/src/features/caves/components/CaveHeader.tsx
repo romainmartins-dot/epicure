@@ -7,9 +7,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePhoto } from "../../../shared/hooks/usePhoto";
 
 const { width } = Dimensions.get("window");
-const PHOTO_HEIGHT = Math.max(Math.round(width * (9 / 16)), 280);
-// Bands from transparent → white, simulates a bottom-edge fade (no lib required)
-const FADE_BANDS = [0, 0.08, 0.2, 0.4, 0.65, 0.85, 1] as const;
+export const PHOTO_HEIGHT = Math.max(Math.round(width * (9 / 16)), 320);
+
+const FADE_BANDS = [0, 0.03, 0.08, 0.16, 0.28, 0.44, 0.62, 0.8, 0.94, 1] as const;
 
 interface Props {
   id: number;
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 24,
+    height: 60,
     flexDirection: "column",
   },
   fadeBand: { flex: 1 },

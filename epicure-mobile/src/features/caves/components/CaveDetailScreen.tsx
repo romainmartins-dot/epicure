@@ -1,12 +1,15 @@
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
+import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
+
+import Animated from "react-native-reanimated";
 
 import { Ionicons } from "@expo/vector-icons";
 
 import { Domaine, useVins } from "../../vins";
 import { Cave } from "../types";
-import { CaveHeader } from "./CaveHeader";
+import { PHOTO_HEIGHT } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
 
 function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) {
@@ -16,6 +19,9 @@ function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) 
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+      onPressIn={() => {
+        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      }}
       onPress={() => router.push(`/domaine/${domaine.id}`)}
     >
       <View style={styles.rowLeft}>
@@ -36,36 +42,22 @@ function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) 
 }
 
 interface Props {
-  cave: Cave | null;
-  loading: boolean;
+  cave: Cave;
+  scrollHandler: React.ComponentProps<typeof Animated.ScrollView>["onScroll"];
 }
 
-export function CaveDetailScreen({ cave, loading }: Props) {
-  const { domaines, loading: vinsLoading } = useVins(cave?.id ?? 0);
-
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#C0392B" />
-      </View>
-    );
-  }
-
-  if (!cave) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorTxt}>Adresse introuvable</Text>
-      </View>
-    );
-  }
+export function CaveDetailScreen({ cave, scrollHandler }: Props) {
+  const { domaines, loading: vinsLoading } = useVins(cave.id);
 
   return (
-    <ScrollView
+    <Animated.ScrollView
       style={styles.scroll}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
+      onScroll={scrollHandler}
+      scrollEventThrottle={16}
     >
-      <CaveHeader id={cave.id} />
+      <View style={styles.spacer} />
       <View style={styles.card}>
         <CaveInfo cave={cave} />
 
@@ -82,23 +74,16 @@ export function CaveDetailScreen({ cave, loading }: Props) {
           </View>
         )}
       </View>
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#fff" },
-  content: { paddingBottom: 80, backgroundColor: "#fff" },
+  scroll: { flex: 1, backgroundColor: "transparent" },
+  content: { paddingBottom: 80 },
+  spacer: { height: PHOTO_HEIGHT },
 
-  card: {
-    marginTop: -24,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
-
-  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
-  errorTxt: { fontSize: 15, color: "#8E8E93" },
+  card: { backgroundColor: "#fff" },
 
   vinsTitle: {
     fontSize: 11,
