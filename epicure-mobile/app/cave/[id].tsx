@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -16,9 +17,10 @@ export default function CavePage() {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
       <CaveDetailScreen cave={cave} loading={loading} />
       <Pressable
-        style={[styles.backBtn, { top: insets.top + 12 }]}
+        style={[styles.backBtn, { top: insets.top + 8 }]}
         onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
       >
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
