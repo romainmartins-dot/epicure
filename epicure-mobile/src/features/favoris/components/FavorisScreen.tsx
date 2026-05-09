@@ -14,7 +14,15 @@ import { useAllFavoriVins } from "../hooks/useAllFavoriVins";
 
 const ROW_HEIGHT = 64;
 
-function VinRow({ vin, separateur }: { vin: VinFlat; separateur: boolean }) {
+function VinRow({
+  vin,
+  separateur,
+  contextNoms,
+}: {
+  vin: VinFlat;
+  separateur: boolean;
+  contextNoms: string[];
+}) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
@@ -30,7 +38,13 @@ function VinRow({ vin, separateur }: { vin: VinFlat; separateur: boolean }) {
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/vin/${vin.id}` as Href)}
     >
-      <DomaineAvatar nom={vin.domaine_nom} photoUrl={vin.domaine_photo_url} size={44} />
+      <DomaineAvatar
+        nom={vin.domaine_nom}
+        vigneron={vin.vigneron_nom}
+        photoUrl={vin.domaine_photo_url}
+        contextDomaines={contextNoms}
+        size={44}
+      />
       <View style={styles.rowContent}>
         <Text style={[styles.cuvee, { color: nomColor }]} numberOfLines={1}>
           {vin.cuvee}
@@ -74,6 +88,8 @@ export function FavorisScreen() {
         ? "1 vin sauvegardé"
         : `${count} vins sauvegardés`;
 
+  const contextNoms = favoriteVins.map((v) => v.domaine_nom);
+
   if (loading) return <View style={[styles.container, { backgroundColor: bgColor }]} />;
 
   return (
@@ -90,7 +106,9 @@ export function FavorisScreen() {
           data={favoriteVins}
           keyExtractor={(v) => v.id}
           contentContainerStyle={{ paddingBottom: insets.bottom + 49 + 16 }}
-          renderItem={({ item, index }) => <VinRow vin={item} separateur={index < count - 1} />}
+          renderItem={({ item, index }) => (
+            <VinRow vin={item} separateur={index < count - 1} contextNoms={contextNoms} />
+          )}
         />
       )}
     </View>
@@ -144,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    gap: 12,
+    gap: 14,
   },
   rowContent: { flex: 1, justifyContent: "center" },
   cuvee: { fontSize: 17, fontWeight: "600", lineHeight: 22 },

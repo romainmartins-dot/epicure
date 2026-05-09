@@ -13,7 +13,15 @@ import { Cave } from "../types";
 import { PHOTO_HEIGHT } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
 
-function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) {
+function DomaineRow({
+  domaine,
+  isLast,
+  contextNoms,
+}: {
+  domaine: Domaine;
+  isLast: boolean;
+  contextNoms: string[];
+}) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
@@ -31,7 +39,12 @@ function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) 
       onPress={() => router.push(`/domaine/${domaine.id}`)}
     >
       <View style={styles.avatarWrapper}>
-        <DomaineAvatar nom={domaine.nom} photoUrl={domaine.photo_url} />
+        <DomaineAvatar
+          nom={domaine.nom}
+          vigneron={domaine.vigneron}
+          photoUrl={domaine.photo_url}
+          contextDomaines={contextNoms}
+        />
       </View>
       <View style={styles.rowLeft}>
         <Text style={[styles.rowNom, { color: nomColor }]} numberOfLines={1}>
@@ -77,7 +90,12 @@ export function CaveDetailScreen({ cave, scrollHandler }: Props) {
         {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
 
         {domaines.map((d, i) => (
-          <DomaineRow key={d.id} domaine={d} isLast={i === domaines.length - 1} />
+          <DomaineRow
+            key={d.id}
+            domaine={d}
+            isLast={i === domaines.length - 1}
+            contextNoms={domaines.map((x) => x.nom)}
+          />
         ))}
 
         {!vinsLoading && domaines.length === 0 && (
@@ -114,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  avatarWrapper: { marginRight: 12 },
+  avatarWrapper: { marginRight: 14 },
   rowLeft: { flex: 1, marginRight: 8 },
   rowNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   rowSub: { fontSize: 13, color: "#8E8E93", lineHeight: 18, marginTop: 1 },

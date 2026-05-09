@@ -18,7 +18,15 @@ const ROW_HEIGHT = 60;
 
 // ─── DomaineRow ──────────────────────────────────────────────────────────────
 
-function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boolean }) {
+function DomaineRow({
+  domaine,
+  separateur,
+  contextNoms,
+}: {
+  domaine: Domaine;
+  separateur: boolean;
+  contextNoms: string[];
+}) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
@@ -35,7 +43,12 @@ function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boo
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
       <View style={styles.avatarWrapper}>
-        <DomaineAvatar nom={domaine.nom} photoUrl={domaine.photo_url} />
+        <DomaineAvatar
+          nom={domaine.nom}
+          vigneron={domaine.vigneron}
+          photoUrl={domaine.photo_url}
+          contextDomaines={contextNoms}
+        />
       </View>
       <View style={styles.rowContent}>
         <Text style={[styles.domNom, { color: nomColor }]} numberOfLines={1}>
@@ -69,6 +82,8 @@ export default function RegionScreen() {
     [domaines],
   );
 
+  const contextNoms = useMemo(() => sorted.map((d) => d.nom), [sorted]);
+
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
   const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const borderColor = isDark ? "#38383A" : "#C6C6C8";
@@ -98,7 +113,11 @@ export default function RegionScreen() {
         keyExtractor={(d) => d.id}
         contentContainerStyle={{ paddingBottom: insets.bottom + 49 + 16 }}
         renderItem={({ item, index }) => (
-          <DomaineRow domaine={item} separateur={index < sorted.length - 1} />
+          <DomaineRow
+            domaine={item}
+            separateur={index < sorted.length - 1}
+            contextNoms={contextNoms}
+          />
         )}
         ListEmptyComponent={
           <View style={styles.empty}>
@@ -146,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  avatarWrapper: { marginRight: 12 },
+  avatarWrapper: { marginRight: 14 },
   rowContent: { flex: 1, justifyContent: "center", marginRight: 8 },
   domNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   domMeta: {

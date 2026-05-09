@@ -17,14 +17,14 @@ export function CaveInfo({ cave }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.badge, { backgroundColor: couleur + "14" }]}>
+      <View style={[styles.badge, { backgroundColor: couleur + "26" }]}>
         <Text style={[styles.badgeTxt, { color: couleur }]}>{label.toUpperCase()}</Text>
       </View>
 
       <Text style={[styles.nom, { color: nomColor }]}>{cave.nom}</Text>
 
       <Text style={styles.adresse}>
-        {cave.adresse ? `${cave.adresse}, ` : ""}
+        {cave.adresse ? `${cave.adresse} · ` : ""}
         {cave.ville}
       </Text>
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
     textTransform: "uppercase",
   },
-  nom: { fontSize: 28, fontWeight: "700", lineHeight: 34, marginTop: 12 },
+  nom: { fontSize: 28, fontWeight: "700", lineHeight: 34, marginTop: 14 },
   adresse: { fontSize: 15, color: "#8E8E93", lineHeight: 20, marginTop: 6 },
   description: { fontSize: 15, lineHeight: 24, marginTop: 24 },
 });

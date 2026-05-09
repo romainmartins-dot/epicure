@@ -2,15 +2,18 @@ import { StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import { Image } from "expo-image";
 
+import { getDomaineAvatarColor } from "../utils/getDomaineAvatarColor";
 import { getDomaineInitials } from "../utils/getDomaineInitials";
 
 interface Props {
   nom: string;
+  vigneron?: string | null;
   photoUrl?: string | null;
+  contextDomaines?: string[];
   size?: number;
 }
 
-export function DomaineAvatar({ nom, photoUrl, size = 36 }: Props) {
+export function DomaineAvatar({ nom, vigneron, photoUrl, contextDomaines, size = 36 }: Props) {
   const isDark = useColorScheme() === "dark";
 
   if (photoUrl) {
@@ -24,7 +27,11 @@ export function DomaineAvatar({ nom, photoUrl, size = 36 }: Props) {
     );
   }
 
-  const initiales = getDomaineInitials(nom);
+  const initiales = getDomaineInitials(nom, {
+    vigneron: vigneron ?? undefined,
+    allDomaines: contextDomaines,
+  });
+  const bgColor = getDomaineAvatarColor(nom, isDark);
   const fontSize = size <= 36 ? 13 : Math.round(size * 0.36);
 
   return (
@@ -35,7 +42,7 @@ export function DomaineAvatar({ nom, photoUrl, size = 36 }: Props) {
           width: size,
           height: size,
           borderRadius: size / 2,
-          backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7",
+          backgroundColor: bgColor,
         },
       ]}
     >

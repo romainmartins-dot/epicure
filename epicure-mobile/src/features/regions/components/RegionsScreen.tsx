@@ -148,9 +148,11 @@ interface DomaineResult {
 function DomaineResultRow({
   domaine,
   separateur,
+  contextNoms,
 }: {
   domaine: DomaineResult;
   separateur: boolean;
+  contextNoms: string[];
 }) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
@@ -168,7 +170,12 @@ function DomaineResultRow({
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
       <View style={styles.avatarWrapper}>
-        <DomaineAvatar nom={domaine.nom} photoUrl={domaine.photo_url} />
+        <DomaineAvatar
+          nom={domaine.nom}
+          vigneron={domaine.vigneron}
+          photoUrl={domaine.photo_url}
+          contextDomaines={contextNoms}
+        />
       </View>
       <View style={styles.domaineContent}>
         <Text style={[styles.domaineNom, { color: nomColor }]} numberOfLines={1}>
@@ -277,7 +284,11 @@ export function RegionsScreen() {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 49 + 16 }]}
           renderItem={({ item, index }) => (
-            <DomaineResultRow domaine={item} separateur={index < domaineResults.length - 1} />
+            <DomaineResultRow
+              domaine={item}
+              separateur={index < domaineResults.length - 1}
+              contextNoms={domaineResults.map((d) => d.nom)}
+            />
           )}
           ListEmptyComponent={
             <View style={styles.noResults}>
@@ -392,7 +403,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  avatarWrapper: { marginRight: 12 },
+  avatarWrapper: { marginRight: 14 },
   domaineContent: { flex: 1, justifyContent: "center", marginRight: 8 },
   domaineNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   domaineMeta: {
