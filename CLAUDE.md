@@ -165,6 +165,8 @@ Tu n'as PAS le droit d'écrire "MISSION TERMINÉE", "c'est OK", "validé", "ship
 2. `Read /tmp/qa_xxx.png` — lecture de l'image
 3. Comparaison EXPLICITE à la checklist, critère par critère, verdict OK/KO
 
+**Pour une non-régression : exécuter le smoke test + tests par écran de SPECS.md section 7. Joindre les screenshots. Si une case n'est pas validée : la PR n'est PAS mergeable.**
+
 Si le simulateur est shutdown → reboot AVANT de déclarer quoi que ce soit.
 Si 1 critère KO → fix et recommence. Ne jamais déclarer terminé sans les 3 étapes.
 
@@ -275,6 +277,7 @@ Règles clés résumées :
 - `ARCHI.md` : architecture technique
 - `UX-QUALITY-BAR.md` : règles UX/DA
 - `DA.md` : direction artistique Epicure (palette, typo, composants)
+- `SPECS.md` : livre blanc fonctionnalités — source de vérité QA
 - `CLAUDE.md` : ces guidelines (ce fichier)
 
 À générer pour chaque mission :
@@ -293,14 +296,14 @@ Règles clés résumées :
 Avant toute mission, Claude Code doit :
 
 1. Lire `CLAUDE.md` (ce fichier)
-2. Lire `STRATEGY.md`
+2. Lire `SPECS.md` (OBLIGATOIRE — source de vérité fonctionnelle)
 3. Lire `ARCHI.md`
 4. Lire `UX-QUALITY-BAR.md`
 5. Lire `DA.md`
 6. Vérifier l'état Git (`git status`, `git log --oneline -5`)
 7. Confirmer la branche courante
 8. Lister les PRs ouvertes (`gh pr list`)
-9. Répondre explicitement : "Guidelines lues, prêt pour mission."
+9. Répondre explicitement : "Guidelines + SPECS lus, prêt pour mission."
 
 ---
 
