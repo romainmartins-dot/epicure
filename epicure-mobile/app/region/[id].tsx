@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -34,9 +35,18 @@ function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boo
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
-      <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
-        <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
-      </View>
+      {domaine.photo_url ? (
+        <Image
+          source={domaine.photo_url}
+          style={styles.initiale}
+          contentFit="cover"
+          cachePolicy="disk"
+        />
+      ) : (
+        <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
+          <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
+        </View>
+      )}
       <View style={styles.rowContent}>
         <Text style={[styles.domNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
@@ -149,12 +159,13 @@ const styles = StyleSheet.create({
   initiale: {
     width: 36,
     height: 36,
-    borderRadius: 18,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
+    flexShrink: 0,
   },
-  initialeText: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
+  initialeText: { fontSize: 15, fontWeight: "600" },
   rowContent: { flex: 1, justifyContent: "center", marginRight: 8 },
   domNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   domMeta: {
