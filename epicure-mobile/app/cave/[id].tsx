@@ -72,9 +72,11 @@ export default function CavePage() {
     );
   }
 
+  const containerBg = isDark ? "#1C1C1E" : "#FFFFFF";
+
   return (
-    <View style={styles.container}>
-      <StatusBar style={photo ? "light" : "auto"} />
+    <View style={[styles.container, { backgroundColor: containerBg }]}>
+      <StatusBar style="light" />
 
       {/* Background photo — fixed behind scrollable content */}
       <View style={styles.photoContainer}>

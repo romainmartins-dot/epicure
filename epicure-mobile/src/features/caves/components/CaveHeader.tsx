@@ -35,7 +35,7 @@ export function CaveHeader({ id }: Props) {
         source={photo}
         style={styles.photo}
         contentFit="cover"
-        contentPosition="bottom"
+        contentPosition="top"
         cachePolicy="disk"
       />
       <View style={styles.fadeOverlay} pointerEvents="none">
