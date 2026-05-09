@@ -12,9 +12,13 @@ const MOCK_PHOTOS: Record<number, string> = {
 export async function fetchPhoto(id: number): Promise<string | null> {
   if (!API) return MOCK_PHOTOS[id] ?? null;
   if (cache.has(id)) return cache.get(id)!;
-  const res = await fetch(`${API}/adresses/${id}/photo`);
-  if (!res.ok) return MOCK_PHOTOS[id] ?? null;
-  const { photo = null } = await res.json();
-  cache.set(id, photo);
-  return photo;
+  try {
+    const res = await fetch(`${API}/adresses/${id}/photo`);
+    if (!res.ok) return MOCK_PHOTOS[id] ?? null;
+    const { photo = null } = await res.json();
+    cache.set(id, photo);
+    return photo;
+  } catch {
+    return MOCK_PHOTOS[id] ?? null;
+  }
 }

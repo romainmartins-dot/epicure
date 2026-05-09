@@ -250,6 +250,7 @@ export function RegionsScreen() {
             <Text style={[styles.sectionLabel, { color: sectionLabelColor }]}>PAR RÉGION</Text>
           </View>
           <FlatList
+            style={styles.list}
             data={REGIONS}
             keyExtractor={(r) => r.id}
             keyboardDismissMode="on-drag"
@@ -268,6 +269,7 @@ export function RegionsScreen() {
 
       {isActive && (
         <FlatList
+          style={styles.list}
           data={domaineResults}
           keyExtractor={(d) => d.id}
           keyboardDismissMode="on-drag"
@@ -291,6 +293,7 @@ export function RegionsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  list: { flex: 1 },
 
   largeTitle: {
     fontSize: 34,
