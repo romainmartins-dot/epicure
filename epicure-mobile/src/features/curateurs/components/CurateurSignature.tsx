@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   nom: {
     fontSize: 15,
     fontWeight: "600",
+    fontStyle: "italic",
     lineHeight: 20,
   },
   sousTitre: {

@@ -1,7 +1,6 @@
 import { FlatList, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -9,12 +8,21 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { DomaineAvatar } from "../../domaines/components/DomaineAvatar";
 import { VinFlat } from "../../vins/hooks/useAllVins";
 import { useAllFavoriVins } from "../hooks/useAllFavoriVins";
 
 const ROW_HEIGHT = 64;
 
-function VinRow({ vin, separateur }: { vin: VinFlat; separateur: boolean }) {
+function VinRow({
+  vin,
+  separateur,
+  contextNoms,
+}: {
+  vin: VinFlat;
+  separateur: boolean;
+  contextNoms: string[];
+}) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
@@ -30,18 +38,13 @@ function VinRow({ vin, separateur }: { vin: VinFlat; separateur: boolean }) {
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/vin/${vin.id}` as Href)}
     >
-      {vin.domaine_photo_url ? (
-        <Image
-          source={vin.domaine_photo_url}
-          style={styles.thumb}
-          contentFit="cover"
-          cachePolicy="disk"
-        />
-      ) : (
-        <View
-          style={[styles.thumbPlaceholder, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}
-        />
-      )}
+      <DomaineAvatar
+        nom={vin.domaine_nom}
+        vigneron={vin.vigneron_nom}
+        photoUrl={vin.domaine_photo_url}
+        contextDomaines={contextNoms}
+        size={44}
+      />
       <View style={styles.rowContent}>
         <Text style={[styles.cuvee, { color: nomColor }]} numberOfLines={1}>
           {vin.cuvee}
@@ -85,6 +88,8 @@ export function FavorisScreen() {
         ? "1 vin sauvegardé"
         : `${count} vins sauvegardés`;
 
+  const contextNoms = favoriteVins.map((v) => v.domaine_nom);
+
   if (loading) return <View style={[styles.container, { backgroundColor: bgColor }]} />;
 
   return (
@@ -101,7 +106,9 @@ export function FavorisScreen() {
           data={favoriteVins}
           keyExtractor={(v) => v.id}
           contentContainerStyle={{ paddingBottom: insets.bottom + 49 + 16 }}
-          renderItem={({ item, index }) => <VinRow vin={item} separateur={index < count - 1} />}
+          renderItem={({ item, index }) => (
+            <VinRow vin={item} separateur={index < count - 1} contextNoms={contextNoms} />
+          )}
         />
       )}
     </View>
@@ -155,19 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    gap: 12,
-  },
-  thumb: {
-    width: 44,
-    height: 44,
-    borderRadius: 8,
-    flexShrink: 0,
-  },
-  thumbPlaceholder: {
-    width: 44,
-    height: 44,
-    borderRadius: 8,
-    flexShrink: 0,
+    gap: 14,
   },
   rowContent: { flex: 1, justifyContent: "center" },
   cuvee: { fontSize: 17, fontWeight: "600", lineHeight: 22 },

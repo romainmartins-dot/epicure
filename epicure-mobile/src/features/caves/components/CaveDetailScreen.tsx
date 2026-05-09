@@ -1,19 +1,27 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 
 import Animated from "react-native-reanimated";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { DomaineAvatar } from "../../domaines/components/DomaineAvatar";
 import { Domaine, useVins } from "../../vins";
 import { Cave } from "../types";
 import { PHOTO_HEIGHT } from "./CaveHeader";
 import { CaveInfo } from "./CaveInfo";
 
-function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) {
+function DomaineRow({
+  domaine,
+  isLast,
+  contextNoms,
+}: {
+  domaine: Domaine;
+  isLast: boolean;
+  contextNoms: string[];
+}) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
@@ -30,26 +38,14 @@ function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) 
       }}
       onPress={() => router.push(`/domaine/${domaine.id}`)}
     >
-      {domaine.photo_url ? (
-        <Image
-          source={domaine.photo_url}
-          style={styles.thumb}
-          contentFit="cover"
-          cachePolicy="disk"
+      <View style={styles.avatarWrapper}>
+        <DomaineAvatar
+          nom={domaine.nom}
+          vigneron={domaine.vigneron}
+          photoUrl={domaine.photo_url}
+          contextDomaines={contextNoms}
         />
-      ) : (
-        <View
-          style={[
-            styles.thumb,
-            styles.thumbPlaceholder,
-            { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" },
-          ]}
-        >
-          <Text style={[styles.thumbInitiale, { color: nomColor }]}>
-            {domaine.nom.charAt(0).toUpperCase()}
-          </Text>
-        </View>
-      )}
+      </View>
       <View style={styles.rowLeft}>
         <Text style={[styles.rowNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
@@ -77,6 +73,7 @@ export function CaveDetailScreen({ cave, scrollHandler }: Props) {
   const isDark = useColorScheme() === "dark";
   const cardBg = isDark ? "#1C1C1E" : "#FFFFFF";
   const emptyBg = isDark ? "#2C2C2E" : "#F2F2F7";
+  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
 
   return (
     <Animated.ScrollView
@@ -90,11 +87,22 @@ export function CaveDetailScreen({ cave, scrollHandler }: Props) {
       <View style={[styles.card, { backgroundColor: cardBg }]}>
         <CaveInfo cave={cave} />
 
-        {!vinsLoading && domaines.length > 0 && <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>}
+        {!vinsLoading && domaines.length > 0 && (
+          <>
+            <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>
+            <View style={[styles.vinsSep, { backgroundColor: separatorColor }]} />
+            <View style={styles.vinsGap} />
+          </>
+        )}
         {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
 
         {domaines.map((d, i) => (
-          <DomaineRow key={d.id} domaine={d} isLast={i === domaines.length - 1} />
+          <DomaineRow
+            key={d.id}
+            domaine={d}
+            isLast={i === domaines.length - 1}
+            contextNoms={domaines.map((x) => x.nom)}
+          />
         ))}
 
         {!vinsLoading && domaines.length === 0 && (
@@ -121,9 +129,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
     textTransform: "uppercase",
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 12,
+    paddingTop: 32,
+    paddingBottom: 16,
   },
+  vinsSep: {
+    height: 0.5,
+    marginHorizontal: 20,
+  },
+  vinsGap: { height: 16 },
 
   row: {
     height: 60,
@@ -131,9 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  thumb: { width: 36, height: 36, borderRadius: 8, flexShrink: 0, marginRight: 12 },
-  thumbPlaceholder: { alignItems: "center", justifyContent: "center" },
-  thumbInitiale: { fontSize: 15, fontWeight: "600" },
+  avatarWrapper: { marginRight: 14 },
   rowLeft: { flex: 1, marginRight: 8 },
   rowNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   rowSub: { fontSize: 13, color: "#8E8E93", lineHeight: 18, marginTop: 1 },

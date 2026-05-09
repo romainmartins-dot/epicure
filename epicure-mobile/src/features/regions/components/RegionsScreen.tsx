@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -19,6 +18,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { DomaineAvatar } from "../../domaines/components/DomaineAvatar";
 import { useAllDomaines } from "../../domaines/hooks/useAllDomaines";
 import { REGIONS } from "../data/regions";
 import type { Region } from "../data/regions";
@@ -148,16 +148,17 @@ interface DomaineResult {
 function DomaineResultRow({
   domaine,
   separateur,
+  contextNoms,
 }: {
   domaine: DomaineResult;
   separateur: boolean;
+  contextNoms: string[];
 }) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
   const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-  const initiale = domaine.nom.charAt(0).toUpperCase();
 
   return (
     <Pressable
@@ -168,18 +169,14 @@ function DomaineResultRow({
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
-      {domaine.photo_url ? (
-        <Image
-          source={domaine.photo_url}
-          style={styles.initiale}
-          contentFit="cover"
-          cachePolicy="disk"
+      <View style={styles.avatarWrapper}>
+        <DomaineAvatar
+          nom={domaine.nom}
+          vigneron={domaine.vigneron}
+          photoUrl={domaine.photo_url}
+          contextDomaines={contextNoms}
         />
-      ) : (
-        <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
-          <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
-        </View>
-      )}
+      </View>
       <View style={styles.domaineContent}>
         <Text style={[styles.domaineNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
@@ -287,7 +284,11 @@ export function RegionsScreen() {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 49 + 16 }]}
           renderItem={({ item, index }) => (
-            <DomaineResultRow domaine={item} separateur={index < domaineResults.length - 1} />
+            <DomaineResultRow
+              domaine={item}
+              separateur={index < domaineResults.length - 1}
+              contextNoms={domaineResults.map((d) => d.nom)}
+            />
           )}
           ListEmptyComponent={
             <View style={styles.noResults}>
@@ -402,19 +403,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  initiale: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  initialeText: {
-    fontSize: 17,
-    fontWeight: "600",
-    lineHeight: 22,
-  },
+  avatarWrapper: { marginRight: 14 },
   domaineContent: { flex: 1, justifyContent: "center", marginRight: 8 },
   domaineNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   domaineMeta: {

@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { CaveDetailScreen, useCave } from "../../src/features/caves";
 import { CaveHeader, PHOTO_HEIGHT } from "../../src/features/caves/components/CaveHeader";
+import { usePhoto } from "../../src/shared/hooks/usePhoto";
 
 const NAV_BAR_HEIGHT = 44;
 const FADE_START = PHOTO_HEIGHT - 100;
@@ -27,6 +28,7 @@ export default function CavePage() {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
   const { cave, loading } = useCave(Number(id));
+  const photo = usePhoto(cave ? cave.id : null);
 
   const scrollY = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -70,9 +72,11 @@ export default function CavePage() {
     );
   }
 
+  const containerBg = isDark ? "#1C1C1E" : "#FFFFFF";
+
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
+    <View style={[styles.container, { backgroundColor: containerBg }]}>
+      <StatusBar style="light" />
 
       {/* Background photo — fixed behind scrollable content */}
       <View style={styles.photoContainer}>
