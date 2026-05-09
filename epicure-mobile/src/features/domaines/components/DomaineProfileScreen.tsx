@@ -121,34 +121,12 @@ interface Props {
   domaine: Domaine | null;
 }
 
-function DomaineMinimal() {
-  const isDark = useColorScheme() === "dark";
-  const labelColor = "#8E8E93";
-  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-
-  return (
-    <>
-      <View style={[styles.separator, { backgroundColor: separatorColor }]} />
-      <View style={styles.selectionSection}>
-        <Text style={[styles.selectionLabel, { color: labelColor }]}>
-          {"SÉLECTION DE L’ÉQUIPE EPICURE"}
-        </Text>
-        <Text style={[styles.selectionCitation, { color: isDark ? "#FFFFFF" : "#1C1C1E" }]}>
-          {
-            "Sélectionné pour la rigueur de son travail vivant et l’expression honnête de son terroir."
-          }
-        </Text>
-      </View>
-      <SignatureEquipe />
-    </>
-  );
-}
-
-function DomaineComplet({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
+function DomaineContent({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
   const isDark = useColorScheme() === "dark";
   const labelColor = "#8E8E93";
   const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
+  const hasContent = !!domaine.philosophie || vins.length > 0;
 
   return (
     <>
@@ -166,6 +144,22 @@ function DomaineComplet({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
             {vins.map((vin, i) => (
               <VinRow key={vin.id} vin={vin} separateur={i < vins.length - 1} />
             ))}
+          </View>
+        </>
+      )}
+
+      {!hasContent && (
+        <>
+          <View style={[styles.separator, { backgroundColor: separatorColor }]} />
+          <View style={styles.selectionSection}>
+            <Text style={[styles.selectionLabel, { color: labelColor }]}>
+              {"SÉLECTION DE L’ÉQUIPE EPICURE"}
+            </Text>
+            <Text style={[styles.selectionCitation, { color: titleColor }]}>
+              {
+                "Sélectionné pour la rigueur de son travail vivant et l’expression honnête de son terroir."
+              }
+            </Text>
           </View>
         </>
       )}
@@ -194,7 +188,6 @@ export function DomaineProfileScreen({ domaineId, domaine }: Props) {
 
   const sousTitre = [domaine.vigneron, domaine.village].filter(Boolean).join(" · ");
   const footnote = [domaine.appellation_principale, domaine.region].filter(Boolean).join(" · ");
-  const isComplet = domaine.statut_donnees === "complet";
   const hasPhoto = !!domaine.photo_url;
 
   return (
@@ -222,9 +215,15 @@ export function DomaineProfileScreen({ domaineId, domaine }: Props) {
           <Text style={[styles.largeTitre, { color: titleColor }]}>{domaine.nom}</Text>
           {sousTitre ? <Text style={styles.sousTitre}>{sousTitre}</Text> : null}
           {footnote ? <Text style={styles.footnote}>{footnote}</Text> : null}
+          {domaine.anciennete_bio ? (
+            <View style={styles.bioBadge}>
+              <Ionicons name="leaf-outline" size={12} color="#27AE60" />
+              <Text style={styles.bioBadgeText}>{domaine.anciennete_bio}</Text>
+            </View>
+          ) : null}
         </View>
 
-        {isComplet ? <DomaineComplet domaine={domaine} vins={vins} /> : <DomaineMinimal />}
+        <DomaineContent domaine={domaine} vins={vins} />
       </ScrollView>
     </View>
   );
@@ -319,6 +318,19 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 24,
   },
+
+  bioBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    marginTop: 12,
+    alignSelf: "flex-start",
+    backgroundColor: "#27AE6012",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  bioBadgeText: { fontSize: 12, color: "#27AE60", fontWeight: "500" },
 
   selectionSection: {
     paddingHorizontal: 20,
