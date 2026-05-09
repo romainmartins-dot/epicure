@@ -30,12 +30,14 @@ function computeInitiales(nom: string): string {
     .slice(0, 2);
 }
 
-function InitialesHero({ nom }: { nom: string }) {
+function InitialesHero({ nom, isDark }: { nom: string; isDark: boolean }) {
   const initiales = computeInitiales(nom);
 
   return (
-    <View style={styles.initialesHero}>
-      <Text style={styles.initialesTxt}>{initiales}</Text>
+    <View style={[styles.initialesHero, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
+      <Text style={[styles.initialesTxt, { color: isDark ? "#FFFFFF" : "#1C1C1E" }]}>
+        {initiales}
+      </Text>
     </View>
   );
 }
@@ -45,12 +47,16 @@ export function CurateurProfileScreen({ curateurId }: Props) {
   const router = useRouter();
   const isDark = useColorScheme() === "dark";
 
+  const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
+  const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
+  const bodyColor = isDark ? "#EBEBF5" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
   const labelColor = "#8E8E93";
+  const rowPressedBg = isDark ? "#2C2C2E" : "#F2F2F7";
 
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: bgColor }]}>
         <ActivityIndicator size="large" color="#C0392B" />
       </View>
     );
@@ -58,7 +64,7 @@ export function CurateurProfileScreen({ curateurId }: Props) {
 
   if (!curateur) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: bgColor }]}>
         <Text style={styles.errorTxt}>Profil introuvable</Text>
       </View>
     );
@@ -66,14 +72,14 @@ export function CurateurProfileScreen({ curateurId }: Props) {
 
   return (
     <ScrollView
-      style={styles.scroll}
+      style={[styles.scroll, { backgroundColor: bgColor }]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <InitialesHero nom={curateur.nom} />
+      <InitialesHero nom={curateur.nom} isDark={isDark} />
 
       <View style={styles.identite}>
-        <Text style={styles.nom}>{curateur.nom}</Text>
+        <Text style={[styles.nom, { color: titleColor }]}>{curateur.nom}</Text>
         {curateur.cave_id == null ? (
           <Text style={styles.titre}>
             {curateur.titre} · {curateur.ville}
@@ -91,7 +97,7 @@ export function CurateurProfileScreen({ curateurId }: Props) {
       {curateur.bio_courte ? (
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: labelColor }]}>PORTRAIT</Text>
-          <Text style={styles.bio}>{curateur.bio_courte}</Text>
+          <Text style={[styles.bio, { color: bodyColor }]}>{curateur.bio_courte}</Text>
         </View>
       ) : null}
 
@@ -99,7 +105,7 @@ export function CurateurProfileScreen({ curateurId }: Props) {
         <>
           <View style={[styles.separator, { backgroundColor: separatorColor }]} />
           <View style={styles.citationWrapper}>
-            <Text style={styles.citation}>{curateur.citation_phare}</Text>
+            <Text style={[styles.citation, { color: titleColor }]}>{curateur.citation_phare}</Text>
           </View>
         </>
       ) : null}
@@ -114,10 +120,13 @@ export function CurateurProfileScreen({ curateurId }: Props) {
         {curateur.domaines_recommandes.map((domaineId, i) => (
           <Pressable
             key={domaineId}
-            style={({ pressed }) => [styles.domaineRow, pressed && styles.domaineRowPressed]}
+            style={({ pressed }) => [
+              styles.domaineRow,
+              { backgroundColor: pressed ? rowPressedBg : bgColor },
+            ]}
             onPress={() => router.push(`/domaine/${domaineId}` as Href)}
           >
-            <Text style={styles.domaineNom} numberOfLines={1}>
+            <Text style={[styles.domaineNom, { color: titleColor }]} numberOfLines={1}>
               {domaineId
                 .split("-")
                 .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -135,21 +144,19 @@ export function CurateurProfileScreen({ curateurId }: Props) {
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#fff" },
+  scroll: { flex: 1 },
   content: { paddingBottom: 48 },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
 
   initialesHero: {
     height: 280,
-    backgroundColor: "#F2F2F7",
     justifyContent: "center",
     alignItems: "center",
   },
   initialesTxt: {
     fontSize: 34,
     fontWeight: "700",
-    color: "#1C1C1E",
     letterSpacing: 0.37,
   },
 
@@ -161,7 +168,6 @@ const styles = StyleSheet.create({
   nom: {
     fontSize: 34,
     fontWeight: "700",
-    color: "#1C1C1E",
     lineHeight: 41,
     letterSpacing: 0.37,
   },
@@ -206,7 +212,6 @@ const styles = StyleSheet.create({
   bio: {
     fontSize: 17,
     fontWeight: "400",
-    color: "#1C1C1E",
     lineHeight: 24,
   },
 
@@ -217,7 +222,6 @@ const styles = StyleSheet.create({
   citation: {
     fontSize: 22,
     fontWeight: "600",
-    color: "#1C1C1E",
     lineHeight: 28,
     fontStyle: "italic",
   },
@@ -226,14 +230,11 @@ const styles = StyleSheet.create({
     height: 44,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
   },
-  domaineRowPressed: { backgroundColor: "#F2F2F7" },
   domaineNom: {
     flex: 1,
     fontSize: 15,
     fontWeight: "400",
-    color: "#1C1C1E",
     lineHeight: 20,
     marginRight: 8,
   },
