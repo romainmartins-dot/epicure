@@ -73,6 +73,7 @@ export function CaveDetailScreen({ cave, scrollHandler }: Props) {
   const isDark = useColorScheme() === "dark";
   const cardBg = isDark ? "#1C1C1E" : "#FFFFFF";
   const emptyBg = isDark ? "#2C2C2E" : "#F2F2F7";
+  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
 
   return (
     <Animated.ScrollView
@@ -86,7 +87,13 @@ export function CaveDetailScreen({ cave, scrollHandler }: Props) {
       <View style={[styles.card, { backgroundColor: cardBg }]}>
         <CaveInfo cave={cave} />
 
-        {!vinsLoading && domaines.length > 0 && <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>}
+        {!vinsLoading && domaines.length > 0 && (
+          <>
+            <Text style={styles.vinsTitle}>RÉFÉRENCÉS</Text>
+            <View style={[styles.vinsSep, { backgroundColor: separatorColor }]} />
+            <View style={styles.vinsGap} />
+          </>
+        )}
         {vinsLoading && <ActivityIndicator color="#C0392B" style={styles.loader} />}
 
         {domaines.map((d, i) => (
@@ -122,9 +129,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
     textTransform: "uppercase",
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 12,
+    paddingTop: 32,
+    paddingBottom: 16,
   },
+  vinsSep: {
+    height: 0.5,
+    marginHorizontal: 20,
+  },
+  vinsGap: { height: 16 },
 
   row: {
     height: 60,

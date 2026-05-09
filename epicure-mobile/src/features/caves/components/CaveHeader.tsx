@@ -31,7 +31,13 @@ export function CaveHeader({ id }: Props) {
 
   return (
     <View style={styles.wrapper}>
-      <Image source={photo} style={styles.photo} contentFit="cover" cachePolicy="disk" />
+      <Image
+        source={photo}
+        style={styles.photo}
+        contentFit="cover"
+        contentPosition="bottom"
+        cachePolicy="disk"
+      />
       <View style={styles.fadeOverlay} pointerEvents="none">
         {FADE_BANDS.map((opacity, i) => (
           <View
