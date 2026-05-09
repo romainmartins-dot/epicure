@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -141,6 +142,7 @@ interface DomaineResult {
   nom: string;
   vigneron?: string | null;
   village?: string | null;
+  photo_url?: string | null;
 }
 
 function DomaineResultRow({
@@ -166,9 +168,18 @@ function DomaineResultRow({
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
-      <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
-        <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
-      </View>
+      {domaine.photo_url ? (
+        <Image
+          source={domaine.photo_url}
+          style={styles.initiale}
+          contentFit="cover"
+          cachePolicy="disk"
+        />
+      ) : (
+        <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
+          <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
+        </View>
+      )}
       <View style={styles.domaineContent}>
         <Text style={[styles.domaineNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
