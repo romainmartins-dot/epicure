@@ -20,6 +20,7 @@ import { WINE_TYPE_COLORS } from "../../vins/data/wineTypeColors";
 import type { Vin } from "../../vins/types";
 import { useVinsByDomaine } from "../hooks/useVinsByDomaine";
 import type { Domaine } from "../types";
+import { getDomaineInitials } from "../utils/getDomaineInitials";
 
 const { width } = Dimensions.get("window");
 const HERO_HEIGHT = Math.round(width * (9 / 16));
@@ -37,14 +38,7 @@ function DomaineHero({ nom, photoUrl }: { nom: string; photoUrl?: string | null 
     );
   }
 
-  const initiales = nom
-    .split(" ")
-    .map((w) => w.replace(/^L[''']/i, "").replace(/^d[''']/i, ""))
-    .filter((w) => w.length > 0)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initiales = getDomaineInitials(nom);
 
   return (
     <View style={[styles.placeholder, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>

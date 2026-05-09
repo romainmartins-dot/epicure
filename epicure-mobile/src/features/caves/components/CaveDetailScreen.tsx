@@ -1,13 +1,13 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 
 import Animated from "react-native-reanimated";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { DomaineAvatar } from "../../domaines/components/DomaineAvatar";
 import { Domaine, useVins } from "../../vins";
 import { Cave } from "../types";
 import { PHOTO_HEIGHT } from "./CaveHeader";
@@ -30,26 +30,9 @@ function DomaineRow({ domaine, isLast }: { domaine: Domaine; isLast: boolean }) 
       }}
       onPress={() => router.push(`/domaine/${domaine.id}`)}
     >
-      {domaine.photo_url ? (
-        <Image
-          source={domaine.photo_url}
-          style={styles.thumb}
-          contentFit="cover"
-          cachePolicy="disk"
-        />
-      ) : (
-        <View
-          style={[
-            styles.thumb,
-            styles.thumbPlaceholder,
-            { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" },
-          ]}
-        >
-          <Text style={[styles.thumbInitiale, { color: nomColor }]}>
-            {domaine.nom.charAt(0).toUpperCase()}
-          </Text>
-        </View>
-      )}
+      <View style={styles.avatarWrapper}>
+        <DomaineAvatar nom={domaine.nom} photoUrl={domaine.photo_url} />
+      </View>
       <View style={styles.rowLeft}>
         <Text style={[styles.rowNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
@@ -131,9 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  thumb: { width: 36, height: 36, borderRadius: 8, flexShrink: 0, marginRight: 12 },
-  thumbPlaceholder: { alignItems: "center", justifyContent: "center" },
-  thumbInitiale: { fontSize: 15, fontWeight: "600" },
+  avatarWrapper: { marginRight: 12 },
   rowLeft: { flex: 1, marginRight: 8 },
   rowNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   rowSub: { fontSize: 13, color: "#8E8E93", lineHeight: 18, marginTop: 1 },

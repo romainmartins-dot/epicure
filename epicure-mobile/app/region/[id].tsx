@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -10,6 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Ionicons } from "@expo/vector-icons";
 
+import { DomaineAvatar } from "../../src/features/domaines/components/DomaineAvatar";
 import { useDomainesByRegion } from "../../src/features/domaines/hooks/useDomainesByRegion";
 import type { Domaine } from "../../src/features/domaines/types";
 import { REGION_NOM_BY_ID } from "../../src/features/regions/data/regions";
@@ -24,7 +24,6 @@ function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boo
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
   const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-  const initiale = domaine.nom.charAt(0).toUpperCase();
 
   return (
     <Pressable
@@ -35,18 +34,9 @@ function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boo
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
     >
-      {domaine.photo_url ? (
-        <Image
-          source={domaine.photo_url}
-          style={styles.initiale}
-          contentFit="cover"
-          cachePolicy="disk"
-        />
-      ) : (
-        <View style={[styles.initiale, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
-          <Text style={[styles.initialeText, { color: nomColor }]}>{initiale}</Text>
-        </View>
-      )}
+      <View style={styles.avatarWrapper}>
+        <DomaineAvatar nom={domaine.nom} photoUrl={domaine.photo_url} />
+      </View>
       <View style={styles.rowContent}>
         <Text style={[styles.domNom, { color: nomColor }]} numberOfLines={1}>
           {domaine.nom}
@@ -156,16 +146,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  initiale: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-    flexShrink: 0,
-  },
-  initialeText: { fontSize: 15, fontWeight: "600" },
+  avatarWrapper: { marginRight: 12 },
   rowContent: { flex: 1, justifyContent: "center", marginRight: 8 },
   domNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   domMeta: {
