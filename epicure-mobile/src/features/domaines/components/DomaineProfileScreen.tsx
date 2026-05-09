@@ -1,5 +1,14 @@
-import { Pressable, ScrollView, StyleSheet, Text, View, useColorScheme } from "react-native";
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from "react-native";
 
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -12,10 +21,22 @@ import type { Vin } from "../../vins/types";
 import { useVinsByDomaine } from "../hooks/useVinsByDomaine";
 import type { Domaine } from "../types";
 
-// ─── Placeholder initiales ────────────────────────────────────────────────────
+const { width } = Dimensions.get("window");
+const HERO_HEIGHT = Math.round(width * (9 / 16));
 
-function InitialesPlaceholder({ nom }: { nom: string }) {
+// ─── Hero visuel ─────────────────────────────────────────────────────────────
+
+function DomaineHero({ nom, photoUrl }: { nom: string; photoUrl?: string | null }) {
   const isDark = useColorScheme() === "dark";
+
+  if (photoUrl) {
+    return (
+      <View style={styles.heroWrapper}>
+        <Image source={photoUrl} style={styles.heroPhoto} contentFit="cover" cachePolicy="disk" />
+      </View>
+    );
+  }
+
   const initiales = nom
     .split(" ")
     .map((w) => w.replace(/^L[''']/i, "").replace(/^d[''']/i, ""))
@@ -174,23 +195,28 @@ export function DomaineProfileScreen({ domaineId, domaine }: Props) {
   const sousTitre = [domaine.vigneron, domaine.village].filter(Boolean).join(" · ");
   const footnote = [domaine.appellation_principale, domaine.region].filter(Boolean).join(" · ");
   const isComplet = domaine.statut_donnees === "complet";
+  const hasPhoto = !!domaine.photo_url;
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
       <Pressable
-        style={[styles.backBtn, { top: insets.top + 12 }]}
+        style={[styles.backBtn, { top: insets.top + 12 }, hasPhoto && styles.backBtnOnPhoto]}
         onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <Ionicons name="chevron-back" size={22} color={isDark ? "#FFFFFF" : "#1C1C1E"} />
+        <Ionicons
+          name="chevron-back"
+          size={22}
+          color={hasPhoto ? "#FFFFFF" : isDark ? "#FFFFFF" : "#1C1C1E"}
+        />
       </Pressable>
 
       <ScrollView
-        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 60 }]}
+        contentContainerStyle={[styles.scrollContent, !hasPhoto && { paddingTop: insets.top + 60 }]}
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
-        <InitialesPlaceholder nom={domaine.nom} />
+        <DomaineHero nom={domaine.nom} photoUrl={domaine.photo_url} />
 
         <View style={styles.identite}>
           <Text style={[styles.largeTitre, { color: titleColor }]}>{domaine.nom}</Text>
@@ -226,6 +252,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 12,
   },
+  backBtnOnPhoto: {
+    backgroundColor: "rgba(0,0,0,0.35)",
+  },
+
+  heroWrapper: { width, height: HERO_HEIGHT },
+  heroPhoto: { width, height: HERO_HEIGHT },
 
   placeholder: {
     height: 200,

@@ -1,6 +1,7 @@
 import { FlatList, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import type { Href } from "expo-router";
 
@@ -29,6 +30,18 @@ function VinRow({ vin, separateur }: { vin: VinFlat; separateur: boolean }) {
       onPressIn={() => void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       onPress={() => router.push(`/vin/${vin.id}` as Href)}
     >
+      {vin.domaine_photo_url ? (
+        <Image
+          source={vin.domaine_photo_url}
+          style={styles.thumb}
+          contentFit="cover"
+          cachePolicy="disk"
+        />
+      ) : (
+        <View
+          style={[styles.thumbPlaceholder, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}
+        />
+      )}
       <View style={styles.rowContent}>
         <Text style={[styles.cuvee, { color: nomColor }]} numberOfLines={1}>
           {vin.cuvee}
@@ -141,9 +154,22 @@ const styles = StyleSheet.create({
     height: ROW_HEIGHT,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+    gap: 12,
   },
-  rowContent: { flex: 1, marginRight: 8, justifyContent: "center" },
+  thumb: {
+    width: 44,
+    height: 44,
+    borderRadius: 8,
+    flexShrink: 0,
+  },
+  thumbPlaceholder: {
+    width: 44,
+    height: 44,
+    borderRadius: 8,
+    flexShrink: 0,
+  },
+  rowContent: { flex: 1, justifyContent: "center" },
   cuvee: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
   meta: { fontSize: 13, fontWeight: "400", color: "#8E8E93", lineHeight: 18, marginTop: 2 },
   millesime: { fontSize: 15, fontWeight: "400", color: "#8E8E93", marginRight: 6 },
@@ -151,7 +177,7 @@ const styles = StyleSheet.create({
   rowSeparator: {
     position: "absolute",
     bottom: 0,
-    left: 20,
+    left: 72,
     right: 0,
     height: 0.5,
   },
