@@ -13,10 +13,14 @@ function mockList(ville?: string, limit = PAGE, offset = 0) {
 
 export async function getAll(): Promise<Adresse[]> {
   if (!API) return mock;
-  const res = await fetch(`${API}/adresses?limit=500`);
-  if (!res.ok) return mock;
-  const json = await res.json();
-  return Array.isArray(json) ? json : json.data;
+  try {
+    const res = await fetch(`${API}/adresses?limit=500`);
+    if (!res.ok) return mock;
+    const json = await res.json();
+    return Array.isArray(json) ? json : json.data;
+  } catch {
+    return mock;
+  }
 }
 
 export async function getList(
@@ -25,10 +29,14 @@ export async function getList(
   offset = 0,
 ): Promise<{ data: Adresse[]; total: number }> {
   if (!API) return mockList(ville, limit, offset);
-  const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-  if (ville) params.set("ville", ville);
-  const res = await fetch(`${API}/adresses?${params}`);
-  if (!res.ok) return mockList(ville, limit, offset);
-  const json = await res.json();
-  return Array.isArray(json) ? { data: json, total: json.length } : json;
+  try {
+    const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+    if (ville) params.set("ville", ville);
+    const res = await fetch(`${API}/adresses?${params}`);
+    if (!res.ok) return mockList(ville, limit, offset);
+    const json = await res.json();
+    return Array.isArray(json) ? { data: json, total: json.length } : json;
+  } catch {
+    return mockList(ville, limit, offset);
+  }
 }

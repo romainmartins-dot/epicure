@@ -1,6 +1,16 @@
-import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import type { Href } from "expo-router";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -33,6 +43,7 @@ interface Props {
 }
 
 export function VinDetailScreen({ vin, domaine, loading }: Props) {
+  const router = useRouter();
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -95,18 +106,21 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 
         {/* Domaine row */}
         {domaine && (
-          <View style={styles.domaineRow}>
+          <Pressable
+            style={({ pressed }) => [styles.domaineRow, pressed && { opacity: 0.7 }]}
+            onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
+          >
             <View style={styles.domaineIcon}>
               <Ionicons name="location" size={14} color="#8E8E93" />
             </View>
             <View style={styles.domaineInfo}>
               <Text style={styles.domaineNom}>{domaine.nom}</Text>
               <Text style={styles.domaineVigneron}>
-                {domaine.vigneron} · {domaine.village}
+                {[domaine.vigneron, domaine.village].filter(Boolean).join(" · ")}
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={16} color="#C7C7CC" />
-          </View>
+          </Pressable>
         )}
 
         <View style={styles.separator} />
