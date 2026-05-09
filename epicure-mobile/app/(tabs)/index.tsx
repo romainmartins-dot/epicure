@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View, useColorScheme } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -14,6 +14,7 @@ export default function CarteTab() {
   const [recherche, setRecherche] = useState("");
   const router = useRouter();
   const mapRef = useRef<any>(null);
+  const isDark = useColorScheme() === "dark";
 
   const rechercherVille = useCallback(() => {
     if (!mapRef.current || !recherche) return;
@@ -29,7 +30,7 @@ export default function CarteTab() {
 
   if (loading)
     return (
-      <View style={styles.loaderContainer}>
+      <View style={[styles.loaderContainer, { backgroundColor: isDark ? "#1C1C1E" : "#FFFFFF" }]}>
         <ActivityIndicator size="large" color="#999" />
       </View>
     );
@@ -53,12 +54,11 @@ export default function CarteTab() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F2F2F7" },
+  container: { flex: 1, backgroundColor: "#000000" },
   loaderContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
   },
   mapContainer: { flex: 1, position: "relative" },
 });

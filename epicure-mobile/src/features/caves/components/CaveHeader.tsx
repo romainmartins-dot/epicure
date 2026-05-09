@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View, useColorScheme } from "react-native";
 
 import { Image } from "expo-image";
 
@@ -17,10 +17,13 @@ interface Props {
 
 export function CaveHeader({ id }: Props) {
   const photo = usePhoto(id);
+  const isDark = useColorScheme() === "dark";
+  const fadeBg = isDark ? "28,28,30" : "255,255,255";
+  const placeholderBg = isDark ? "#2C2C2E" : "#E5E5EA";
 
   if (!photo) {
     return (
-      <View style={styles.placeholder}>
+      <View style={[styles.placeholder, { backgroundColor: placeholderBg }]}>
         <Ionicons name="wine-outline" size={64} color="#C7C7CC" />
       </View>
     );
@@ -33,7 +36,7 @@ export function CaveHeader({ id }: Props) {
         {FADE_BANDS.map((opacity, i) => (
           <View
             key={i}
-            style={[styles.fadeBand, { backgroundColor: `rgba(255,255,255,${opacity})` }]}
+            style={[styles.fadeBand, { backgroundColor: `rgba(${fadeBg},${opacity})` }]}
           />
         ))}
       </View>
@@ -47,7 +50,6 @@ const styles = StyleSheet.create({
   placeholder: {
     width,
     height: PHOTO_HEIGHT,
-    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
   },

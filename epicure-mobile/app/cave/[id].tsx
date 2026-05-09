@@ -47,7 +47,7 @@ export default function CavePage() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar style="auto" />
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#C0392B" />
         </View>
@@ -61,7 +61,7 @@ export default function CavePage() {
   if (!cave) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <StatusBar style="dark" />
+        <StatusBar style="auto" />
         <Text style={styles.errorTxt}>Adresse introuvable</Text>
         <Pressable style={[styles.backBtn, { top: insets.top + 8 }]} onPress={goBack}>
           <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
@@ -72,7 +72,7 @@ export default function CavePage() {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
 
       {/* Background photo — fixed behind scrollable content */}
       <View style={styles.photoContainer}>
@@ -108,7 +108,7 @@ export default function CavePage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1 },
   centered: { flex: 1, justifyContent: "center", alignItems: "center" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
 

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
@@ -11,10 +11,14 @@ interface Props {
 }
 
 export default function AdresseCard({ item, onPress }: Props) {
+  const isDark = useColorScheme() === "dark";
   const scale = useSharedValue(1);
   const cardStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
+
+  const cardBg = isDark ? "#1C1C1E" : "#FFFFFF";
+  const nomColor = isDark ? "#FFFFFF" : "#1A1A1A";
 
   return (
     <Pressable
@@ -26,12 +30,12 @@ export default function AdresseCard({ item, onPress }: Props) {
         scale.value = withSpring(1, { damping: 15, stiffness: 400 });
       }}
     >
-      <Animated.View style={[styles.card, cardStyle]}>
+      <Animated.View style={[styles.card, { backgroundColor: cardBg }, cardStyle]}>
         <View style={[styles.emoji, { backgroundColor: typeCouleur(item.type) + "20" }]}>
           <Text style={{ fontSize: 20 }}>{typeEmoji(item.type)}</Text>
         </View>
         <View style={styles.right}>
-          <Text style={styles.nom}>{item.nom}</Text>
+          <Text style={[styles.nom, { color: nomColor }]}>{item.nom}</Text>
           <Text style={styles.ville}>
             {item.adresse ? `${item.adresse}, ` : ""}
             {item.ville}
@@ -52,7 +56,6 @@ export default function AdresseCard({ item, onPress }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
     borderRadius: 14,
     padding: 14,
     marginBottom: 10,
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   right: { flex: 1 },
-  nom: { fontSize: 15, fontWeight: "700", color: "#1a1a1a", marginBottom: 2 },
+  nom: { fontSize: 15, fontWeight: "700", marginBottom: 2 },
   ville: { fontSize: 13, color: "#888", marginBottom: 3 },
   desc: { fontSize: 12, color: "#aaa", lineHeight: 17 },
   badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4, marginLeft: 8 },

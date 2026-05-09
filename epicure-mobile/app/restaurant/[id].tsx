@@ -28,7 +28,7 @@ export default function RestaurantPage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1 },
   backBtn: {
     position: "absolute",
     top: 56,

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import { typeCouleur, typeLabel } from "../../../shared/utils/formatters";
 import { CurateurSignature } from "../../curateurs";
@@ -9,8 +9,11 @@ interface Props {
 }
 
 export function CaveInfo({ cave }: Props) {
+  const isDark = useColorScheme() === "dark";
   const couleur = typeCouleur(cave.type);
   const label = typeLabel(cave.type);
+  const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
+  const bodyColor = isDark ? "#EBEBF5" : "#3C3C43";
 
   return (
     <View style={styles.container}>
@@ -18,14 +21,16 @@ export function CaveInfo({ cave }: Props) {
         <Text style={[styles.badgeTxt, { color: couleur }]}>{label.toUpperCase()}</Text>
       </View>
 
-      <Text style={styles.nom}>{cave.nom}</Text>
+      <Text style={[styles.nom, { color: nomColor }]}>{cave.nom}</Text>
 
       <Text style={styles.adresse}>
         {cave.adresse ? `${cave.adresse}, ` : ""}
         {cave.ville}
       </Text>
 
-      {cave.description ? <Text style={styles.description}>{cave.description}</Text> : null}
+      {cave.description ? (
+        <Text style={[styles.description, { color: bodyColor }]}>{cave.description}</Text>
+      ) : null}
 
       <CurateurSignature caveId={cave.id} caveNom={cave.nom} />
     </View>
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
     textTransform: "uppercase",
   },
-  nom: { fontSize: 28, fontWeight: "700", color: "#1C1C1E", lineHeight: 34, marginTop: 12 },
+  nom: { fontSize: 28, fontWeight: "700", lineHeight: 34, marginTop: 12 },
   adresse: { fontSize: 15, color: "#8E8E93", lineHeight: 20, marginTop: 6 },
-  description: { fontSize: 15, color: "#3C3C43", lineHeight: 24, marginTop: 24 },
+  description: { fontSize: 15, lineHeight: 24, marginTop: 24 },
 });
