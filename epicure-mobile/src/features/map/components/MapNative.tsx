@@ -1,5 +1,5 @@
 import { memo, useMemo, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, useColorScheme } from "react-native";
 
 import ClusteredMapView from "react-native-map-clustering";
 import { Marker, Region } from "react-native-maps";
@@ -13,6 +13,9 @@ const TIP_W = 6;
 const TIP_H = 9;
 
 const PinMarker = memo(function PinMarker({ nom, showLabel }: { nom: string; showLabel: boolean }) {
+  const isDark = useColorScheme() === "dark";
+  const labelColor = isDark ? "#FFFFFF" : "#1A1A1A";
+  const shadowColor = isDark ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.95)";
   return (
     <View style={pin.container}>
       <View style={pin.head}>
@@ -20,7 +23,10 @@ const PinMarker = memo(function PinMarker({ nom, showLabel }: { nom: string; sho
       </View>
       <View style={pin.tip} />
       {showLabel ? (
-        <Text style={pin.label} numberOfLines={1}>
+        <Text
+          style={[pin.label, { color: labelColor, textShadowColor: shadowColor }]}
+          numberOfLines={1}
+        >
           {nom}
         </Text>
       ) : null}

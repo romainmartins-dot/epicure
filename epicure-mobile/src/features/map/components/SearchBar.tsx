@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View, useColorScheme } from "react-native";
 
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
@@ -12,6 +12,7 @@ interface Props {
 }
 
 export default function SearchBar({ recherche, setRecherche, onSubmit }: Props) {
+  const isDark = useColorScheme() === "dark";
   const clearOpacity = useSharedValue(0);
 
   useEffect(() => {
@@ -24,11 +25,14 @@ export default function SearchBar({ recherche, setRecherche, onSubmit }: Props) 
     transform: [{ scale: 0.7 + clearOpacity.value * 0.3 }],
   }));
 
+  const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
+  const inputColor = isDark ? "#FFFFFF" : "#1A1A1A";
+
   return (
-    <View style={styles.searchBar}>
+    <View style={[styles.searchBar, { backgroundColor: bgColor }]}>
       <Ionicons name="search" size={16} color="#999" style={styles.searchIcon} />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: inputColor }]}
         placeholder="Rechercher une ville..."
         placeholderTextColor="#999"
         value={recherche}
@@ -49,7 +53,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     margin: 12,
-    backgroundColor: "#fff",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -59,6 +62,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   searchIcon: { marginRight: 8 },
-  input: { flex: 1, fontSize: 15, color: "#1a0a00" },
+  input: { flex: 1, fontSize: 15 },
   clearBtn: { padding: 4 },
 });
