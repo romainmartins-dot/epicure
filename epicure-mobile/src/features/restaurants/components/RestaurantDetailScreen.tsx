@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useColorScheme,
 } from "react-native";
 
 import { Image } from "expo-image";
@@ -50,7 +51,15 @@ const VIN_TYPE_LABELS: Record<VinTypeRestaurant, string> = {
   doux: "Doux",
 };
 
-function VinRow({ vin }: { vin: RestaurantVin }) {
+function VinRow({
+  vin,
+  titleColor,
+  bodyColor,
+}: {
+  vin: RestaurantVin;
+  titleColor: string;
+  bodyColor: string;
+}) {
   const color = VIN_COLORS[vin.type] ?? "#C7C7CC";
   const millesimeLabel = vin.millesime ? String(vin.millesime) : "—";
 
@@ -59,7 +68,7 @@ function VinRow({ vin }: { vin: RestaurantVin }) {
       <View style={[styles.vinDot, { backgroundColor: color }]} />
       <View style={styles.vinInfo}>
         <View style={styles.vinTitleRow}>
-          <Text style={styles.vinCuvee} numberOfLines={1}>
+          <Text style={[styles.vinCuvee, { color: titleColor }]} numberOfLines={1}>
             {vin.cuvee}
           </Text>
           <Text style={styles.vinMillesime}>{millesimeLabel}</Text>
@@ -68,29 +77,39 @@ function VinRow({ vin }: { vin: RestaurantVin }) {
           {vin.domaine} · {vin.appellation}
         </Text>
         {vin.note_curateur && (
-          <Text style={styles.vinNote} numberOfLines={2}>
+          <Text style={[styles.vinNote, { color: bodyColor }]} numberOfLines={2}>
             {vin.note_curateur}
           </Text>
         )}
       </View>
       <View style={styles.vinPrix}>
-        {vin.prix_verre && <Text style={styles.vinPrixVerre}>{vin.prix_verre}€</Text>}
+        {vin.prix_verre && (
+          <Text style={[styles.vinPrixVerre, { color: titleColor }]}>{vin.prix_verre}€</Text>
+        )}
         {vin.prix_bouteille && <Text style={styles.vinPrixBouteille}>{vin.prix_bouteille}€</Text>}
       </View>
     </View>
   );
 }
 
-function PlatRow({ plat }: { plat: CartePlat }) {
+function PlatRow({
+  plat,
+  titleColor,
+  bodyColor,
+}: {
+  plat: CartePlat;
+  titleColor: string;
+  bodyColor: string;
+}) {
   return (
     <View style={styles.platRow}>
       <View style={styles.platInfo}>
-        <Text style={styles.platNom}>{plat.nom}</Text>
+        <Text style={[styles.platNom, { color: titleColor }]}>{plat.nom}</Text>
         <Text style={styles.platDescription} numberOfLines={2}>
           {plat.description}
         </Text>
       </View>
-      <Text style={styles.platPrix}>{plat.prix}€</Text>
+      <Text style={[styles.platPrix, { color: titleColor }]}>{plat.prix}€</Text>
     </View>
   );
 }
@@ -102,9 +121,18 @@ interface Props {
 }
 
 export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) {
+  const isDark = useColorScheme() === "dark";
+
+  const scrollBg = isDark ? "#000000" : "#E5E5EA";
+  const cardBg = isDark ? "#1C1C1E" : "#FFFFFF";
+  const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
+  const bodyColor = isDark ? "#EBEBF5" : "#3C3C43";
+  const secondaryBg = isDark ? "#2C2C2E" : "#F2F2F7";
+  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
+
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: cardBg }]}>
         <ActivityIndicator size="large" color="#27AE60" />
       </View>
     );
@@ -112,7 +140,7 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 
   if (!adresse) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: cardBg }]}>
         <Text style={styles.errorTxt}>Adresse introuvable</Text>
       </View>
     );
@@ -120,7 +148,7 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 
   return (
     <ScrollView
-      style={styles.scroll}
+      style={[styles.scroll, { backgroundColor: scrollBg }]}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
       bounces={true}
@@ -133,25 +161,27 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
           cachePolicy="disk"
         />
       ) : (
-        <View style={[styles.hero, styles.heroPlaceholder]}>
+        <View style={[styles.hero, styles.heroPlaceholder, { backgroundColor: secondaryBg }]}>
           <Ionicons name="restaurant" size={64} color="#C7C7CC" />
         </View>
       )}
 
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: cardBg }]}>
         <View style={styles.pullIndicator} />
 
         <View style={styles.badge}>
           <Text style={styles.badgeText}>RESTAURANT</Text>
         </View>
 
-        <Text style={styles.title}>{adresse.nom}</Text>
+        <Text style={[styles.title, { color: titleColor }]}>{adresse.nom}</Text>
         <Text style={styles.subtitle}>
           {adresse.adresse ? `${adresse.adresse}, ` : ""}
           {adresse.ville}
         </Text>
 
-        {adresse.description ? <Text style={styles.description}>{adresse.description}</Text> : null}
+        {adresse.description ? (
+          <Text style={[styles.description, { color: bodyColor }]}>{adresse.description}</Text>
+        ) : null}
 
         {(restaurant?.reservation_url || restaurant?.telephone) && (
           <View style={styles.ctaRow}>
@@ -171,12 +201,12 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
               <Pressable
                 style={({ pressed }) => [
                   styles.ctaBtn,
-                  styles.ctaBtnSecondary,
+                  { backgroundColor: secondaryBg },
                   pressed && styles.ctaBtnPressed,
                 ]}
                 onPress={() => Linking.openURL(`tel:${restaurant.telephone}`)}
               >
-                <Text style={styles.ctaBtnTextSecondary}>Appeler</Text>
+                <Text style={[styles.ctaBtnTextSecondary, { color: titleColor }]}>Appeler</Text>
               </Pressable>
             )}
           </View>
@@ -184,8 +214,8 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 
         {restaurant?.vins?.length ? (
           <>
-            <View style={styles.separator} />
-            <Text style={styles.carteTitle}>Vins naturels</Text>
+            <View style={[styles.separator, { backgroundColor: separatorColor }]} />
+            <Text style={[styles.carteTitle, { color: titleColor }]}>Vins naturels</Text>
             {restaurant.description_carte_vins ? (
               <Text style={styles.carteSubtitle}>{restaurant.description_carte_vins}</Text>
             ) : null}
@@ -200,15 +230,15 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
                 ))}
             </View>
             {restaurant.vins.map((vin) => (
-              <VinRow key={vin.id} vin={vin} />
+              <VinRow key={vin.id} vin={vin} titleColor={titleColor} bodyColor={bodyColor} />
             ))}
           </>
         ) : null}
 
         {restaurant?.carte?.length ? (
           <>
-            <View style={styles.separator} />
-            <Text style={styles.carteTitle}>Carte</Text>
+            <View style={[styles.separator, { backgroundColor: separatorColor }]} />
+            <Text style={[styles.carteTitle, { color: titleColor }]}>Carte</Text>
             <Text style={styles.carteSubtitle}>Cuisine de marché · saison en cours</Text>
 
             {SECTIONS.map((section) => {
@@ -218,7 +248,7 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
                 <View key={section} style={styles.section}>
                   <Text style={styles.sectionLabel}>{SECTION_LABELS[section]}</Text>
                   {plats.map((plat, i) => (
-                    <PlatRow key={i} plat={plat} />
+                    <PlatRow key={i} plat={plat} titleColor={titleColor} bodyColor={bodyColor} />
                   ))}
                 </View>
               );
@@ -231,21 +261,19 @@ export function RestaurantDetailScreen({ adresse, restaurant, loading }: Props) 
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#E5E5EA" },
+  scroll: { flex: 1 },
   scrollContent: { paddingBottom: 80 },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
 
   hero: { width, height: HERO_HEIGHT },
   heroPlaceholder: {
-    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
   },
 
   card: {
     marginTop: -24,
-    backgroundColor: "#fff",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
@@ -280,9 +308,9 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 
-  title: { fontSize: 34, lineHeight: 41, fontWeight: "700", color: "#1C1C1E", letterSpacing: 0.37 },
+  title: { fontSize: 34, lineHeight: 41, fontWeight: "700", letterSpacing: 0.37 },
   subtitle: { fontSize: 15, lineHeight: 20, color: "#8E8E93", marginTop: 4 },
-  description: { fontSize: 15, lineHeight: 22, color: "#3C3C43", marginTop: 12 },
+  description: { fontSize: 15, lineHeight: 22, marginTop: 12 },
 
   ctaRow: { flexDirection: "row", gap: 12, marginTop: 20 },
   ctaBtn: {
@@ -292,14 +320,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ctaBtnPrimary: { backgroundColor: "#27AE60" },
-  ctaBtnSecondary: { backgroundColor: "#F2F2F7" },
   ctaBtnPressed: { opacity: 0.75 },
   ctaBtnTextPrimary: { fontSize: 16, fontWeight: "600", color: "#fff" },
-  ctaBtnTextSecondary: { fontSize: 16, fontWeight: "600", color: "#1C1C1E" },
+  ctaBtnTextSecondary: { fontSize: 16, fontWeight: "600" },
 
-  separator: { height: 0.5, backgroundColor: "#C6C6C8", marginVertical: 24 },
+  separator: { height: 0.5, marginVertical: 24 },
 
-  carteTitle: { fontSize: 20, fontWeight: "700", color: "#1C1C1E", marginBottom: 2 },
+  carteTitle: { fontSize: 20, fontWeight: "700", marginBottom: 2 },
   carteSubtitle: { fontSize: 13, color: "#8E8E93", marginBottom: 20 },
 
   section: { marginBottom: 24 },
@@ -321,9 +348,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#C6C6C8",
   },
   platInfo: { flex: 1 },
-  platNom: { fontSize: 15, fontWeight: "600", color: "#1C1C1E", marginBottom: 3 },
+  platNom: { fontSize: 15, fontWeight: "600", marginBottom: 3 },
   platDescription: { fontSize: 12, color: "#8E8E93", lineHeight: 17 },
-  platPrix: { fontSize: 15, fontWeight: "600", color: "#1C1C1E", paddingTop: 1 },
+  platPrix: { fontSize: 15, fontWeight: "600", paddingTop: 1 },
 
   vinsLegend: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginBottom: 16 },
   legendItem: { flexDirection: "row", alignItems: "center", gap: 5 },
@@ -341,11 +368,11 @@ const styles = StyleSheet.create({
   vinDot: { width: 7, height: 7, borderRadius: 3.5, marginTop: 6, flexShrink: 0 },
   vinInfo: { flex: 1 },
   vinTitleRow: { flexDirection: "row", alignItems: "baseline", gap: 8 },
-  vinCuvee: { flex: 1, fontSize: 15, fontWeight: "600", color: "#1C1C1E" },
+  vinCuvee: { flex: 1, fontSize: 15, fontWeight: "600" },
   vinMillesime: { fontSize: 13, color: "#C7C7CC", flexShrink: 0 },
   vinAppellation: { fontSize: 12, color: "#8E8E93", marginTop: 2 },
-  vinNote: { fontSize: 13, color: "#3C3C43", fontStyle: "italic", marginTop: 6, lineHeight: 18 },
+  vinNote: { fontSize: 13, fontStyle: "italic", marginTop: 6, lineHeight: 18 },
   vinPrix: { alignItems: "flex-end", gap: 2, flexShrink: 0 },
-  vinPrixVerre: { fontSize: 13, fontWeight: "600", color: "#1C1C1E" },
+  vinPrixVerre: { fontSize: 13, fontWeight: "600" },
   vinPrixBouteille: { fontSize: 11, color: "#8E8E93" },
 });

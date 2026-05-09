@@ -133,7 +133,7 @@ function DomaineMinimal() {
         <Text style={[styles.selectionLabel, { color: labelColor }]}>
           {"SÉLECTION DE L’ÉQUIPE EPICURE"}
         </Text>
-        <Text style={styles.selectionCitation}>
+        <Text style={[styles.selectionCitation, { color: isDark ? "#FFFFFF" : "#1C1C1E" }]}>
           {
             "Sélectionné pour la rigueur de son travail vivant et l’expression honnête de son terroir."
           }
@@ -337,7 +337,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     lineHeight: 28,
-    color: "#1C1C1E",
     fontStyle: "italic",
   },
 

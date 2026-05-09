@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useColorScheme,
 } from "react-native";
 
 import { Image } from "expo-image";
@@ -28,10 +29,11 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 function SectionBlock({ label, value }: { label: string; value: string }) {
+  const isDark = useColorScheme() === "dark";
   return (
     <View style={styles.sectionBlock}>
       <Text style={styles.sectionLabel}>{label}</Text>
-      <Text style={styles.sectionValue}>{value}</Text>
+      <Text style={[styles.sectionValue, { color: isDark ? "#EBEBF5" : "#3C3C43" }]}>{value}</Text>
     </View>
   );
 }
@@ -44,9 +46,19 @@ interface Props {
 
 export function VinDetailScreen({ vin, domaine, loading }: Props) {
   const router = useRouter();
+  const isDark = useColorScheme() === "dark";
+
+  const scrollBg = isDark ? "#000000" : "#E5E5EA";
+  const cardBg = isDark ? "#1C1C1E" : "#FFFFFF";
+  const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
+  const bodyColor = isDark ? "#EBEBF5" : "#3C3C43";
+  const secondaryBg = isDark ? "#2C2C2E" : "#F2F2F7";
+  const tertiaryBg = isDark ? "#3A3A3C" : "#E5E5EA";
+  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
+
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: cardBg }]}>
         <ActivityIndicator size="large" color="#C0392B" />
       </View>
     );
@@ -54,7 +66,7 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 
   if (!vin) {
     return (
-      <View style={styles.centered}>
+      <View style={[styles.centered, { backgroundColor: cardBg }]}>
         <Text style={styles.errorTxt}>Vin introuvable</Text>
       </View>
     );
@@ -67,7 +79,7 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 
   return (
     <ScrollView
-      style={styles.scroll}
+      style={[styles.scroll, { backgroundColor: scrollBg }]}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
       bounces={true}
@@ -80,41 +92,41 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
           cachePolicy="disk"
         />
       ) : (
-        <View style={[styles.hero, styles.heroPlaceholder]}>
+        <View style={[styles.hero, styles.heroPlaceholder, { backgroundColor: secondaryBg }]}>
           <Ionicons name="wine" size={64} color="#C7C7CC" />
         </View>
       )}
 
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: cardBg }]}>
         <View style={styles.pullIndicator} />
 
-        {/* Badges type + alcool */}
         <View style={styles.badgeRow}>
           <View style={[styles.badge, { backgroundColor: typeColor + "18" }]}>
             <Text style={[styles.badgeText, { color: typeColor }]}>{vin.type.toUpperCase()}</Text>
           </View>
-          <View style={styles.badgeAlcool}>
+          <View style={[styles.badgeAlcool, { backgroundColor: secondaryBg }]}>
             <Text style={styles.badgeAlcoolText}>{vin.alcool_pct}% vol.</Text>
           </View>
         </View>
 
-        {/* Titre + subtitle */}
-        <Text style={styles.title}>{vin.cuvee}</Text>
+        <Text style={[styles.title, { color: titleColor }]}>{vin.cuvee}</Text>
         <Text style={styles.subtitle}>
           {vin.appellation} · {millesimeLabel}
         </Text>
 
-        {/* Domaine row */}
         {domaine && (
           <Pressable
-            style={({ pressed }) => [styles.domaineRow, pressed && { opacity: 0.7 }]}
+            style={({ pressed }) => [
+              styles.domaineRow,
+              { backgroundColor: pressed ? tertiaryBg : secondaryBg },
+            ]}
             onPress={() => router.push(`/domaine/${domaine.id}` as Href)}
           >
-            <View style={styles.domaineIcon}>
+            <View style={[styles.domaineIcon, { backgroundColor: tertiaryBg }]}>
               <Ionicons name="location" size={14} color="#8E8E93" />
             </View>
             <View style={styles.domaineInfo}>
-              <Text style={styles.domaineNom}>{domaine.nom}</Text>
+              <Text style={[styles.domaineNom, { color: titleColor }]}>{domaine.nom}</Text>
               <Text style={styles.domaineVigneron}>
                 {[domaine.vigneron, domaine.village].filter(Boolean).join(" · ")}
               </Text>
@@ -123,56 +135,53 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
           </Pressable>
         )}
 
-        <View style={styles.separator} />
+        <View style={[styles.separator, { backgroundColor: separatorColor }]} />
 
-        {/* Pull quote + description */}
-        <Text style={styles.pullQuote}>{vin.description_courte}</Text>
-        <Text style={styles.body}>{vin.description_longue}</Text>
+        <Text style={[styles.pullQuote, { color: titleColor }]}>{vin.description_courte}</Text>
+        <Text style={[styles.body, { color: bodyColor }]}>{vin.description_longue}</Text>
 
         {vin.note_curateur && domaine?.curateur_nom && (
           <>
-            <View style={styles.separator} />
+            <View style={[styles.separator, { backgroundColor: separatorColor }]} />
             <View style={styles.curateurBlock}>
               <View style={styles.curateurAccent} />
               <View style={styles.curateurBody}>
                 <Text style={styles.curateurNom}>{domaine.curateur_nom.toUpperCase()}</Text>
-                <Text style={styles.curateurNote}>{vin.note_curateur}</Text>
+                <Text style={[styles.curateurNote, { color: bodyColor }]}>{vin.note_curateur}</Text>
               </View>
             </View>
           </>
         )}
 
-        <View style={styles.separator} />
+        <View style={[styles.separator, { backgroundColor: separatorColor }]} />
 
-        {/* Grille 2×2 */}
         <View style={styles.metaGrid}>
-          <View style={styles.metaCell}>
+          <View style={[styles.metaCell, { backgroundColor: secondaryBg }]}>
             <Text style={styles.metaLabel}>CÉPAGE</Text>
-            <Text style={styles.metaValue}>{vin.cepage}</Text>
+            <Text style={[styles.metaValue, { color: titleColor }]}>{vin.cepage}</Text>
           </View>
-          <View style={styles.metaCell}>
+          <View style={[styles.metaCell, { backgroundColor: secondaryBg }]}>
             <Text style={styles.metaLabel}>MILLÉSIME</Text>
-            <Text style={styles.metaValue}>{millesimeLabel}</Text>
+            <Text style={[styles.metaValue, { color: titleColor }]}>{millesimeLabel}</Text>
           </View>
-          <View style={styles.metaCell}>
+          <View style={[styles.metaCell, { backgroundColor: secondaryBg }]}>
             <Text style={styles.metaLabel}>ÉLEVAGE</Text>
-            <Text style={styles.metaValue}>{vin.elevage}</Text>
+            <Text style={[styles.metaValue, { color: titleColor }]}>{vin.elevage}</Text>
           </View>
-          <View style={styles.metaCell}>
+          <View style={[styles.metaCell, { backgroundColor: secondaryBg }]}>
             <Text style={styles.metaLabel}>TERROIR</Text>
-            <Text style={styles.metaValue}>{vin.terroir}</Text>
+            <Text style={[styles.metaValue, { color: titleColor }]}>{vin.terroir}</Text>
           </View>
         </View>
 
-        <View style={styles.separator} />
+        <View style={[styles.separator, { backgroundColor: separatorColor }]} />
 
-        {/* Accords — une ligne par accord */}
         <View style={styles.sectionBlock}>
           <Text style={styles.sectionLabel}>ACCORDS</Text>
           {(vin.accords_mets ?? []).map((accord, i) => (
             <View key={i} style={styles.accordRow}>
               <View style={styles.accordDot} />
-              <Text style={styles.sectionValue}>{accord}</Text>
+              <Text style={[styles.sectionValue, { color: bodyColor }]}>{accord}</Text>
             </View>
           ))}
         </View>
@@ -188,21 +197,19 @@ export function VinDetailScreen({ vin, domaine, loading }: Props) {
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: "#E5E5EA" },
+  scroll: { flex: 1 },
   scrollContent: { paddingBottom: 80 },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
   errorTxt: { fontSize: 15, color: "#8E8E93" },
 
   hero: { width, height: HERO_HEIGHT },
   heroPlaceholder: {
-    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
   },
 
   card: {
     marginTop: -24,
-    backgroundColor: "#fff",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
@@ -229,17 +236,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
-    backgroundColor: "#F2F2F7",
   },
   badgeAlcoolText: { fontSize: 11, fontWeight: "500", color: "#8E8E93", letterSpacing: 0.3 },
 
-  title: { fontSize: 34, lineHeight: 41, fontWeight: "700", color: "#1C1C1E", letterSpacing: 0.37 },
+  title: { fontSize: 34, lineHeight: 41, fontWeight: "700", letterSpacing: 0.37 },
   subtitle: { fontSize: 15, lineHeight: 20, color: "#8E8E93", marginTop: 4, marginBottom: 16 },
 
   domaineRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F2F2F7",
     borderRadius: 12,
     padding: 12,
     gap: 10,
@@ -248,29 +253,26 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "#E5E5EA",
     justifyContent: "center",
     alignItems: "center",
   },
   domaineInfo: { flex: 1 },
-  domaineNom: { fontSize: 15, fontWeight: "600", color: "#1C1C1E" },
+  domaineNom: { fontSize: 15, fontWeight: "600" },
   domaineVigneron: { fontSize: 13, color: "#8E8E93", marginTop: 1 },
 
-  separator: { height: 0.5, backgroundColor: "#C6C6C8", marginVertical: 24 },
+  separator: { height: 0.5, marginVertical: 24 },
 
   pullQuote: {
     fontSize: 17,
     lineHeight: 24,
     fontWeight: "600",
-    color: "#1C1C1E",
     marginBottom: 10,
   },
-  body: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
+  body: { fontSize: 15, lineHeight: 22 },
 
   metaGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   metaCell: {
     width: (width - 40 - 12) / 2,
-    backgroundColor: "#F2F2F7",
     borderRadius: 12,
     padding: 14,
   },
@@ -282,7 +284,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: 6,
   },
-  metaValue: { fontSize: 15, fontWeight: "500", color: "#1C1C1E", lineHeight: 20 },
+  metaValue: { fontSize: 15, fontWeight: "500", lineHeight: 20 },
 
   sectionBlock: { marginBottom: 20 },
   sectionLabel: {
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: 8,
   },
-  sectionValue: { fontSize: 15, lineHeight: 22, color: "#3C3C43" },
+  sectionValue: { fontSize: 15, lineHeight: 22 },
 
   accordRow: { flexDirection: "row", alignItems: "flex-start", gap: 8, marginBottom: 4 },
   accordDot: {
@@ -318,7 +320,6 @@ const styles = StyleSheet.create({
   curateurNote: {
     fontSize: 15,
     lineHeight: 22,
-    color: "#3C3C43",
     fontStyle: "italic",
   },
 });
