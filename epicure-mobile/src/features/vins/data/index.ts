@@ -79,3 +79,17 @@ export function getVinsByCave(caveId: number): Vin[] {
   const ids = new Set(biovino.vins_proposes.map((v) => v.vin_id));
   return ALL_VINS.filter((v) => ids.has(v.id));
 }
+
+export function getCavesForDomaine(
+  domaineId: string,
+): { id: number; nom: string; type: "cave" | "restaurant"; ville: string }[] {
+  const domaineVinIds = new Set(
+    ALL_VINS.filter((v) => (v as unknown as { domaine_id: string }).domaine_id === domaineId).map(
+      (v) => v.id,
+    ),
+  );
+  const biovinoVinIds = new Set(biovino.vins_proposes.map((v) => v.vin_id));
+  const biovinoHasDomaine = [...domaineVinIds].some((id) => biovinoVinIds.has(id));
+  if (!biovinoHasDomaine) return [];
+  return [{ id: biovino.cave_id, nom: biovino.cave_nom, type: "cave", ville: "Lille" }];
+}

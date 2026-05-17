@@ -13,7 +13,7 @@
       "philosophie": "Vinification sans soufre, levures indigènes, zéro intrant",
       "histoire": "Thomas Pico reprend le domaine familial en 2003 et bascule immédiatement en biodynamie. Il devient une référence mondiale du Chablis nature, reconnu par les plus grands sommeliers pour sa pureté minérale.",
       "site_web": null,
-      "photo_url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "photo_url": null,
       "curateur_nom": "L'équipe Epicure",
       "curateur_id": "equipe-epicure",
       "statut_donnees": "complet"
@@ -1058,6 +1058,21 @@
       "philosophie": null,
       "histoire": null,
       "site_web": null,
+      "curateur_nom": "L'équipe Epicure",
+      "curateur_id": "equipe-epicure",
+      "statut_donnees": "minimal"
+    },
+    {
+      "id": "chateau-nodot",
+      "nom": "Château Nodot",
+      "vigneron": "Jessica Aubert",
+      "village": "Saint-Christoly-de-Blaye",
+      "region": "Bordeaux",
+      "appellation_principale": "Blaye Côtes de Bordeaux",
+      "surface_ha": 8,
+      "anciennete_bio": "conversion 2010",
+      "philosophie": "biodynamie certifiée Demeter",
+      "photo_url": null,
       "curateur_nom": "L'équipe Epicure",
       "curateur_id": "equipe-epicure",
       "statut_donnees": "minimal"

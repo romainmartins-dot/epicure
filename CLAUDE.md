@@ -1,5 +1,19 @@
 # Epicure — Instructions pour Claude Code
 
+## ⛔ RÈGLE ABSOLUE — VALIDATION VISUELLE RÉELLE
+
+Avant TOUTE déclaration "OK", "vert", "validé", "prêt", "non-régression OK" :
+
+1. Tu DOIS ouvrir chaque screenshot avec un outil de lecture d'image et le REGARDER réellement.
+2. Tu DOIS vérifier que l'écran affiche le contenu attendu — PAS un écran noir, PAS un écran blanc, PAS un écran de chargement, PAS une erreur rouge React Native.
+3. Si un screenshot est noir / blanc / vide / erreur : c'est un ÉCHEC BLOQUANT. Tu écris BLOCKERS.md. Tu ne déclares RIEN vert.
+4. Un screenshot "pris" n'est pas un screenshot "vérifié". Prendre un PNG ne prouve rien. Le regarder et constater le contenu, oui.
+5. Tu ne fais JAMAIS confiance à l'absence d'erreur dans le terminal pour conclure que l'UI est OK. Le terminal vert + l'écran noir = ÉCHEC.
+
+Sanction : si Romain découvre un écran noir/cassé que tu as déclaré "vert", toute la session QA est invalidée et doit être refaite intégralement.
+
+---
+
 ## Vision projet
 
 Epicure n'est pas un aggrégateur. C'est **le guide de référence des vins naturels**, porté par une communauté d'experts reconnus.

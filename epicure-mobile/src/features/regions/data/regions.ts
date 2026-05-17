@@ -13,6 +13,7 @@ export const REGIONS: Region[] = [
   { id: "jura", nom: "Jura" },
   { id: "savoie", nom: "Savoie" },
   { id: "cahors-sud-ouest", nom: "Cahors / Sud-Ouest" },
+  { id: "bordeaux", nom: "Bordeaux" },
 ];
 
 export const REGION_NOM_BY_ID: Record<string, string> = Object.fromEntries(

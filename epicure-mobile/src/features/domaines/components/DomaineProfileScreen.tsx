@@ -18,8 +18,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { WINE_TYPE_COLORS } from "../../vins/data/wineTypeColors";
 import type { Vin } from "../../vins/types";
+import { useAdressesByDomaine } from "../hooks/useAdressesByDomaine";
+import type { AdresseRef } from "../hooks/useAdressesByDomaine";
 import { useVinsByDomaine } from "../hooks/useVinsByDomaine";
 import type { Domaine } from "../types";
+import { getDomaineInitials } from "../utils/getDomaineInitials";
 
 const { width } = Dimensions.get("window");
 const HERO_HEIGHT = Math.round(width * (9 / 16));
@@ -37,14 +40,7 @@ function DomaineHero({ nom, photoUrl }: { nom: string; photoUrl?: string | null 
     );
   }
 
-  const initiales = nom
-    .split(" ")
-    .map((w) => w.replace(/^L[''']/i, "").replace(/^d[''']/i, ""))
-    .filter((w) => w.length > 0)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initiales = getDomaineInitials(nom);
 
   return (
     <View style={[styles.placeholder, { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7" }]}>
@@ -90,6 +86,40 @@ function VinRow({ vin, separateur }: { vin: Vin; separateur: boolean }) {
   );
 }
 
+// ─── AdresseRow ──────────────────────────────────────────────────────────────
+
+function AdresseRow({ adresse, separateur }: { adresse: AdresseRef; separateur: boolean }) {
+  const router = useRouter();
+  const isDark = useColorScheme() === "dark";
+  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
+  const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
+  const route = adresse.type === "cave" ? `/cave/${adresse.id}` : `/restaurant/${adresse.id}`;
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.adresseRow,
+        { backgroundColor: pressed ? (isDark ? "#2C2C2E" : "#F2F2F7") : "transparent" },
+      ]}
+      onPress={() => router.push(route as Href)}
+    >
+      <Ionicons name="storefront-outline" size={14} color="#C0392B" style={styles.adresseIcon} />
+      <View style={styles.adresseInfo}>
+        <Text style={[styles.adresseNom, { color: nomColor }]} numberOfLines={1}>
+          {adresse.nom}
+        </Text>
+        <Text style={styles.adresseVille} numberOfLines={1}>
+          {adresse.ville}
+        </Text>
+      </View>
+      <Ionicons name="chevron-forward" size={12} color="#C7C7CC" />
+      {separateur && (
+        <View style={[styles.adresseSeparator, { backgroundColor: separatorColor }]} />
+      )}
+    </Pressable>
+  );
+}
+
 // ─── SignatureEquipe ──────────────────────────────────────────────────────────
 
 function SignatureEquipe() {
@@ -121,34 +151,20 @@ interface Props {
   domaine: Domaine | null;
 }
 
-function DomaineMinimal() {
-  const isDark = useColorScheme() === "dark";
-  const labelColor = "#8E8E93";
-  const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-
-  return (
-    <>
-      <View style={[styles.separator, { backgroundColor: separatorColor }]} />
-      <View style={styles.selectionSection}>
-        <Text style={[styles.selectionLabel, { color: labelColor }]}>
-          {"SÉLECTION DE L’ÉQUIPE EPICURE"}
-        </Text>
-        <Text style={[styles.selectionCitation, { color: isDark ? "#FFFFFF" : "#1C1C1E" }]}>
-          {
-            "Sélectionné pour la rigueur de son travail vivant et l’expression honnête de son terroir."
-          }
-        </Text>
-      </View>
-      <SignatureEquipe />
-    </>
-  );
-}
-
-function DomaineComplet({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
+function DomaineContent({
+  domaine,
+  vins,
+  adresses,
+}: {
+  domaine: Domaine;
+  vins: Vin[];
+  adresses: AdresseRef[];
+}) {
   const isDark = useColorScheme() === "dark";
   const labelColor = "#8E8E93";
   const titleColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
+  const hasContent = !!domaine.philosophie || vins.length > 0;
 
   return (
     <>
@@ -170,6 +186,34 @@ function DomaineComplet({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
         </>
       )}
 
+      {adresses.length > 0 && (
+        <>
+          <View style={[styles.separator, { backgroundColor: separatorColor }]} />
+          <View style={styles.section}>
+            <Text style={[styles.sectionLabel, { color: labelColor }]}>DISPONIBLE CHEZ</Text>
+            {adresses.map((adresse, i) => (
+              <AdresseRow key={adresse.id} adresse={adresse} separateur={i < adresses.length - 1} />
+            ))}
+          </View>
+        </>
+      )}
+
+      {!hasContent && (
+        <>
+          <View style={[styles.separator, { backgroundColor: separatorColor }]} />
+          <View style={styles.selectionSection}>
+            <Text style={[styles.selectionLabel, { color: labelColor }]}>
+              {"SÉLECTION DE L'ÉQUIPE EPICURE"}
+            </Text>
+            <Text style={[styles.selectionCitation, { color: titleColor }]}>
+              {
+                "Sélectionné pour la rigueur de son travail vivant et l'expression honnête de son terroir."
+              }
+            </Text>
+          </View>
+        </>
+      )}
+
       <SignatureEquipe />
     </>
   );
@@ -177,6 +221,7 @@ function DomaineComplet({ domaine, vins }: { domaine: Domaine; vins: Vin[] }) {
 
 export function DomaineProfileScreen({ domaineId, domaine }: Props) {
   const { vins } = useVinsByDomaine(domaineId);
+  const adresses = useAdressesByDomaine(domaineId);
   const insets = useSafeAreaInsets();
   const isDark = useColorScheme() === "dark";
   const router = useRouter();
@@ -194,7 +239,6 @@ export function DomaineProfileScreen({ domaineId, domaine }: Props) {
 
   const sousTitre = [domaine.vigneron, domaine.village].filter(Boolean).join(" · ");
   const footnote = [domaine.appellation_principale, domaine.region].filter(Boolean).join(" · ");
-  const isComplet = domaine.statut_donnees === "complet";
   const hasPhoto = !!domaine.photo_url;
 
   return (
@@ -222,9 +266,15 @@ export function DomaineProfileScreen({ domaineId, domaine }: Props) {
           <Text style={[styles.largeTitre, { color: titleColor }]}>{domaine.nom}</Text>
           {sousTitre ? <Text style={styles.sousTitre}>{sousTitre}</Text> : null}
           {footnote ? <Text style={styles.footnote}>{footnote}</Text> : null}
+          {domaine.anciennete_bio ? (
+            <View style={styles.bioBadge}>
+              <Ionicons name="leaf-outline" size={12} color="#27AE60" />
+              <Text style={styles.bioBadgeText}>{domaine.anciennete_bio}</Text>
+            </View>
+          ) : null}
         </View>
 
-        {isComplet ? <DomaineComplet domaine={domaine} vins={vins} /> : <DomaineMinimal />}
+        <DomaineContent domaine={domaine} vins={vins} adresses={adresses} />
       </ScrollView>
     </View>
   );
@@ -307,18 +357,32 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   sectionLabel: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: "500",
     letterSpacing: 0.5,
     textTransform: "uppercase",
-    lineHeight: 13,
-    marginBottom: 12,
+    lineHeight: 16,
+    marginBottom: 16,
+    color: "#8E8E93",
   },
   descriptionText: {
     fontSize: 17,
     fontWeight: "400",
     lineHeight: 24,
   },
+
+  bioBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    marginTop: 12,
+    alignSelf: "flex-start",
+    backgroundColor: "#27AE6012",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  bioBadgeText: { fontSize: 12, color: "#27AE60", fontWeight: "500" },
 
   selectionSection: {
     paddingHorizontal: 20,
@@ -360,6 +424,26 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 16,
+    right: 0,
+    height: 0.5,
+  },
+
+  adresseRow: {
+    height: 44,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 0,
+  },
+  adresseIcon: {
+    marginRight: 12,
+  },
+  adresseInfo: { flex: 1, justifyContent: "center", marginRight: 8 },
+  adresseNom: { fontSize: 17, fontWeight: "600", lineHeight: 22 },
+  adresseVille: { fontSize: 13, fontWeight: "400", color: "#8E8E93", lineHeight: 18 },
+  adresseSeparator: {
+    position: "absolute",
+    bottom: 0,
+    left: 26,
     right: 0,
     height: 0.5,
   },
