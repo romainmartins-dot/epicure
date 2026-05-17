@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useAllDomaines } from "../../domaines/hooks/useAllDomaines";
+import { getDomaineInitials } from "../../domaines/utils/getDomaineInitials";
 import { REGIONS } from "../data/regions";
 import type { Region } from "../data/regions";
 
@@ -157,7 +158,7 @@ function DomaineResultRow({
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
   const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-  const initiale = domaine.nom.charAt(0).toUpperCase();
+  const initiale = getDomaineInitials(domaine.nom);
 
   return (
     <Pressable

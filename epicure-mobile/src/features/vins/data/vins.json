@@ -687,6 +687,17 @@
       "ambiance": "Vin de feu et de terre, dîner hivernal.",
       "niveau": "gastronomique",
       "tags": ["cahors", "malbec", "profond", "terrien", "puissant"]
+    },
+    {
+      "domaine_id": "chateau-nodot",
+      "id": "nodot-tradition",
+      "cuvee": "Cuvée Tradition",
+      "appellation": "Blaye Côtes de Bordeaux",
+      "region": "Bordeaux",
+      "type": "rouge",
+      "cepage": "Cabernet Sauvignon, Merlot",
+      "millesime": null,
+      "note_curateur": null
     }
   ]
 }

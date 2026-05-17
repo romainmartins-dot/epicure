@@ -1061,6 +1061,21 @@
       "curateur_nom": "L'équipe Epicure",
       "curateur_id": "equipe-epicure",
       "statut_donnees": "minimal"
+    },
+    {
+      "id": "chateau-nodot",
+      "nom": "Château Nodot",
+      "vigneron": "Jessica Aubert",
+      "village": "Saint-Christoly-de-Blaye",
+      "region": "Bordeaux",
+      "appellation_principale": "Blaye Côtes de Bordeaux",
+      "surface_ha": 8,
+      "anciennete_bio": "conversion 2010",
+      "philosophie": "biodynamie certifiée Demeter",
+      "photo_url": null,
+      "curateur_nom": "L'équipe Epicure",
+      "curateur_id": "equipe-epicure",
+      "statut_donnees": "minimal"
     }
   ]
 }

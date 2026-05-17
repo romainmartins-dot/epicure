@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { useDomainesByRegion } from "../../src/features/domaines/hooks/useDomainesByRegion";
 import type { Domaine } from "../../src/features/domaines/types";
+import { getDomaineInitials } from "../../src/features/domaines/utils/getDomaineInitials";
 import { REGION_NOM_BY_ID } from "../../src/features/regions/data/regions";
 
 const ROW_HEIGHT = 60;
@@ -24,7 +25,7 @@ function DomaineRow({ domaine, separateur }: { domaine: Domaine; separateur: boo
   const bgColor = isDark ? "#1C1C1E" : "#FFFFFF";
   const nomColor = isDark ? "#FFFFFF" : "#1C1C1E";
   const separatorColor = isDark ? "#38383A" : "#C6C6C8";
-  const initiale = domaine.nom.charAt(0).toUpperCase();
+  const initiale = getDomaineInitials(domaine.nom);
 
   return (
     <Pressable
